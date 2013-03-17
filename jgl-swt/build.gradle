@@ -1,0 +1,24 @@
+dependencies {
+	
+	compile project(':jgl-opengl')
+	
+	def osName = System.getProperty("os.name").toLowerCase()
+	def osArch = System.getProperty("os.arch").toLowerCase()
+	
+	def isWindows = osName.contains("windows")
+	def isLinux = osName.contains("linux")
+	def is32bit = osArch.contains("86")
+	def is64bit = osArch.contains("64")
+		
+	if (isWindows && is32bit) {
+		compile 'org.eclipse.swt:swt-win32-win32-x86:4.2.1'
+	} else if (isWindows && is64bit) {
+		compile 'org.eclipse.swt:swt-win32-win32-x86_64:4.2.1'
+	} else if (isLinux && is32bit) {
+		compile 'org.eclipse.swt:swt-gtk-linux-x86:4.2.1'
+	} else if (isLinux && is64bit) {
+		compile 'org.eclipse.swt:swt-gtk-linux-x86_64:4.2.1'	
+	} else {
+		println("Unsupported OS :(")
+	}
+}

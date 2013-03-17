@@ -1,0 +1,42 @@
+dependencies {
+	
+	compile 'org.slf4j:slf4j-simple:1.7.2'
+
+	def osName = System.getProperty("os.name").toLowerCase()
+	def osArch = System.getProperty("os.arch").toLowerCase()
+
+	def isWindows = osName.contains("windows")
+	def isLinux = osName.contains("linux")
+	def is32bit = osArch.contains("86")
+	def is64bit = osArch.contains("64")
+	
+	compile project(':jgl-os')
+	compile project(':jgl-time')
+	
+	compile 'org.jogamp.gluegen:gluegen-rt:20130313'
+	
+	compile 'org.jogamp.jogl:jogl-core:20130313'
+	compile 'org.jogamp.jogl:jogl-gldesktop:20130313'
+	compile 'org.jogamp.jogl:jogl-swt:20130313'
+	compile 'org.jogamp.jogl:jogl-glu:20130313' // TODO remove after example code is cleared...
+		
+	compile 'org.jogamp.nativewindow:nativewindow-core:20130313'
+	
+	if (isWindows) { 
+		
+		compile 'org.jogamp.jogl:jogl-os-win:20130313'
+		compile 'org.jogamp.nativewindow:nativewindow-os-win:20130313'
+		
+		if (is64bit) {
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-amd64:20130313'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-amd64:20130313'
+			compile 'org.jogamp.jogl:jogl-natives-windows-amd64:20130313'
+		} // TODO setup 32 bit dependencies as well
+	} 
+	
+	else if (isLinux) {		
+		compile 'org.jogamp.jogl:jogl-os-x11:2-RC11' // TODO set remaining X11 dependencies.
+	} 
+	
+	else { println("Unsupported OS :(") }	
+}
