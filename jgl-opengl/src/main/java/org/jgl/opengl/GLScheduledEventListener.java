@@ -8,6 +8,7 @@ import static java.lang.String.format;
 import javax.media.opengl.*;
 
 import org.jgl.opengl.util.GlCheckError;
+import org.jgl.opengl.util.GlViewSize;
 import org.jgl.time.util.ExecutionState;
 import org.slf4j.*;
 
@@ -48,7 +49,7 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 
 	@Override
 	public void dispose(GLAutoDrawable gad) { 
-		log.info("Disposing GL event listener..."); // TODO implement destructor
+		log.debug("Disposing GL event listener..."); // TODO implement destructor
 	}
 
 	@Override
@@ -56,14 +57,14 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 		glViewSize = new GlViewSize(x, y, w, h);
 		onResize(gad, glViewSize);
 	}
+
+	protected abstract void onResize(GLAutoDrawable gad, GlViewSize newViewport);
 	
 	protected final void checkError(GL gl) {
 		if (log.isDebugEnabled()) {
 			checkError.apply(gl);
 		}
 	}
-
-	protected abstract void onResize(GLAutoDrawable gad, GlViewSize newViewport);
 	
 	public GlViewSize getGlViewSize() { return glViewSize; }
 	public ExecutionState getExecutionState() { return executionState; }

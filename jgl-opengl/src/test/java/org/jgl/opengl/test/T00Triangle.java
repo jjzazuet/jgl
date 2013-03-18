@@ -6,7 +6,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
 
 import org.jgl.opengl.GLScheduledEventListener;
-import org.jgl.opengl.GlViewSize;
+import org.jgl.opengl.util.GlViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public class T00Triangle extends GLScheduledEventListener {

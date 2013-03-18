@@ -1,4 +1,4 @@
-package org.jgl.opengl;
+package org.jgl.opengl.util;
 
 public class GlViewSize {
 	

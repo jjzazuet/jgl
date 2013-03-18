@@ -6,7 +6,7 @@ import javax.media.opengl.GLProfile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-import org.jgl.opengl.test.T00Triangle;
+import org.jgl.opengl.test.*;
 import org.jgl.opengl.util.JoglNativeBoostrap;
 import org.jgl.swt.GLComposite;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T00Triangle());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new ShaderCompileTest());
 		
 		comp.getScheduler().setFrameTicksPerSecond(1);
 		comp.init();
