@@ -33,7 +33,7 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new ShaderCompileTest());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T01Triangle());
 		
 		comp.getScheduler().setFrameTicksPerSecond(1);
 		comp.init();

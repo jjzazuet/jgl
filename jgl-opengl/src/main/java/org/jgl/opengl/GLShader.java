@@ -84,10 +84,7 @@ public class GLShader extends GLContextBoundResource {
 	
 	@Override
 	public boolean equals(Object o) {
-		
-		boolean equals = false;
-		
-		equals = o != null && 
+		boolean equals = o != null && 
 				o instanceof GLShader && 
 				getSource().compareTo(((GLShader) o).getSource()) == 0;
 		return equals;

@@ -5,13 +5,13 @@ import org.slf4j.*;
 
 public class GLResource {
 
-	protected static final int MAX_GL_LOG_LENGTH = 2048;
 	protected static final Logger log = LoggerFactory.getLogger(GLResource.class);
-	protected final GlCheckError checkError = new GlCheckError();
+	public final GlCheckError checkError = new GlCheckError();
 
 	private int glResourceHandle = -1;
 
 	public int getGlResourceHandle() { return glResourceHandle; }
+	
 	protected final void setGlResourceHandle(int glResourceHandle) {
 		this.glResourceHandle = glResourceHandle;
 	}
