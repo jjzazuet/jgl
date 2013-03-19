@@ -1,6 +1,7 @@
 dependencies {
 	
 	compile project(':jgl-opengl')
+	testCompile project(':jgl-opengl') // TODO fix gradle test execution
 	
 	def osName = System.getProperty("os.name").toLowerCase()
 	def osArch = System.getProperty("os.arch").toLowerCase()
