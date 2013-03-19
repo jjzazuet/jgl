@@ -1,19 +1,42 @@
 package org.jgl.opengl.util;
 
-import static javax.media.opengl.GL2.*;
 import static com.google.common.base.Preconditions.*;
+import static javax.media.opengl.GL2.*;
+import static org.jgl.opengl.GLShaderType.*;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+import java.io.File;
+import java.nio.*;
+
+import javax.media.opengl.GL3;
+
 import org.jgl.opengl.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
 import com.google.common.base.Charsets;
 
 public class GLSLUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(GLSLUtils.class);
+	
+	public static final GLProgram loadProgram(String vsPath, String fsPath, GL3 gl) throws Exception {
+		
+		checkNotNull(vsPath);
+		checkNotNull(fsPath);
+		checkNotNull(gl);
+		
+		File vsSrcFile = new File(vsPath);
+		File fsSrcFile = new File(fsPath);
+
+		checkArgument(vsSrcFile.exists());
+		checkArgument(fsSrcFile.exists());
+		
+		GLShader vs = new GLShader(VERTEX_SHADER, vsSrcFile);
+		GLShader fs = new GLShader(FRAGMENT_SHADER, fsSrcFile);
+		GLProgram p = new GLProgram();
+		
+		p.attachShader(vs).attachShader(fs).init(gl);		
+		return p;
+	}
 	
 	public static final int getGlslParam(GLContextBoundResource r, int param) {
 		

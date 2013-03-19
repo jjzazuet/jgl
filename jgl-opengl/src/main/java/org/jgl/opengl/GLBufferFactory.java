@@ -84,10 +84,10 @@ public class GLBufferFactory {
 		}
 
 		glSizeIptr = glSizeIptr * md.getByteSizeofPrimitive(md.getGlPrimitiveType());
+		
 		targetBuffer.flip();
 		glBuffer.getGl().glBufferData(glBuffer.getGlBufferType(), 
 				glSizeIptr, targetBuffer, glUsageHint);
-		
 		glBuffer.unbind();
 		glBuffer.setRawBuffer(targetBuffer);
 

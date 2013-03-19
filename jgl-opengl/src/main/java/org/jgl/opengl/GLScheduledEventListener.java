@@ -1,12 +1,8 @@
 package org.jgl.opengl;
 
 import static com.google.common.base.Throwables.*;
-import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
-import static java.lang.String.format;
 
 import javax.media.opengl.*;
-
 import org.jgl.opengl.util.GlCheckError;
 import org.jgl.opengl.util.GlViewSize;
 import org.jgl.time.util.ExecutionState;
@@ -20,21 +16,15 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	private GlViewSize glViewSize = new GlViewSize(0, 0, 0, 0);
 	private ExecutionState executionState = new ExecutionState();
 
-	protected abstract void doInit(GLAutoDrawable gad);
-	public abstract void doRender(GLAutoDrawable gad, ExecutionState currentState) throws Exception;
+	protected abstract void doInit(GLAutoDrawable gad) throws Exception;
+	protected abstract void doRender(GLAutoDrawable gad, ExecutionState currentState) throws Exception;
 	protected abstract void doUpdate(GLAutoDrawable gad, ExecutionState currentState) throws Exception;
+	protected abstract void onResize(GLAutoDrawable gad, GlViewSize newViewport);
 	
 	@Override
-	public void init(GLAutoDrawable arg0) {
-
-		GL3 gl = (GL3) arg0.getGL();
-
-		log.info(format("OpenGL vendor: [%s]", gl.glGetString(GL_VENDOR)));
-		log.info(format("OpenGL renderer: [%s]", gl.glGetString(GL_RENDERER)));
-		log.info(format("OpenGL version: [%s]", gl.glGetString(GL_VERSION)));
-		log.info(format("OpenGL Shading language version: [%s]", gl.glGetString(GL_SHADING_LANGUAGE_VERSION)));
-		
-		doInit(arg0);
+	public void init(GLAutoDrawable arg0) { 
+		try { doInit(arg0); } 
+		catch (Exception e) { propagate(e); }
 	}
 
 	@Override
@@ -58,8 +48,6 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 		onResize(gad, glViewSize);
 	}
 
-	protected abstract void onResize(GLAutoDrawable gad, GlViewSize newViewport);
-	
 	protected final void checkError(GL gl) {
 		if (log.isDebugEnabled()) {
 			checkError.apply(gl);

@@ -1,7 +1,6 @@
 package org.jgl.swt.test;
 
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLProfile;
+import javax.media.opengl.*;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -25,7 +24,7 @@ public class GLTestShell {
 		s = new Shell(d);
 		
 		s.setLayout(new FillLayout());
-		s.setSize(512, 384);
+		s.setSize(720, 480);
 		
 		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 		
@@ -33,10 +32,11 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T01Triangle());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T002Rect());
 		
 		comp.getScheduler().setFrameTicksPerSecond(1);
 		comp.init();
+		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
 		s.open();
 
 		while (!s.isDisposed()) {

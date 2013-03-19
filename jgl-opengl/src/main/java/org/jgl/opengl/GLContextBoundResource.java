@@ -2,6 +2,9 @@ package org.jgl.opengl;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.String.format;
+
+import java.nio.IntBuffer;
+
 import javax.media.opengl.GL3;
 
 public abstract class GLContextBoundResource extends GLResource {
@@ -70,6 +73,12 @@ public abstract class GLContextBoundResource extends GLResource {
 	 * @throws IllegalStateException if the resource is not bound to the OpenGL context. */
 	public void checkBound() {
 		checkState(bound, resourceMsg("Unbound GL resource"));
+	}
+	
+	protected final IntBuffer intReadBuffer(int i) {
+		IntBuffer b = IntBuffer.wrap(new int [] {i});
+		b.flip();
+		return b;
 	}
 	
 	@Override

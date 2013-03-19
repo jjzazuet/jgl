@@ -43,10 +43,9 @@ public class GLShader extends GLContextBoundResource {
 
 	private void compile() throws CharacterCodingException {
 		
-		IntBuffer b = IntBuffer.wrap(new int [] {getSource().length()});
+		IntBuffer b = intReadBuffer(getSource().length());
 		String [] lines = new String [] {getSource()};
 
-		b.flip();
 		getGl().glShaderSource(getGlResourceHandle(), lines.length, lines, b);
 		getGl().glCompileShader(getGlResourceHandle());
 		int compileStatus = getGlslParam(this, GL_COMPILE_STATUS);

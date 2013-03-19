@@ -1,19 +1,21 @@
 package org.jgl.opengl;
 
 import static com.google.common.base.Preconditions.*;
+
 import java.nio.IntBuffer;
 import java.util.*;
 
 public class GLVertexArray extends GLContextBoundResource {
 
-	private Set<GLVertexAttribute> attributes = new HashSet<GLVertexAttribute>();
+	private final Set<GLVertexAttribute> attributes = new HashSet<GLVertexAttribute>();
 
-	public void bindAttribute(GLVertexAttribute p, GLBuffer paramData, int bufferComponentIndex) {
+	public GLVertexArray bindAttribute(GLVertexAttribute p, GLBuffer paramData, int bufferComponentIndex) {
 
 		checkNotNull(paramData);
 		checkNotNull(p);
 		GLBufferMetadata md = checkNotNull(paramData.getBufferMetadata());
 
+		// TODO add some kind of raw type checking e.g. float(3) = vec3
 		bind();
 		paramData.bind();
 
@@ -27,6 +29,8 @@ public class GLVertexArray extends GLContextBoundResource {
 		attributes.add(p);
 		paramData.unbind();
 		unbind();
+		
+		return this;
 	}
 
 	public void enable(GLVertexAttribute p) {
@@ -60,8 +64,6 @@ public class GLVertexArray extends GLContextBoundResource {
 
 	@Override
 	protected void doDestroy() {
-		IntBuffer b = IntBuffer.wrap(new int[] { getGlResourceHandle() });
-		b.flip();
-		getGl().glDeleteVertexArrays(1, b);
+		getGl().glDeleteVertexArrays(1, intReadBuffer(getGlResourceHandle()));
 	}
 }

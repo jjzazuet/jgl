@@ -18,8 +18,7 @@ dependencies {
 	compile 'org.jogamp.jogl:jogl-core:20130313'
 	compile 'org.jogamp.jogl:jogl-gldesktop:20130313'
 	compile 'org.jogamp.jogl:jogl-swt:20130313'
-	compile 'org.jogamp.jogl:jogl-glu:20130313' // TODO remove after example code is cleared...
-		
+
 	compile 'org.jogamp.nativewindow:nativewindow-core:20130313'
 	
 	if (isWindows) { 

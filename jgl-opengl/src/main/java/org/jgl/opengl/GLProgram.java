@@ -54,13 +54,14 @@ public class GLProgram extends GLContextBoundResource {
 		IntBuffer sizeBuf = IntBuffer.allocate(1);
 		IntBuffer typeBuf = IntBuffer.allocate(1);
 		ByteBuffer nameBuf = ByteBuffer.allocate(maxLength + 1);
+		int attributeCount = getGlslParam(this, type);
 		
-		for (int k = 0; k < getGlslParam(this, type); k++) {
+		for (int k = 0; k < attributeCount; k++) {
 			
 			GLAttribute at;
 			String attributeName;
 			int location;
-			lengthBuf.clear(); sizeBuf.clear(); typeBuf.clear();
+			lengthBuf.clear(); sizeBuf.clear(); typeBuf.clear(); nameBuf.clear();
 			
 			if (type == GL_ACTIVE_ATTRIBUTES) {
 				
@@ -69,7 +70,7 @@ public class GLProgram extends GLContextBoundResource {
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = getGl().glGetAttribLocation(getGlResourceHandle(), attributeName);
-				at = new GLVertexAttribute(location, attributeName);
+				at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName);
 				
 			} else {
 				
@@ -113,7 +114,7 @@ public class GLProgram extends GLContextBoundResource {
 	protected void doUnbind() { getGl().glUseProgram(0); }
 
 	@Override
-	protected void doDestroy() { 
+	protected void doDestroy() {
 		for (GLShader s : shaders) { s.destroy(); }
 		getGl().glDeleteProgram(getGlResourceHandle());
 	}

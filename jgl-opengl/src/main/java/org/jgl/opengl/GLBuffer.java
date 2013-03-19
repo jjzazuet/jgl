@@ -37,9 +37,7 @@ public class GLBuffer extends GLContextBoundResource {
 	
 	@Override
 	protected void doDestroy() { 
-		IntBuffer b = IntBuffer.wrap(new int [] {getGlResourceHandle()});
-		b.flip();
-		getGl().glDeleteBuffers(1, b);
+		getGl().glDeleteBuffers(1, intReadBuffer(getGlResourceHandle()));
 	}
 
 	public int getGlBufferType() { return glBufferType; }
