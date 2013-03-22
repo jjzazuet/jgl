@@ -79,7 +79,7 @@ public class GLProgram extends GLContextBoundResource {
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = getGl().glGetUniformLocation(getGlResourceHandle(), attributeName);
-				at = new GLUniformAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName);
+				at = new GLUniformAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, this);
 			}
 			
 			if (log.isDebugEnabled()) { log.debug(at.toString()); }

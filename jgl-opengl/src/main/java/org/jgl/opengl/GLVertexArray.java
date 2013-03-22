@@ -20,7 +20,7 @@ public class GLVertexArray extends GLContextBoundResource {
 		paramData.bind();
 
 		int glIndex = p.getLocation();
-		int glSize = md.getComponentSize(bufferComponentIndex);
+		int glSize = md.getComponentUnitSize(bufferComponentIndex);
 		int glPrimitiveType = md.getGlPrimitiveType();
 		int glStride = md.getTotalComponentByteSize();
 		int glOffsetPointer = md.getComponentByteOffset(bufferComponentIndex);

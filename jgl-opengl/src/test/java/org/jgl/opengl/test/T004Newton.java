@@ -2,36 +2,36 @@ package org.jgl.opengl.test;
 
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.test.TGeometry.*;
+import static org.jgl.opengl.util.GLSLUtils.*;
 import javax.media.opengl.GL3;
 
+import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.util.GlViewSize;
 import org.jgl.time.util.ExecutionState;
 
-public class T002Rect extends GL3EventListener {
+public class T004Newton extends GL3EventListener {
 
-	private GLVertexArray rectVao = new GLVertexArray();
 	private GLProgram p;
+	private GLVertexArray rectVao = new GLVertexArray();
 	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
-		
-		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t002Rect/rect.vs", 
-				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t002Rect/rect.fs", gl);
-		
-		GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
-		GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLVertexAttribute position = p.getStageAttribute("Position");
-		GLVertexAttribute color = p.getStageAttribute("Color");
 
-		rectVao.init(gl);
-		rectVao.bindAttribute(position, verts, 0).enable(position);
-		rectVao.bindAttribute(color, colors, 0).enable(color);
+		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t004Newton/newton.vs", 
+				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t004Newton/newton.fs", gl);
 		
-		gl.glClearColor(0, 0, 0, 1);
-		gl.glClearDepth(1);
+		GLVertexAttribute position = p.getStageAttribute("Position");
+		GLBuffer rectangleBuffer = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
+		
+		rectVao.init(gl);
+		rectVao.bindAttribute(position, rectangleBuffer, 0).enable(position);
+		p.bind();
+		p.getUniformAttribute("Color1").setVec3f(new Vector3(0.2f, 0.02f, 0.05f));
+		p.getUniformAttribute("Color2").setVec3f(new Vector3(1.0f, 0.98f, 0.98f));
+		p.unbind();
+		gl.glDisable(GL_DEPTH_TEST);	
 	}
 
 	@Override

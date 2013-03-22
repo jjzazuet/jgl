@@ -19,7 +19,7 @@ public class BufferMetadataTest {
 		GLBufferMetadata md = new GLBufferMetadata(new int [] { 1 }, GL_FLOAT);
 		
 		assertTrue(md.getComponentCount() == 1);
-		assertTrue(md.getComponentSize(0) == 1);
+		assertTrue(md.getComponentUnitSize(0) == 1);
 		assertTrue(md.getComponentByteSize(0) == 4);
 		assertTrue(md.getComponentByteOffset(0) == 0);
 		assertTrue(md.getTotalComponentByteSize() == 4);
@@ -28,7 +28,7 @@ public class BufferMetadataTest {
 		GLBufferMetadata float3 = new GLBufferMetadata(new int [] {3}, GL_FLOAT);
 		
 		assertTrue(float3.getComponentCount() == 1);
-		assertTrue(float3.getComponentSize(0) == 3);
+		assertTrue(float3.getComponentUnitSize(0) == 3);
 		assertTrue(float3.getComponentByteSize(0) == 12);
 		assertTrue(float3.getComponentByteOffset(0) == 0);
 		assertTrue(float3.getTotalComponentByteSize() == 12);
@@ -37,8 +37,8 @@ public class BufferMetadataTest {
 		GLBufferMetadata floatV = new GLBufferMetadata(new int [] { 3, 2 }, GL_FLOAT);
 		
 		assertTrue(floatV.getComponentCount() == 2);
-		assertTrue(floatV.getComponentSize(0) == 3);
-		assertTrue(floatV.getComponentSize(1) == 2);
+		assertTrue(floatV.getComponentUnitSize(0) == 3);
+		assertTrue(floatV.getComponentUnitSize(1) == 2);
 		assertTrue(floatV.getComponentByteSize(0) == 12);
 		assertTrue(floatV.getComponentByteSize(1) == 8);
 		assertTrue(floatV.getComponentByteOffset(0) == 0);
@@ -49,7 +49,7 @@ public class BufferMetadataTest {
 		GLBufferMetadata intl = new GLBufferMetadata(new int [] {1}, GL_UNSIGNED_INT);
 		
 		assertTrue(intl.getComponentCount() == 1);
-		assertTrue(intl.getComponentSize(0) == 1);
+		assertTrue(intl.getComponentUnitSize(0) == 1);
 		assertTrue(intl.getComponentByteSize(0) == 4);
 		assertTrue(intl.getComponentByteOffset(0) == 0);	
 	}

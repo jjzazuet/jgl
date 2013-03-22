@@ -35,8 +35,8 @@ public class T001Triangle extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		p.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		triangleVao.bind();
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_TRIANGLES, 0, 3);
 		triangleVao.unbind();
 		p.unbind();	

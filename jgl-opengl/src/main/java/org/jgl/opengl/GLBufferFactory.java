@@ -44,9 +44,6 @@ public class GLBufferFactory {
 		Buffer targetBuffer = null;
 		int glSizeIptr = -1;
 
-		glBuffer.init(gl);
-		glBuffer.bind();
-
 		switch (md.getGlPrimitiveType()) {
 	
 			case GL_FLOAT:
@@ -83,11 +80,12 @@ public class GLBufferFactory {
 				break;
 		}
 
-		glSizeIptr = glSizeIptr * md.getByteSizeofPrimitive(md.getGlPrimitiveType());
+		glSizeIptr = glSizeIptr * md.getByteSizeof(md.getGlPrimitiveType());
 		
 		targetBuffer.flip();
-		glBuffer.getGl().glBufferData(glBuffer.getGlBufferType(), 
-				glSizeIptr, targetBuffer, glUsageHint);
+		glBuffer.init(gl);
+		glBuffer.bind();
+		glBuffer.getGl().glBufferData(glBuffer.getGlBufferType(), glSizeIptr, targetBuffer, glUsageHint);
 		glBuffer.unbind();
 		glBuffer.setRawBuffer(targetBuffer);
 

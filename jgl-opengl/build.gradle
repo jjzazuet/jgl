@@ -12,9 +12,10 @@ dependencies {
 	
 	compile project(':jgl-os')
 	compile project(':jgl-time')
-	
+	compile project(':jgl-math')
+		
 	compile 'org.jogamp.gluegen:gluegen-rt:20130313'
-	
+
 	compile 'org.jogamp.jogl:jogl-core:20130313'
 	compile 'org.jogamp.jogl:jogl-gldesktop:20130313'
 	compile 'org.jogamp.jogl:jogl-swt:20130313'
