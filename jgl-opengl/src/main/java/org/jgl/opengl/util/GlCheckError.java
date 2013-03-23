@@ -3,9 +3,7 @@ package org.jgl.opengl.util;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import javax.media.opengl.GL;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.*;
 
 public class GlCheckError {
 
@@ -13,9 +11,7 @@ public class GlCheckError {
 	
 	public void apply(GL gl) {
 		if (log.isDebugEnabled()) {
-			
 			int glError = get(gl);
-			
 			if (glError != GL_NO_ERROR) {
 				throw new IllegalStateException(
 						String.format("Invalid OpenGL state: [%s]", glError));

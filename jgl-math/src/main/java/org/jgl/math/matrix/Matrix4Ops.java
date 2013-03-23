@@ -50,13 +50,23 @@ public class Matrix4Ops {
 		m.m30 = 0; m.m31 = 0; m.m32 = 0; m.m33 = 0;
 	}
 	
-	public static void store(Matrix4 src, FloatBuffer b) {
-		checkNoNulls(src, b);
+	public static void store(FloatBuffer b, Matrix4 ... src) {
+		
+		checkNoNulls(src);
+		checkNotNull(b);
+		checkArgument(src.length >= 1);
+		checkArgument(b.capacity() >= src.length * Matrix4.COMPONENT_SIZE);
+		
 		b.clear();
-		b.put((float) src.m00); b.put((float) src.m01); b.put((float) src.m02); b.put((float) src.m03);
-		b.put((float) src.m10); b.put((float) src.m11); b.put((float) src.m12); b.put((float) src.m13);
-		b.put((float) src.m20); b.put((float) src.m21); b.put((float) src.m22); b.put((float) src.m23);
-		b.put((float) src.m30); b.put((float) src.m31); b.put((float) src.m32); b.put((float) src.m33);
+		
+		for (Matrix4 m : src) {
+			checkState(b.remaining() >= Matrix4.COMPONENT_SIZE);
+			b.put((float) m.m00); b.put((float) m.m01); b.put((float) m.m02); b.put((float) m.m03);
+			b.put((float) m.m10); b.put((float) m.m11); b.put((float) m.m12); b.put((float) m.m13);
+			b.put((float) m.m20); b.put((float) m.m21); b.put((float) m.m22); b.put((float) m.m23);
+			b.put((float) m.m30); b.put((float) m.m31); b.put((float) m.m32); b.put((float) m.m33);		
+		}
+		
 		b.flip();
 	}
 }

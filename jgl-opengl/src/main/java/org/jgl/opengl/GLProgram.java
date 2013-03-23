@@ -27,7 +27,7 @@ public class GLProgram extends GLContextBoundResource {
 		for (GLShader s : shaders) { 
 			if (!s.isInitialized()) { s.init(getGl()); }
 			getGl().glAttachShader(getGlResourceHandle(), s.getGlResourceHandle());
-			checkError.apply(getGl());
+			checkError().apply(getGl());
 		}
 		
 		getGl().glLinkProgram(getGlResourceHandle());
@@ -53,7 +53,7 @@ public class GLProgram extends GLContextBoundResource {
 		IntBuffer lengthBuf = IntBuffer.allocate(1);
 		IntBuffer sizeBuf = IntBuffer.allocate(1);
 		IntBuffer typeBuf = IntBuffer.allocate(1);
-		ByteBuffer nameBuf = ByteBuffer.allocate(maxLength + 1);
+		ByteBuffer nameBuf;
 		int attributeCount = getGlslParam(this, type);
 		
 		for (int k = 0; k < attributeCount; k++) {
@@ -61,7 +61,9 @@ public class GLProgram extends GLContextBoundResource {
 			GLAttribute at;
 			String attributeName;
 			int location;
-			lengthBuf.clear(); sizeBuf.clear(); typeBuf.clear(); nameBuf.clear();
+			
+			lengthBuf.clear(); sizeBuf.clear(); typeBuf.clear();
+			nameBuf = ByteBuffer.allocate(maxLength + 1);
 			
 			if (type == GL_ACTIVE_ATTRIBUTES) {
 				

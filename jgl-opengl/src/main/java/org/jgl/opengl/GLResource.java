@@ -6,11 +6,12 @@ import org.slf4j.*;
 public class GLResource {
 
 	protected static final Logger log = LoggerFactory.getLogger(GLResource.class);
-	public final GlCheckError checkError = new GlCheckError();
+	private final GlCheckError checkError = new GlCheckError();
 
 	private int glResourceHandle = -1;
-
+	
 	public int getGlResourceHandle() { return glResourceHandle; }
+	public GlCheckError checkError() { return checkError; }
 	
 	protected final void setGlResourceHandle(int glResourceHandle) {
 		this.glResourceHandle = glResourceHandle;

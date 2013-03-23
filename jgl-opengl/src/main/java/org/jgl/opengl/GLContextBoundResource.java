@@ -10,7 +10,6 @@ import javax.media.opengl.GL3;
 public abstract class GLContextBoundResource extends GLResource {
 
 	private GL3 gl = null;
-	
 	private boolean bound = false;
 	private boolean initialized = false;
 
@@ -21,34 +20,32 @@ public abstract class GLContextBoundResource extends GLResource {
 	
 	public void init(final GL3 gl) {
 		
-		this.gl = gl;
+		this.gl = checkNotNull(gl);
 		
 		if (!initialized) {	
 			doInit();
 			if (log.isDebugEnabled()) {
-				checkError.apply(gl);
+				checkError().apply(gl);
 				log.debug(resourceMsg("Initialized GL resource"));
 			}
 			initialized = true;
 		}
 	}
 	
-	/** Bind to the active OpenGL context. */
 	public void bind() {
 		if (!initialized) { 
 			throw new IllegalStateException(resourceMsg("Resouce not initialized")); 
 		}
 		if (bound) { multipleBindWarn(); }
 		doBind();
-		checkError.apply(gl);
+		checkError().apply(gl);
 		bound = true;
 	}
 	
-	/** Detach from the active OpenGL context. */
 	public void unbind() {
 		if (!bound) { multipleBindWarn(); }
 		doUnbind();
-		checkError.apply(gl);
+		checkError().apply(gl);
 		bound = false;
 	}
 		
@@ -75,26 +72,26 @@ public abstract class GLContextBoundResource extends GLResource {
 		checkState(bound, resourceMsg("Unbound GL resource"));
 	}
 	
-	protected final IntBuffer intReadBuffer(int i) {
-		IntBuffer b = IntBuffer.wrap(new int [] {i});
-		b.flip();
-		return b;
-	}
-	
 	@Override
 	public String toString() {
 		return String.format("%s[rh: %s, bound: %s, init: %s]", 
 				getClass().getSimpleName(), getGlResourceHandle(), isBound(), initialized);
 	}
 	
-	public GL3 getGl() { return gl; }
+	private void multipleBindWarn() {
+		log.warn(resourceMsg("Multiple bind/unbind request"));		
+	}
 	
 	public String resourceMsg(String msg) {
 		return format("%s: [%s, %s]", 
 				msg, getClass().getSimpleName(), getGlResourceHandle());
 	}
-	
-	private void multipleBindWarn() {
-		log.warn(resourceMsg("Multiple bind request"));		
+
+	protected final IntBuffer intReadBuffer(int i) {
+		IntBuffer b = IntBuffer.wrap(new int [] {i});
+		b.flip();
+		return b;
 	}
+
+	public GL3 getGl() { return gl; }
 }

@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 public class Matrix4 {
 
+	public static final int COMPONENT_SIZE = 16;
 	public static final String ROW_FORMAT = "%n[%.6f, %.6f, %.6f, %.6f]";
 	
 	public double m00, m01, m02, m03;

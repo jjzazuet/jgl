@@ -1,6 +1,14 @@
 package org.jgl.opengl;
 
+import static org.jgl.math.matrix.Matrix2Ops.*;
+import static org.jgl.math.matrix.Matrix4Ops.*;
+import static org.jgl.math.Preconditions.*;
 import static com.google.common.base.Preconditions.*;
+
+import java.nio.FloatBuffer;
+
+import org.jgl.math.matrix.Matrix2;
+import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.vector.*;
 
 public class GLUniformAttribute extends GLAttribute {
@@ -18,9 +26,27 @@ public class GLUniformAttribute extends GLAttribute {
 		p.getGl().glUniform1f(getLocation(), value);
 	}
 	
-	public void setInt(String uniformName, int value) {
+	public void setInt(int value) {
 		p.checkBound();
 		p.getGl().glUniform1i(getLocation(), value);
+	}
+	
+	public void setMat2fv(boolean transpose, FloatBuffer dst, Matrix2 ... src) {
+		p.checkBound();
+		checkNoNulls(src);
+		checkArgument(src.length >= 1);
+		store(dst, src);
+		p.getGl().glUniformMatrix2fv(getLocation(), src.length, transpose, dst);
+		p.checkError().apply(p.getGl());
+	}
+	
+	public void setMat4fv(boolean transpose, FloatBuffer dst, Matrix4 ... src) {
+		p.checkBound();
+		checkNoNulls(src);
+		checkArgument(src.length >= 1);
+		store(dst, src);
+		p.getGl().glUniformMatrix4fv(getLocation(), src.length, transpose, dst);
+		p.checkError().apply(p.getGl());
 	}
 	
 	public void setVec2f(Vector2 v) {
@@ -31,5 +57,33 @@ public class GLUniformAttribute extends GLAttribute {
 	public void setVec3f(Vector3 v) {
 		p.checkBound();
 		p.getGl().glUniform3f(getLocation(), (float) v.x, (float) v.y, (float) v.z);
+	}
+	
+	public void setVec2fv(float [] data) {
+		p.checkBound();
+		p.getGl().glUniform2fv(getLocation(), getSize(), bufferData(data, 2));
+		p.checkError().apply(p.getGl());
+	}
+	
+	public void setVec3fv(float [] data) {
+		p.checkBound();
+		p.getGl().glUniform3fv(getLocation(), getSize(), bufferData(data, 3));
+		p.checkError().apply(p.getGl());
+	}
+	
+	public void setVec4fv(float [] data) {
+		p.checkBound();
+		p.getGl().glUniform4fv(getLocation(), getSize(), bufferData(data, 4));
+		p.checkError().apply(p.getGl());
+	}
+	
+	protected FloatBuffer bufferData(float [] data, int componentSize) {
+		checkNotNull(data);
+		checkArgument(componentSize >= 1);
+		checkArgument(data.length >= componentSize);
+		checkArgument(data.length / componentSize == getSize());
+		FloatBuffer fb = FloatBuffer.wrap(data);
+		fb.flip();
+		return fb;
 	}
 }

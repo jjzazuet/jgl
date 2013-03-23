@@ -6,6 +6,15 @@ import static com.google.common.base.Preconditions.*;
 
 public class GLBufferMetadata {
 
+	public static final int GL_BYTE_SIZE           = 1;
+	public static final int GL_UNSIGNED_BYTE_SIZE  = 1;
+	public static final int GL_SHORT_SIZE          = 2;
+	public static final int GL_UNSIGNED_SHORT_SIZE = 2;
+	public static final int GL_INT_SIZE            = 4;
+	public static final int GL_UNSIGNED_INT_SIZE   = 4;
+	public static final int GL_FLOAT_SIZE          = 4;
+	public static final int GL_DOUBLE_SIZE         = 8;
+	
 	private final int glPrimitiveType;
 	private final int[] componentUnitSizes;
 
@@ -33,6 +42,16 @@ public class GLBufferMetadata {
 		return componentSize;
 	}
 	
+	public int getTotalComponentByteSize() {
+		
+		int byteSum = 0;
+		
+		for (int k = 0; k < componentUnitSizes.length; k++) {
+			byteSum += getComponentByteSize(k);
+		}
+		return byteSum;
+	}	
+
 	public int getComponentByteSize(int componentIndex) {
 		return getByteSizeof(glPrimitiveType) * getComponentUnitSize(componentIndex); 
 	}
@@ -46,27 +65,17 @@ public class GLBufferMetadata {
 		}
 		return byteOffset;
 	}
-
-	public int getTotalComponentByteSize() {
-		
-		int byteSum = 0;
-		
-		for (int k = 0; k < componentUnitSizes.length; k++) {
-			byteSum += getComponentByteSize(k);
-		}
-		return byteSum;
-	}	
 	
 	public int getByteSizeof(int glType) {
 		switch (glType) {
-			case GL_BYTE:           return 1;
-			case GL_UNSIGNED_BYTE:  return 1;
-			case GL_SHORT:          return 2;
-			case GL_UNSIGNED_SHORT: return 2;
-			case GL_INT:            return 4;
-			case GL_UNSIGNED_INT:   return 4;
-			case GL_FLOAT:          return 4;
-			case GL_DOUBLE:         return 8;
+			case GL_BYTE:           return GL_BYTE_SIZE;
+			case GL_UNSIGNED_BYTE:  return GL_UNSIGNED_BYTE_SIZE;
+			case GL_SHORT:          return GL_SHORT_SIZE;
+			case GL_UNSIGNED_SHORT: return GL_UNSIGNED_SHORT_SIZE;
+			case GL_INT:            return GL_INT_SIZE;
+			case GL_UNSIGNED_INT:   return GL_UNSIGNED_INT_SIZE;
+			case GL_FLOAT:          return GL_FLOAT_SIZE;
+			case GL_DOUBLE:         return GL_DOUBLE_SIZE;
 		}
 		return -1;
 	}

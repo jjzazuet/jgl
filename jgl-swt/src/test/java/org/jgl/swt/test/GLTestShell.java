@@ -32,9 +32,9 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T005Manderblot());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T006NewtonZoom());
 		
-		comp.getScheduler().setFrameTicksPerSecond(1);
+		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
 		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
 		s.open();
