@@ -49,16 +49,26 @@ public class GLUniformAttribute extends GLAttribute {
 		p.checkError().apply(p.getGl());
 	}
 	
-	public void setVec2f(Vector2 v) {
+	public void setVec2f(double x, double y) {
 		p.checkBound();
-		p.getGl().glUniform2f(getLocation(), (float) v.x, (float) v.y);
-	}
-
-	public void setVec3f(Vector3 v) {
-		p.checkBound();
-		p.getGl().glUniform3f(getLocation(), (float) v.x, (float) v.y, (float) v.z);
+		p.getGl().glUniform2f(getLocation(), (float) x, (float) y);		
 	}
 	
+	public void setVec2f(Vector2 v) { 
+		checkNotNull(v);
+		setVec2f(v.x, v.y); 
+	}
+
+	public void setVec3f(double x, double y, double z) {
+		p.checkBound();
+		p.getGl().glUniform3f(getLocation(), (float) x, (float) y, (float) z);		
+	}
+	
+	public void setVec3f(Vector3 v) { 
+		checkNotNull(v);
+		setVec3f(v.x, v.y, v.z); 
+	}
+
 	public void setVec2fv(float [] data) {
 		p.checkBound();
 		p.getGl().glUniform2fv(getLocation(), getSize(), bufferData(data, 2));

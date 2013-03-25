@@ -30,18 +30,15 @@ public class T005Manderblot extends GL3EventListener {
 		rectVao.bindAttribute(position, buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(position);
 		rectVao.bindAttribute(coord, buffer(rectangle_coords, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(coord);
 		clrs.setVec4fv(color_map);
-		p.unbind();
 		gl.glClearDepth(1);
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-		p.bind();
 		rectVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		rectVao.unbind();
-		p.unbind();	
 	}
 
 	@Override

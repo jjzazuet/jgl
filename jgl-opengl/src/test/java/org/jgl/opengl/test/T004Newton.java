@@ -30,18 +30,15 @@ public class T004Newton extends GL3EventListener {
 		p.bind();
 		p.getUniformAttribute("Color1").setVec3f(new Vector3(0.2f, 0.02f, 0.05f));
 		p.getUniformAttribute("Color2").setVec3f(new Vector3(1.0f, 0.98f, 0.98f));
-		p.unbind();
 		gl.glDisable(GL_DEPTH_TEST);	
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-		p.bind();
 		rectVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		rectVao.unbind();
-		p.unbind();	
 	}
 
 	@Override
