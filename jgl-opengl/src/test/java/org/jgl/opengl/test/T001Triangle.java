@@ -23,11 +23,9 @@ public class T001Triangle extends GL3EventListener {
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t001Triangle/triangle.fs", gl);
 
 		GLBuffer triangleBuffer = buffer(triangleVertices, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLVertexAttribute position = p.getStageAttribute("Position");
 		
 		triangleVao.init(gl);
-		triangleVao.bindAttribute(position, triangleBuffer, 0).enable(position);
-
+		p.getStageAttribute("Position").set(triangleVao, triangleBuffer, false, 0).enable();
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClearDepth(1);
 	}

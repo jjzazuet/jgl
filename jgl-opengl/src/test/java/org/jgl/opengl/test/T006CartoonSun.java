@@ -27,14 +27,14 @@ public class T006CartoonSun extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006CartoonSun/cartoonSun.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006CartoonSun/cartoonSun.fs", gl);
 		
-		GLVertexAttribute position = p.getStageAttribute("Position");
-		
 		time = p.getUniformAttribute("Time");
 		sunPos = p.getUniformAttribute("SunPos");
 		
 		p.bind();
 		rectVao.init(gl);
-		rectVao.bindAttribute(position, buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(position);
+		p.getStageAttribute("Position").set(rectVao, 
+				buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
+				false, 0).enable();
 		p.getUniformAttribute("Sun1").setVec3f(0.95f, 0.85f, 0.60f);
 		p.getUniformAttribute("Sun2").setVec3f(0.90f, 0.80f, 0.20f);
 		p.getUniformAttribute("Sky1").setVec3f(0.90f, 0.80f, 0.50f);

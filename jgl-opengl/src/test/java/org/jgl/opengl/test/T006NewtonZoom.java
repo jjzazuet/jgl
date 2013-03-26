@@ -36,12 +36,13 @@ public class T006NewtonZoom extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006NewtonZoom/newtonZoom.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006NewtonZoom/newtonZoom.fs", gl);
 		
-		GLVertexAttribute position = p.getStageAttribute("Position");
 		zoomMatrix = p.getUniformAttribute("ZoomMatrix");
 		
 		p.bind();
 		rectVao.init(gl);
-		rectVao.bindAttribute(position, buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(position);
+		p.getStageAttribute("Position").set(rectVao, 
+				buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
+				false, 0).enable();
 		p.getUniformAttribute("Color1").setVec3f(0.2f, 0.02f, 0.05f);
 		p.getUniformAttribute("Color2").setVec3f(1.0f, 0.95f, 0.98f);
 		gl.glClearDepth(1);

@@ -1,6 +1,4 @@
 dependencies {
-	
-	compile 'org.slf4j:slf4j-simple:1.7.2'
 
 	def osName = System.getProperty("os.name").toLowerCase()
 	def osArch = System.getProperty("os.arch").toLowerCase()
@@ -13,7 +11,10 @@ dependencies {
 	compile project(':jgl-os')
 	compile project(':jgl-time')
 	compile project(':jgl-math')
-		
+	compile project(':jgl-geom')
+
+	compile 'org.slf4j:slf4j-simple:1.7.2'
+			
 	compile 'org.jogamp.gluegen:gluegen-rt:20130313'
 
 	compile 'org.jogamp.jogl:jogl-core:20130313'

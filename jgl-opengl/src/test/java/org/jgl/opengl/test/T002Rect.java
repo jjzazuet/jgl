@@ -23,13 +23,10 @@ public class T002Rect extends GL3EventListener {
 		
 		GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
 		GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLVertexAttribute position = p.getStageAttribute("Position");
-		GLVertexAttribute color = p.getStageAttribute("Color");
 
 		rectVao.init(gl);
-		rectVao.bindAttribute(position, verts, 0).enable(position);
-		rectVao.bindAttribute(color, colors, 0).enable(color);
-		
+		p.getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
+		p.getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClearDepth(1);
 	}

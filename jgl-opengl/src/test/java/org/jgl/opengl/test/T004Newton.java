@@ -22,12 +22,11 @@ public class T004Newton extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t004Newton/newton.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t004Newton/newton.fs", gl);
 		
-		GLVertexAttribute position = p.getStageAttribute("Position");
 		GLBuffer rectangleBuffer = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
 		
 		rectVao.init(gl);
-		rectVao.bindAttribute(position, rectangleBuffer, 0).enable(position);
 		p.bind();
+		p.getStageAttribute("Position").set(rectVao, rectangleBuffer, false, 0).enable();
 		p.getUniformAttribute("Color1").setVec3f(new Vector3(0.2f, 0.02f, 0.05f));
 		p.getUniformAttribute("Color2").setVec3f(new Vector3(1.0f, 0.98f, 0.98f));
 		gl.glDisable(GL_DEPTH_TEST);	

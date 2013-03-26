@@ -8,7 +8,7 @@ public class JoglNativeBoostrap {
 
 	public static void joglBootstrap() throws Exception {
 		load("gluegen-rt");
-		load("nativewindow_win32");
+		load("nativewindow_win32"); // TODO determine correct OS libraries to load at runtime.
 		load("nativewindow_awt");	
 		load("jogl_desktop");
 	}

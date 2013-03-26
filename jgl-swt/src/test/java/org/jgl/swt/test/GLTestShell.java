@@ -26,13 +26,13 @@ public class GLTestShell {
 		s.setLayout(new FillLayout());
 		s.setSize(720, 480);
 		
-		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL3));
 		
 		caps.setDoubleBuffered(true);
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T006NewtonZoom());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T012CheckerCube());
 		
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();

@@ -6,13 +6,15 @@ public abstract class GLAttribute {
 
 	private final int index, size, glType, location;
 	private final String name;
-	
-	public GLAttribute(int index, int location, int size, int glType, String name) {
+	private final GLProgram program;
+
+	public GLAttribute(int index, int location, int size, int glType, String name, GLProgram p) {
 
 		checkArgument(location >= 0);
 		checkArgument(index >= 0);
 		checkArgument(size >= 0);
 
+		this.program = checkNotNull(p);
 		this.name = checkNotNull(name);
 		this.index = index;
 		this.location = location;
@@ -57,4 +59,5 @@ public abstract class GLAttribute {
 	public int getGlType() { return glType; }
 	public int getLocation() { return location; }
 	public String getName() { return name; }
+	public GLProgram getProgram() { return program; }
 }

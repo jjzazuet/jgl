@@ -21,14 +21,16 @@ public class T005Manderblot extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t005Manderblot/manderblot.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t005Manderblot/manderblot.fs", gl);
 		
-		GLVertexAttribute position = p.getStageAttribute("Position");
-		GLVertexAttribute coord = p.getStageAttribute("Coord");
 		GLUniformAttribute clrs = p.getUniformAttribute("clrs");
 
 		p.bind();
 		rectVao.init(gl);
-		rectVao.bindAttribute(position, buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(position);
-		rectVao.bindAttribute(coord, buffer(rectangle_coords, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 0).enable(coord);
+		p.getStageAttribute("Position").set(rectVao, 
+				buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
+				false, 0).enable();
+		p.getStageAttribute("Coord").set(rectVao, 
+				buffer(rectangle_coords, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
+				false, 0).enable();
 		clrs.setVec4fv(color_map);
 		gl.glClearDepth(1);
 	}

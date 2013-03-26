@@ -72,7 +72,7 @@ public class GLProgram extends GLContextBoundResource {
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = getGl().glGetAttribLocation(getGlResourceHandle(), attributeName);
-				at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName);
+				at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, this);
 				
 			} else {
 				
