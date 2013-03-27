@@ -24,7 +24,7 @@ public class GLTestShell {
 		s = new Shell(d);
 		
 		s.setLayout(new FillLayout());
-		s.setSize(720, 480);
+		s.setSize(816, 640);
 		
 		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL3));
 		
@@ -34,7 +34,7 @@ public class GLTestShell {
 
 		GLComposite comp = new GLComposite(s, SWT.None, caps, new T012CheckerCube());
 		
-		comp.getScheduler().setFrameTicksPerSecond(60);
+		comp.getScheduler().setFrameTicksPerSecond(30);
 		comp.init();
 		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
 		s.open();

@@ -102,7 +102,8 @@ public class Cube implements Shape {
 
 	@Override
 	public int[] getIndices() {
-		return new int[] { 
+		
+		int [] a = new int[] { 
 				0,   1,  5,  2, // +x
 				19, 22, 23, 18, // -x
 				6,   7, 10, 11, // +y
@@ -110,6 +111,8 @@ public class Cube implements Shape {
 				12, 13, 16, 17, // +z
 				31, 35, 32, 30  // -z
 		};
+		
+		return a;
 	}
 
 	@Override
@@ -178,7 +181,7 @@ public class Cube implements Shape {
 	@Override
 	public float[] getTexCoords() {
 
-		return new float [] {
+		float [] a = new float [] {
 				
 				1, 1, 0,
 				1, 0, 0,
@@ -223,6 +226,7 @@ public class Cube implements Shape {
 				1, 0, 5
 			};
 		
+		return a;
 	}
 
 	@Override

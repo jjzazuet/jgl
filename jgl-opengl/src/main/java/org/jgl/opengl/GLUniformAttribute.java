@@ -9,6 +9,7 @@ import java.nio.FloatBuffer;
 
 import org.jgl.math.matrix.Matrix2;
 import org.jgl.math.matrix.Matrix4;
+import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.*;
 
 public class GLUniformAttribute extends GLAttribute {
@@ -32,7 +33,7 @@ public class GLUniformAttribute extends GLAttribute {
 		getProgram().checkBound();
 		checkNoNulls(src);
 		checkArgument(src.length >= 1);
-		store(dst, src);
+		storeColMaj(dst, src);
 		getProgram().getGl().glUniformMatrix2fv(getLocation(), src.length, transpose, dst);
 		getProgram().checkError().apply(getProgram().getGl());
 	}
@@ -41,9 +42,13 @@ public class GLUniformAttribute extends GLAttribute {
 		getProgram().checkBound();
 		checkNoNulls(src);
 		checkArgument(src.length >= 1);
-		store(dst, src);
+		storeColMaj(dst, src);
 		getProgram().getGl().glUniformMatrix4fv(getLocation(), src.length, transpose, dst);
 		getProgram().checkError().apply(getProgram().getGl());
+	}
+	
+	public void setMat4fv(boolean transpose, BufferedMatrix4 src) {
+		setMat4fv(transpose, src.getBackingBuffer(), src);
 	}
 	
 	public void setVec2f(double x, double y) {

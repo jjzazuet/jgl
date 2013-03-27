@@ -7,7 +7,9 @@ import static java.lang.Math.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.vector.VectorOps.*;
 import static org.jgl.math.vector.Vector3Ops.*;
+import static org.jgl.math.angle.AngleOps.*;
 
+import org.jgl.math.angle.Angle;
 import org.jgl.math.vector.Vector3;
 
 public class Matrix4OpsCam {
@@ -33,68 +35,62 @@ public class Matrix4OpsCam {
 		cross(y, z, x);
 		setIdentity(dst);
 		
-		dst.m00 = x.x; dst.m01 = x.y; dst.m02 = x.z; dst.m03 = -dot(eye, x);
-		dst.m10 = y.x; dst.m11 = y.y; dst.m12 = y.z; dst.m13 = -dot(eye, y);
-		dst.m20 = z.x; dst.m21 = z.y; dst.m22 = z.z; dst.m23 = -dot(eye, z);
+		dst.m00 = x.x; dst.m10 = x.y; dst.m20 = x.z; dst.m30 = -dot(eye, x);
+		dst.m01 = y.x; dst.m11 = y.y; dst.m21 = y.z; dst.m31 = -dot(eye, y);
+		dst.m02 = z.x; dst.m12 = z.y; dst.m22 = z.z; dst.m32 = -dot(eye, z);
 	}
 	
 	public static void orbit(Matrix4 dst, Vector3 target, 
-			double radius, double azimuthDeg, double elevationDeg) {
+			double radius, Angle azimuth, Angle elevation) {
 		
 		checkNoNulls(dst, target);
-		
-		azimuthDeg = toRadians(azimuthDeg);
-		elevationDeg = toRadians(elevationDeg);
-		
+				
 		Vector3 z = new Vector3(
-				cos(elevationDeg) * cos(azimuthDeg), 
-				sin(elevationDeg), 
-				cos(elevationDeg) * -sin(azimuthDeg));
+				cos(elevation) * cos(azimuth), 
+				sin(elevation), 
+				cos(elevation) * -sin(azimuth));
 		
-		Vector3 x = new Vector3(-sin(azimuthDeg), 0, -cos(azimuthDeg));
+		Vector3 x = new Vector3(-sin(azimuth), 0, -cos(azimuth));
 		Vector3 y = new Vector3();
 		
 		cross(z, x, y);
 		setIdentity(dst);
 		
-		dst.m00 = x.x; dst.m01 = x.y; dst.m02 = x.z; dst.m03 = dot(x, z) * -radius - dot(x, target);
-		dst.m10 = y.x; dst.m11 = y.y; dst.m12 = y.z; dst.m13 = dot(y, z) * -radius - dot(y, target);
-		dst.m20 = z.x; dst.m21 = z.y; dst.m22 = z.z; dst.m23 = dot(z, z) * -radius - dot(z, target);
+		dst.m00 = x.x; dst.m10 = x.y; dst.m20 = x.z; dst.m30 = dot(x, z) * -radius - dot(x, target);
+		dst.m01 = y.x; dst.m11 = y.y; dst.m21 = y.z; dst.m31 = dot(y, z) * -radius - dot(y, target);
+		dst.m02 = z.x; dst.m12 = z.y; dst.m22 = z.z; dst.m32 = dot(z, z) * -radius - dot(z, target);
 	}
 	
-	public static void pitch(Matrix4 dst, double angDeg) {
-		
-		checkNotNull(dst);	
-		angDeg = toRadians(angDeg);
-		double angCos = cos(-angDeg);
-		double angSin = sin(-angDeg);
-		setIdentity(dst);
-		
-		dst.m11 = angCos; dst.m12 = -angSin;
-		dst.m21 = angSin; dst.m22 =  angCos;
-	}
-	
-	public static void yaw(Matrix4 dst, double angDeg) {
+	public static void pitch(Matrix4 dst, Angle a) {
 		
 		checkNotNull(dst);
-		angDeg = toRadians(angDeg);
-		double angCos = cos(-angDeg);
-		double angSin = sin(-angDeg);
+		double cosx = cos(-a.getRadians());
+		double sinx = sin(-a.getRadians());
 		setIdentity(dst);
-
-		dst.m00 =  angCos; dst.m02 = angSin;
-		dst.m20 = -angSin; dst.m22 = angCos;
+		
+		dst.m21 = cosx; dst.m31 = -sinx;
+		dst.m22 = sinx; dst.m32 =  cosx;
 	}
 	
-	public static void roll(Matrix4 dst, double angDeg) {
-
+	public static void yaw(Matrix4 dst, Angle a) {
+		
 		checkNotNull(dst);
-		angDeg = toRadians(angDeg);
-		double angCos = cos(-angDeg);
-		double angSin = sin(-angDeg);
+		double cosx = cos(-a.getRadians());
+		double sinx = sin(-a.getRadians());
 		setIdentity(dst);
 
-		dst.m00 = angCos; dst.m01 = -angSin;
-		dst.m10 = angSin; dst.m11 =  angCos;
+		dst.m00 =  cosx; dst.m20 = sinx;
+		dst.m02 = -sinx; dst.m22 = cosx;
+	}
+	
+	public static void roll(Matrix4 dst, Angle a) {
+
+		checkNotNull(dst);
+		double cosx = cos(-a.getRadians());
+		double sinx = sin(-a.getRadians());
+		setIdentity(dst);
+
+		dst.m00 = cosx; dst.m10 = -sinx;
+		dst.m01 = sinx; dst.m11 =  cosx; 
 	}
 }

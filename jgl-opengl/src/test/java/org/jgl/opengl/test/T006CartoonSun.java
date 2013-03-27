@@ -62,6 +62,7 @@ public class T006CartoonSun extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GlViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, newViewport.width, newViewport.height);
+		gl.glViewport(newViewport.x, newViewport.y, 
+				(int) newViewport.width, (int) newViewport.height);
 	}
 }

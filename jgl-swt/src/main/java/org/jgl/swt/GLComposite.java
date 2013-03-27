@@ -84,4 +84,5 @@ public class GLComposite extends Composite implements Listener, Runnable, Render
 	
 	public Scheduler getScheduler() { return scheduler; }
 	public GLScheduledEventListener getTarget() { return target; }
+	public GLCanvas getCanvas() { return canvas; }
 }

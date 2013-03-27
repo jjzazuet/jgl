@@ -7,12 +7,11 @@ import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
 
-import java.nio.FloatBuffer;
-
 import javax.media.opengl.GL3;
 
 import org.jgl.geom.Cube;
-import org.jgl.math.matrix.Matrix4;
+import org.jgl.math.angle.Angle;
+import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.util.GlViewSize;
@@ -27,10 +26,11 @@ public class T012CheckerCube extends GL3EventListener {
 	private GLBuffer cubeIndices;
 	private GLBuffer cubeTexCoords;
 	
-	private Matrix4 cameraMatrix = new Matrix4();
-	private Matrix4 perspMatrix = new Matrix4();
-	private FloatBuffer perspMatrixBuffer = FloatBuffer.allocate(16);
-	private FloatBuffer cameraMatrixBuffer = FloatBuffer.allocate(16); // TODO clean this up somehow
+	private Angle fov = new Angle();
+	private Angle azimuth = new Angle();
+	private Angle elevation = new Angle();
+	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
+	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private GLUniformAttribute cameraMatrixAttr;
 	private GLUniformAttribute projectionMatrixAttr;
 	
@@ -57,11 +57,18 @@ public class T012CheckerCube extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
+		
 		cubeVao.bind();
-		gl.glClear(GL_DEPTH_BUFFER_BIT);
-		gl.glDrawElements(GL_TRIANGLES, 
-				cubeIndices.getRawBuffer().remaining(),
-				cubeIndices.getGlBufferType(),
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		int mode = GL_TRIANGLES;
+		int count = cubeIndices.getRawBuffer().capacity();
+		int type = cubeIndices.getBufferMetadata().getGlPrimitiveType(); 
+		
+		cubeIndices.getRawBuffer().clear();
+		gl.glDrawElements(mode, 
+				count,
+				type,
 				cubeIndices.getRawBuffer());
 		cubeVao.unbind();
 	}
@@ -71,14 +78,17 @@ public class T012CheckerCube extends GL3EventListener {
 
 		double time = currentState.elapsedTimeUs * 0.000001;
 		
-		orbit(cameraMatrix, new Vector3(), 2.7, degrees(time * 135), degrees(sineWave(time / 20) * 90));
-		cameraMatrixAttr.setMat4fv(true, cameraMatrixBuffer, cameraMatrix);
+		azimuth.setDegrees(time * 135);
+		elevation.setDegrees(sineWave(time / 20) * 90);
+		orbit(cameraMatrix, new Vector3(), 2.7, azimuth, elevation);
+		cameraMatrixAttr.setMat4fv(false, cameraMatrix);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GlViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, newViewport.width, newViewport.height);
-		perspectiveX(perspMatrix, degrees(70), newViewport.width / newViewport.height, 1, 20);
-		projectionMatrixAttr.setMat4fv(true, perspMatrixBuffer, perspMatrix);
+		gl.glViewport(newViewport.x, newViewport.y, 
+				(int) newViewport.width, (int) newViewport.height);
+		perspectiveX(projMatrix, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 20);
+		projectionMatrixAttr.setMat4fv(false, projMatrix);
 	}
 }

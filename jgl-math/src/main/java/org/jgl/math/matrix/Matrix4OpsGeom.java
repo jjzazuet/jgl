@@ -1,82 +1,72 @@
 package org.jgl.math.matrix;
 
 import static org.jgl.math.Preconditions.*;
-
-import static java.lang.Math.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.vector.VectorOps.*;
+import static org.jgl.math.angle.AngleOps.*;
 
+import org.jgl.math.angle.Angle;
 import org.jgl.math.vector.Vector3;
 
 public class Matrix4OpsGeom {
 
 	public static void translateXyz(Matrix4 dst, Vector3 translation) {
 		setIdentity(dst);
-		dst.m03 = translation.x;
-		dst.m13 = translation.y;
-		dst.m23 = translation.z;
+		dst.m30 = translation.x;
+		dst.m31 = translation.y;
+		dst.m32 = translation.z;
 	}
 	
 	public static void scaleXyz(Matrix4 dst, Vector3 scale) {
 		checkNoNulls(dst, scale);
+		setIdentity(dst);
 		dst.m00 = scale.x;
 		dst.m11 = scale.y;
 		dst.m22 = scale.z;
-		dst.m33 = 1;
 	}
 
-	public static void rotateXLh(Matrix4 dst, double xDeg) {
+	public static void rotateXLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		double xRadCos = cos(toRadians(xDeg));
-		double xRadSin = sin(toRadians(xDeg));
-		dst.m11 = xRadCos; dst.m12 = -xRadSin;
-		dst.m21 = xRadSin; dst.m22 =  xRadCos; 
+		double cosx = cos(a);
+		double sinx = sin(a);
+		dst.m11 = cosx; dst.m21 = -sinx;
+		dst.m12 = sinx; dst.m22 =  cosx; 
 	}
 
-	public static void rotateYLh(Matrix4 dst, double yDeg) {
+	public static void rotateYLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		double yRadCos = cos(toRadians(yDeg));
-		double yRadSin = sin(toRadians(yDeg));
-		dst.m00 =  yRadCos; dst.m02 = yRadSin;
-		dst.m20 = -yRadSin; dst.m22 = yRadCos; 		
+		double cosy = cos(a);
+		double siny = sin(a);
+		dst.m00 =  cosy; dst.m20 = siny;
+		dst.m02 = -siny; dst.m22 = cosy; 		
 	}
 
-	public static void rotateZLh(Matrix4 dst, double zDeg) {
+	public static void rotateZLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		zDeg = toRadians(zDeg);
-		double zRadCos = cos(zDeg);
-		double zRadSin = sin(zDeg);
-		dst.m00 = zRadCos; dst.m01 = -zRadSin;
-		dst.m10 = zRadSin; dst.m11 =  zRadCos; 		
+		double cosz = cos(a);
+		double sinz = sin(a);
+		dst.m00 = cosz; dst.m10 = -sinz;
+		dst.m01 = sinz; dst.m11 =  cosz; 		
 	}
 
 	// http://www.cprogramming.com/tutorial/3d/rotation.html
-	public static void rotateLh(Matrix4 dst, Vector3 axis, double angDeg) {
+	public static void rotateLh(Matrix4 dst, Vector3 axis, Angle d) {
 		
 		checkNoNulls(axis, dst);
 		
-		Vector3 srcNorm = new Vector3();
+		Vector3 a = new Vector3();
 		
-		normalize(axis, srcNorm);
+		normalize(axis, a);
 		setIdentity(dst);
 		
-		double rotRad = toRadians(angDeg);
-		double rotSin = sin(rotRad);
-		double rotCos = cos(rotRad);
-		double oneMinusRotCos = 1 - rotCos;
-		double x = srcNorm.x, y = srcNorm.y, z = srcNorm.z;
+		double sf = sin(d);
+		double cf = cos(d);
+		double _cf = 1 - cf;
+		double x = a.x, y = a.y, z = a.z;
 		double xx = x*x, xy = x*y, xz = x*z, yy = y*y, yz = y*z, zz = z*z;
-		
-		dst.m00 = xx * oneMinusRotCos + rotCos;
-		dst.m01 = xy * oneMinusRotCos - z * rotSin;
-		dst.m02 = xz * oneMinusRotCos + y * rotSin;
-		
-		dst.m10 = xy * oneMinusRotCos + z * rotSin;
-		dst.m11 = yy * oneMinusRotCos + rotCos;
-		dst.m12 = yz * oneMinusRotCos - x * rotSin;
 
-		dst.m20 = xz * oneMinusRotCos - y*rotSin;
-		dst.m21 = yz * oneMinusRotCos + x*rotSin;
-		dst.m22 = zz * oneMinusRotCos + rotCos;
+		dst.m00 = cf + xx*_cf;   dst.m10 = xy*_cf - z*sf; dst.m20 = xz*_cf + y*sf;
+		dst.m01 = xy*_cf + z*sf; dst.m11 = cf + yy*_cf;   dst.m21 = yz*_cf - x*sf;
+		dst.m02 = xz*_cf - y*sf; dst.m12 = yz*_cf + x*sf; dst.m22 = cf + zz*_cf;
 	}
 }

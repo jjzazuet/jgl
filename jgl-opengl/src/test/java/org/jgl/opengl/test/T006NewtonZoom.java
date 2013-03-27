@@ -71,12 +71,13 @@ public class T006NewtonZoom extends GL3EventListener {
 		m.m00 = x.x; m.m01 = x.y;
 		m.m10 = y.x; m.m11 = y.y;
 		
-		store(matBuffer, m);
-		zoomMatrix.setMat2fv(true, matBuffer, m);
+		storeColMaj(matBuffer, m);
+		zoomMatrix.setMat2fv(false, matBuffer, m);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GlViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, newViewport.width, newViewport.height);
+		gl.glViewport(newViewport.x, newViewport.y, 
+				(int) newViewport.width, (int) newViewport.height);
 	}
 }

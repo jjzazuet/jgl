@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
 
+import org.jgl.math.angle.Angle;
+
 public class Matrix4OpsPersp {
 
 	public static void perspectiveLh(Matrix4 dst, 
@@ -25,14 +27,13 @@ public class Matrix4OpsPersp {
 		dst.m32 = -(2 * zFar * zNear) / (zFar - zNear);
 	}
 	
-	public static void perspectiveX(Matrix4 dst, double xFov, 
+	public static void perspectiveX(Matrix4 dst, Angle xFov, 
 			double aspectRatio, double zNear, double zFar) {
 
 		checkArgument(aspectRatio > 0);
-		checkArgument(toRadians(xFov) > 0);
-		xFov = toRadians(xFov);
+		checkArgument(xFov.getRadians() > 0);
 		
-		double xRight = zNear * tan(xFov * .5);
+		double xRight = zNear * tan(xFov.getRadians() * .5);
 		double xLeft = -xRight;
 		double yBottom = xLeft / aspectRatio;
 		double yTop = xRight / aspectRatio;
@@ -40,14 +41,13 @@ public class Matrix4OpsPersp {
 		perspectiveLh(dst, xLeft, xRight, yBottom, yTop, zNear, zFar);
 	}
 	
-	public static void perspectiveY(Matrix4 dst, double yFov,
+	public static void perspectiveY(Matrix4 dst, Angle yFov,
 			double aspectRatio, double zNear, double zFar) {
 		
 		checkArgument(aspectRatio > 0);
-		checkArgument(toRadians(yFov) > 0);
-		yFov = toRadians(yFov);
+		checkArgument(yFov.getRadians() > 0);
 		
-		double yTop = zNear * tan(yFov * .5);
+		double yTop = zNear * tan(yFov.getRadians() * .5);
 		double yBottom = -yTop;
 		double xLeft = yBottom * aspectRatio;
 		double xRight = yTop * aspectRatio;

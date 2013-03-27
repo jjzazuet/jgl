@@ -7,7 +7,7 @@ import java.nio.FloatBuffer;
 
 public class Matrix2Ops {
 
-	public static void store(FloatBuffer b, Matrix2 ... src) {
+	public static void storeColMaj(FloatBuffer b, Matrix2 ... src) {
 		
 		checkNoNulls(src);
 		checkNotNull(b);
@@ -22,5 +22,11 @@ public class Matrix2Ops {
 		}
 		
 		b.flip();
+	}
+	
+	public static void setIdentity(Matrix2 m) {
+		checkNotNull(m);
+		m.m00 = 1; m.m10 = 0;
+		m.m01 = 0; m.m11 = 1;
 	}
 }

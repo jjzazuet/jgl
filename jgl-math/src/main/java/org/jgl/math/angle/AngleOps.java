@@ -32,7 +32,7 @@ public class AngleOps {
 	
 	@OutRadians
 	public static final double degrees(@InDegrees double value) {
-		return toRadians(value);
+		return value * (PI / 180);
 	}
 	
 	/** 
@@ -56,6 +56,10 @@ public class AngleOps {
 	 *  @param t the point for which to calculate the value on the wave.
 	 */
 	public static final double sineWave(double t) {
-		return sin(TWO_PI * t);
+		return Math.sin(TWO_PI * t);
 	}
+	
+	public static final double cos(Angle a) { return Math.cos(a.getRadians()); }
+	public static final double sin(Angle a) { return Math.sin(a.getRadians()); }
+	
 }

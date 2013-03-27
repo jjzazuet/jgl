@@ -7,6 +7,7 @@ import java.nio.FloatBuffer;
 
 public class Matrix4Ops {
 
+	// TODO review and test in column major order
 	public static void mul(Matrix4 l, Matrix4 r, Matrix4 dst) {
 		
 		checkNoNulls(l, r, dst);
@@ -15,14 +16,17 @@ public class Matrix4Ops {
 		double m01 = l.m01 * r.m00 + l.m11 * r.m01 + l.m21 * r.m02 + l.m31 * r.m03;
 		double m02 = l.m02 * r.m00 + l.m12 * r.m01 + l.m22 * r.m02 + l.m32 * r.m03;
 		double m03 = l.m03 * r.m00 + l.m13 * r.m01 + l.m23 * r.m02 + l.m33 * r.m03;
+		
 		double m10 = l.m00 * r.m10 + l.m10 * r.m11 + l.m20 * r.m12 + l.m30 * r.m13;
 		double m11 = l.m01 * r.m10 + l.m11 * r.m11 + l.m21 * r.m12 + l.m31 * r.m13;
 		double m12 = l.m02 * r.m10 + l.m12 * r.m11 + l.m22 * r.m12 + l.m32 * r.m13;
 		double m13 = l.m03 * r.m10 + l.m13 * r.m11 + l.m23 * r.m12 + l.m33 * r.m13;
+		
 		double m20 = l.m00 * r.m20 + l.m10 * r.m21 + l.m20 * r.m22 + l.m30 * r.m23;
 		double m21 = l.m01 * r.m20 + l.m11 * r.m21 + l.m21 * r.m22 + l.m31 * r.m23;
 		double m22 = l.m02 * r.m20 + l.m12 * r.m21 + l.m22 * r.m22 + l.m32 * r.m23;
 		double m23 = l.m03 * r.m20 + l.m13 * r.m21 + l.m23 * r.m22 + l.m33 * r.m23;
+		
 		double m30 = l.m00 * r.m30 + l.m10 * r.m31 + l.m20 * r.m32 + l.m30 * r.m33;
 		double m31 = l.m01 * r.m30 + l.m11 * r.m31 + l.m21 * r.m32 + l.m31 * r.m33;
 		double m32 = l.m02 * r.m30 + l.m12 * r.m31 + l.m22 * r.m32 + l.m32 * r.m33;
@@ -36,21 +40,21 @@ public class Matrix4Ops {
 	
 	public static void setIdentity(Matrix4 m) {
 		checkNotNull(m);
-		m.m00 = 1; m.m01 = 0; m.m02 = 0; m.m03 = 0;
-		m.m10 = 0; m.m11 = 1; m.m12 = 0; m.m13 = 0;
-		m.m20 = 0; m.m21 = 0; m.m22 = 1; m.m23 = 0;
-		m.m30 = 0; m.m31 = 0; m.m32 = 0; m.m33 = 1;
+		m.m00 = 1; m.m10 = 0; m.m20 = 0; m.m30 = 0;
+		m.m01 = 0; m.m11 = 1; m.m21 = 0; m.m31 = 0;
+		m.m02 = 0; m.m12 = 0; m.m22 = 1; m.m32 = 0;
+		m.m03 = 0; m.m13 = 0; m.m23 = 0; m.m33 = 1;
 	}
 	
 	public static void setZero(Matrix4 m) {
 		checkNotNull(m);
-		m.m00 = 0; m.m01 = 0; m.m02 = 0; m.m03 = 0; 
-		m.m10 = 0; m.m11 = 0; m.m12 = 0; m.m13 = 0;
-		m.m20 = 0; m.m21 = 0; m.m22 = 0; m.m23 = 0;
-		m.m30 = 0; m.m31 = 0; m.m32 = 0; m.m33 = 0;
+		m.m00 = 0; m.m10 = 0; m.m20 = 0; m.m30 = 0;
+		m.m01 = 0; m.m11 = 0; m.m21 = 0; m.m31 = 0;
+		m.m02 = 0; m.m12 = 0; m.m22 = 0; m.m32 = 0;
+		m.m03 = 0; m.m13 = 0; m.m23 = 0; m.m33 = 0;
 	}
 	
-	public static void store(FloatBuffer b, Matrix4 ... src) {
+	public static void storeColMaj(FloatBuffer b, Matrix4 ... src) {
 		
 		checkNoNulls(src);
 		checkNotNull(b);
