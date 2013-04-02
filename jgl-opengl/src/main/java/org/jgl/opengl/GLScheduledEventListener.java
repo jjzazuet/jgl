@@ -22,7 +22,8 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	protected abstract void onResize(GLAutoDrawable gad, GlViewSize newViewport);
 	
 	@Override
-	public void init(GLAutoDrawable arg0) { 
+	public void init(GLAutoDrawable arg0) {
+		arg0.setAutoSwapBufferMode(false);
 		try { doInit(arg0); } 
 		catch (Exception e) { propagate(e); }
 	}

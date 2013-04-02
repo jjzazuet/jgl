@@ -34,7 +34,7 @@ public class GLTestShell {
 
 		GLComposite comp = new GLComposite(s, SWT.None, caps, new T012CheckerCube());
 		
-		comp.getScheduler().setFrameTicksPerSecond(30);
+		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
 		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
 		s.open();

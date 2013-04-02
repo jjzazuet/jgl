@@ -18,11 +18,11 @@ public class NativeBootstrap {
 		} else if (isLinux()) {
 			libFileName = format(FORMAT_NIX_LIB, rawName);
 		} else throw new IllegalStateException(String.format("Unsupported OS/architecture: [%s, %s]", osName, osArch));
-	
+
 		URL location = NativeBootstrap.class.getClassLoader().getResource(libFileName);
 		File tmpDir = new File(TMP_DIR);
 		File libTempFile = new File(tmpDir, libFileName);
-		
+
 		copyTofile(location, libTempFile);
 		System.load(libTempFile.getAbsolutePath());
 	}

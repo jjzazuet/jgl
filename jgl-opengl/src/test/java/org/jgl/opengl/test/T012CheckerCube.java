@@ -58,8 +58,8 @@ public class T012CheckerCube extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		
-		cubeVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		cubeVao.bind();
 		
 		int mode = GL_TRIANGLES;
 		int count = cubeIndices.getRawBuffer().capacity();

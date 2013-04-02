@@ -28,6 +28,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	@Override
 	public void doRender(GLAutoDrawable gad, ExecutionState currentState) throws Exception {
 		doRender((GL3) gad.getGL(), currentState);
+		gad.swapBuffers();
 	}
 
 	@Override
