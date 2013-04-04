@@ -23,7 +23,6 @@ public class T012CheckerCube extends GL3EventListener {
 	private Cube cube = new Cube();
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVerts;
-	private GLBuffer cubeIndices;
 	private GLBuffer cubeTexCoords;
 	
 	private Angle fov = new Angle();
@@ -41,7 +40,6 @@ public class T012CheckerCube extends GL3EventListener {
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.fs", gl);
 		
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3); // TODO tighter component size controls...
-		cubeIndices = buffer(cube.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 4);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cameraMatrixAttr = p.getUniformAttribute("CameraMatrix");
 		projectionMatrixAttr = p.getUniformAttribute("ProjectionMatrix");
@@ -57,19 +55,9 @@ public class T012CheckerCube extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-		
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		cubeVao.bind();
-		
-		int mode = GL_TRIANGLES;
-		int count = cubeIndices.getRawBuffer().capacity();
-		int type = cubeIndices.getBufferMetadata().getGlPrimitiveType(); 
-		
-		cubeIndices.getRawBuffer().clear();
-		gl.glDrawElements(mode, 
-				count,
-				type,
-				cubeIndices.getRawBuffer());
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
+		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
 

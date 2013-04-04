@@ -127,7 +127,7 @@ public class Cube implements Shape {
 				{ 0, 0, 1 },
 				{-1, 0, 0 },
 				{ 0,-1, 0 },
-				{ 0, 0,-1}
+				{ 0, 0,-1 }
 			};
 		
 		float [] normals = new float [] {
