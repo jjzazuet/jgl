@@ -33,8 +33,23 @@ public class Sphere implements Shape {
 
 	@Override
 	public int[] getIndices() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		int n = (getRings() + 1)*(2 * (getSections() + 1) + 1);
+		int [] indices = new int [n];
+		int k = 0;
+		int offs = 0;
+		
+		for(int r = 0; r!= (getRings() + 1); ++r) {
+			for(int s = 0; s != (getSections() + 1); ++s) {
+				indices[k++] = offs + s;
+				indices[k++] = offs + s + (getSections() + 1);
+			}
+			indices[k++] = n;
+			offs += getSections() + 1;
+		}
+		
+		checkState(k == indices.length);
+		return indices;
 	}
 
 	@Override
@@ -85,8 +100,21 @@ public class Sphere implements Shape {
 
 	@Override
 	public float[] getTangents() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		float [] dest = new float[((getRings() + 2) * (getSections() + 1)) * 3];
+		int k = 0;
+		double s_step = (2.0 * PI) / ((double) getSections());
+
+		for(int r = 0; r != (getRings() + 2); ++r) {
+			for(int s = 0; s != (getSections() + 1); ++s) {
+				dest[k++] = (float) -sin(s*s_step);
+				dest[k++] = 0;
+				dest[k++] = (float) -cos(s*s_step);
+			}
+		}
+
+		checkState(k == dest.length);
+		return dest;
 	}
 
 	@Override
@@ -96,7 +124,6 @@ public class Sphere implements Shape {
 
 	@Override
 	public Vector4 getBoundingSphere() {
-		// TODO Auto-generated method stub
 		return new Vector4(0, 0, 0, getRadius());
 	}
 
