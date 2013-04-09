@@ -26,6 +26,7 @@ public class Matrix4OpsGeom {
 		dst.m22 = scale.z;
 	}
 
+	// TODO possibly remove these functions.
 	public static void rotateXLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
 		double cosx = cos(a);
