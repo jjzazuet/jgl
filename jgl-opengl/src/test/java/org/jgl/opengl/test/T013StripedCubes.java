@@ -6,16 +6,13 @@ import static org.jgl.math.matrix.Matrix4OpsPersp.perspectiveX;
 import static org.jgl.math.angle.AngleOps.*;
 import static org.jgl.opengl.GLBufferFactory.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
-import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
-import static org.jgl.math.matrix.Matrix4OpsGeom.*;
 
 import javax.media.opengl.GL3;
 
 import org.jgl.geom.shape.Cube;
 import org.jgl.geom.transform.ModelTransform;
 import org.jgl.math.angle.Angle;
-import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
@@ -33,14 +30,9 @@ public class T013StripedCubes extends GL3EventListener {
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
-	private Angle rotation = new Angle();
 	private Vector3 origin = new Vector3();
-	private Vector3 translationVec = new Vector3();
 	
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
-	private Matrix4 translationMat = new Matrix4();
-	private Matrix4 rotationMat = new Matrix4();
-	private BufferedMatrix4 modelMat = new BufferedMatrix4();
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
 	
 	private ModelTransform cube1Trans = new ModelTransform();
@@ -80,20 +72,6 @@ public class T013StripedCubes extends GL3EventListener {
 		uModelMatrix.setMat4fv(false, cube2Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
-
-		/* translationVec.setX(-1);
-		rotation.setDegrees(time * 180);
-		translateXyz(translationMat, translationVec);
-		rotateZLh(rotationMat, rotation);
-		mul(translationMat, rotationMat, modelMat);*/
-		
-		/*translationVec.setX(1);
-		rotation.setDegrees(time * 90);
-		translateXyz(translationMat, translationVec);
-		rotateYLh(rotationMat, rotation);
-		mul(translationMat, rotationMat, modelMat);
-		uModelMatrix.setMat4fv(false, modelMat);*/
-
 	}
 
 	@Override
@@ -105,14 +83,10 @@ public class T013StripedCubes extends GL3EventListener {
 		elevation.setDegrees(sineWave(time / 6.3) * 45);
 		orbit(camMat, origin, 3.5, azimuth, elevation);
 		uCameraMatrix.setMat4fv(false, camMat);
-
 		cube2Trans.setTranslation(1, 0, 0);
 		cube2Trans.setRotationY(time * 90);
-		
 		cube1Trans.setTranslation(-1, 0, 0);
 		cube1Trans.setRotationZ(time * 180);
-
-
 	}
 
 	@Override

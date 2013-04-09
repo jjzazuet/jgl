@@ -7,6 +7,7 @@ import static org.jgl.math.angle.AngleOps.*;
 
 import org.jgl.math.angle.Angle;
 import org.jgl.math.vector.Vector3;
+import org.jgl.math.vector.Vector4;
 
 public class Matrix4OpsGeom {
 
@@ -49,7 +50,7 @@ public class Matrix4OpsGeom {
 		dst.m01 = sinz; dst.m11 =  cosz; 		
 	}
 
-	// http://www.cprogramming.com/tutorial/3d/rotation.html
+	/** {@link http://www.cprogramming.com/tutorial/3d/rotation.html} */
 	public static void rotateLh(Matrix4 dst, Vector3 axis, Angle d) {
 		
 		checkNoNulls(axis, dst);
@@ -68,5 +69,30 @@ public class Matrix4OpsGeom {
 		dst.m00 = cf + xx*_cf;   dst.m10 = xy*_cf - z*sf; dst.m20 = xz*_cf + y*sf;
 		dst.m01 = xy*_cf + z*sf; dst.m11 = cf + yy*_cf;   dst.m21 = yz*_cf - x*sf;
 		dst.m02 = xz*_cf - y*sf; dst.m12 = yz*_cf + x*sf; dst.m22 = cf + zz*_cf;
+	}
+	
+	/** {@link http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html} */
+	public static void fromQuaternion(Matrix4 dst, Vector4 q) {
+	
+		checkNoNulls(dst, q);
+		
+		double xx = q.x * q.x;
+		double xy = q.x * q.y;
+		double xz = q.x * q.z;
+
+		double yy = q.y * q.y;
+		double yz = q.y * q.z;
+		
+		double zz = q.z * q.z;
+		
+		double wx = q.w * q.x;
+		double wy = q.w * q.y;
+		double wz = q.w * q.z;
+		
+		setIdentity(dst);
+		
+		dst.m00 = 1 -(2*yy) -(2*zz); dst.m10 =    (2*xy) -(2*wz); dst.m20 =    (2*xz) +(2*wy);
+		dst.m01 =    (2*xy) +(2*wz); dst.m11 = 1 -(2*xx) -(2*zz); dst.m21 =    (2*yz) -(2*wx);
+		dst.m02 =    (2*xz) -(2*wy); dst.m12 =    (2*yz) +(2*wx); dst.m22 = 1 -(2*xx) -(2*yy);
 	}
 }
