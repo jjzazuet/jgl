@@ -8,7 +8,6 @@ import static org.jgl.math.quaternion.QuaternionOps.*;
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.matrix.io.BufferedMatrix4;
-import org.jgl.math.quaternion.QuaternionOps;
 import org.jgl.math.vector.*;
 
 public class ModelTransform {
@@ -44,9 +43,8 @@ public class ModelTransform {
 		setQuaternion(orientY, rotationYAngle);
 		setQuaternion(orientZ, rotationZAngle);
 		
-		QuaternionOps.mulQuat(orientX, orientY, orientY); 
-		normalize(orientY);
-		QuaternionOps.mulQuat(orientY, orientZ, orientZ); 
+		mulQuat(orientX, orientY, orientY); 
+		mulQuat(orientY, orientZ, orientZ); 
 		normalize(orientZ);
 		fromQuaternion(rotationMatrix, orientZ);
 		
