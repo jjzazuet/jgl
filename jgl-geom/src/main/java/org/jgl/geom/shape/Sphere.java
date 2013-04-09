@@ -1,7 +1,9 @@
-package org.jgl.geom;
+package org.jgl.geom.shape;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
+
+import org.jgl.geom.FaceOrientation;
 import org.jgl.math.vector.Vector4;
 
 public class Sphere implements Shape {

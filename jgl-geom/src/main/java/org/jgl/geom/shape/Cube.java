@@ -1,7 +1,8 @@
-package org.jgl.geom;
+package org.jgl.geom.shape;
 
 import static org.jgl.geom.FaceOrientation.*;
 
+import org.jgl.geom.FaceOrientation;
 import org.jgl.math.vector.Vector4;
 import static com.google.common.base.Preconditions.*;
 

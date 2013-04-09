@@ -16,4 +16,11 @@ public class Angle {
 		this.radians = Math.toRadians(degrees);
 		return this;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%s[%s rad, %s deg]", 
+				getClass().getSimpleName(),
+				getRadians(), getDegrees());
+	}
 }

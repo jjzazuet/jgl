@@ -11,7 +11,7 @@ import static org.jgl.math.angle.AngleOps.*;
 
 import javax.media.opengl.GL3;
 
-import org.jgl.geom.Sphere;
+import org.jgl.geom.shape.Sphere;
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.matrix.io.BufferedMatrix4;
@@ -28,7 +28,7 @@ public class T013SpiralSphere extends GL3EventListener {
 	private GLVertexArray sphereVao = new GLVertexArray();
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 cameraMat = new BufferedMatrix4();
-	
+
 	private Matrix4 modelTranslationMat = new Matrix4();
 	private Matrix4 modelRotationMat = new Matrix4();
 	private BufferedMatrix4 modelTransformMatrix = new BufferedMatrix4();
@@ -88,7 +88,7 @@ public class T013SpiralSphere extends GL3EventListener {
 		translateXyz(modelTranslationMat, modelTranslation);
 		modelRotation.setDegrees(time * 180);
 		rotateYLh(modelRotationMat, modelRotation);
-		mul(modelRotationMat, modelTranslationMat, modelTransformMatrix);
+		mul(modelTranslationMat, modelRotationMat, modelTransformMatrix);
 		uModelMatrix.setMat4fv(false, modelTransformMatrix);
 	}
 

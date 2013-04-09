@@ -1,5 +1,6 @@
-package org.jgl.geom;
+package org.jgl.geom.shape;
 
+import org.jgl.geom.FaceOrientation;
 import org.jgl.math.vector.Vector4;
 
 public interface Shape {
