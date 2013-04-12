@@ -32,7 +32,7 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T006CartoonSun());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T013StripedCubes());
 		
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();

@@ -54,7 +54,11 @@ public class ModelTransform {
 		mul(translationMatrix, modelMatrix, modelMatrix);
 		
 		return modelMatrix;
-	}	
+	}
+	
+	public void setScale(double s) {
+		setScale(s, s, s);
+	}
 	
 	public void setScale(double x, double y, double z) {
 		scaleVector.set(x, y, z);
