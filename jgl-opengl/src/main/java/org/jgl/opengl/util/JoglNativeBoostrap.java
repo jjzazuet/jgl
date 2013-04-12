@@ -6,10 +6,9 @@ import com.jogamp.common.jvm.JNILibLoaderBase;
 
 public class JoglNativeBoostrap {
 
-	public static void joglBootstrap() throws Exception {
-		load("nativewindow_awt"); // TODO on some machines this library fails with UnsatisfiedLinkError	
+	public static void joglBootstrap() throws Exception {	
 		load("gluegen-rt");
-		load("nativewindow_win32"); // TODO determine correct OS libraries to load at runtime.
+		load("nativewindow_win32"); 
 		load("jogl_desktop"); 
 	}
 	
