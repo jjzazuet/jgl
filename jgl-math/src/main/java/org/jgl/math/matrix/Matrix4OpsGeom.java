@@ -51,7 +51,9 @@ public class Matrix4OpsGeom {
 		dst.m01 = sinz; dst.m11 =  cosz; 		
 	}
 
-	/** {@link http://www.cprogramming.com/tutorial/3d/rotation.html} */
+	/** 
+	 * @see <a href="http://www.cprogramming.com/tutorial/3d/rotation.html">http://www.cprogramming.com/tutorial/3d/rotation.html</a>
+	 */
 	public static void rotateLh(Matrix4 dst, Vector3 axis, Angle d) {
 		
 		checkNoNulls(axis, dst);
@@ -72,7 +74,9 @@ public class Matrix4OpsGeom {
 		dst.m02 = xz*_cf - y*sf; dst.m12 = yz*_cf + x*sf; dst.m22 = cf + zz*_cf;
 	}
 	
-	/** {@link http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html} */
+	/** 
+	 * @see <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html</a> 
+	 **/
 	public static void fromQuaternion(Matrix4 dst, Vector4 q) {
 	
 		checkNoNulls(dst, q);

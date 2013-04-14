@@ -7,12 +7,26 @@ subprojects {
 	group = 'org.jgl'
 	version = '0.02'
 	sourceCompatibility = 1.6
-
+		
+	ext {
+		osName = System.getProperty("os.name").toLowerCase()
+		osArch = System.getProperty("os.arch").toLowerCase()
+		
+		isWindows = osName.contains("windows")
+		isLinux = osName.contains("linux")
+		is32bit = osArch.contains("86")
+		is64bit = osArch.contains("64")
+		
+		unsupportedOs = "Unsupported OS :("
+	}
+	
 	repositories { 
 		mavenCentral()
 		maven { url "https://raw.github.com/jjzazuet/mvn-repo/master/repo" }
 	}
+	
 	configurations { provided }
+	
 	jar { manifest.attributes provider: 'unsungstories.net' }
 
 	sourceSets {
@@ -21,7 +35,7 @@ subprojects {
 		test.runtimeClasspath += configurations.provided
 	}
 	
-	dependencies {
+	dependencies {	
 		testCompile 'junit:junit:4.8.2'
 		compile 'com.google.seeds:seeds-base:14.0'
 	}

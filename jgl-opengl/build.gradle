@@ -1,12 +1,4 @@
 dependencies {
-
-	def osName = System.getProperty("os.name").toLowerCase()
-	def osArch = System.getProperty("os.arch").toLowerCase()
-
-	def isWindows = osName.contains("windows")
-	def isLinux = osName.contains("linux")
-	def is32bit = osArch.contains("86")
-	def is64bit = osArch.contains("64")
 	
 	compile project(':jgl-os')
 	compile project(':jgl-time')
@@ -35,9 +27,17 @@ dependencies {
 		} // TODO setup 32 bit dependencies as well
 	} 
 	
-	else if (isLinux) {		
-		compile 'org.jogamp.jogl:jogl-os-x11:2-RC11' // TODO set remaining X11 dependencies.
+	else if (isLinux) {
+			
+		compile 'org.jogamp.jogl:jogl-os-x11:20130313' // TODO set remaining X11 dependencies.
+		compile 'org.jogamp.nativewindow:nativewindow-os-x11:20130313'
+		
+		if (is64bit) {
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-amd64:20130313'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-amd64:20130313'
+			compile 'org.jogamp.jogl:jogl-natives-linux-amd64:20130313'
+		} // TODO setup 32 bit dependencies as well
 	} 
 	
-	else { println("Unsupported OS :(") }	
+	else { throw new TaskExecutionException(unsupportedOs) }	
 }
