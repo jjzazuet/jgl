@@ -1,5 +1,6 @@
 package org.jgl.opengl.util;
 
+import static org.jgl.os.SystemSpec.*;
 import org.jgl.os.NativeBootstrap;
 
 import com.jogamp.common.jvm.JNILibLoaderBase;
@@ -7,8 +8,15 @@ import com.jogamp.common.jvm.JNILibLoaderBase;
 public class JoglNativeBoostrap {
 
 	public static void joglBootstrap() throws Exception {	
+		
 		load("gluegen-rt");
-		load("nativewindow_win32"); 
+		
+		if (isLinux()) {
+			load("nativewindow_x11");			
+		} else if (isWindows()) {
+			load("nativewindow_win32"); 
+		}		
+		
 		load("jogl_desktop"); 
 	}
 	

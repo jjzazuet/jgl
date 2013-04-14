@@ -3,7 +3,7 @@ package org.jgl.os;
 public class SystemSpec {
 
 	public static final String FORMAT_WIN_LIB = "%s.dll";
-	public static final String FORMAT_NIX_LIB = "%s.so";
+	public static final String FORMAT_NIX_LIB = "lib%s.so";
 	public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 
 	protected static final String osName = System.getProperty("os.name").toLowerCase();

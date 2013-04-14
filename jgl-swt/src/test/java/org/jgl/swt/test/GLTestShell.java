@@ -26,7 +26,8 @@ public class GLTestShell {
 		s.setLayout(new FillLayout());
 		s.setSize(816, 640);
 		
-		GLCapabilities caps = new GLCapabilities(GLProfile.get(GLProfile.GL3));
+		GLProfile profile = GLProfile.get(GLProfile.GL3);
+		GLCapabilities caps = new GLCapabilities(profile);
 		
 		caps.setDoubleBuffered(true);
 		caps.setNumSamples(8);
@@ -36,6 +37,7 @@ public class GLTestShell {
 		
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
+
 		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
 		s.open();
 
