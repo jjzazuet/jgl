@@ -23,19 +23,39 @@ public class GLSLUtils {
 		checkNotNull(vsPath);
 		checkNotNull(fsPath);
 		checkNotNull(gl);
-		
-		File vsSrcFile = new File(vsPath);
-		File fsSrcFile = new File(fsPath);
-
-		checkArgument(vsSrcFile.exists());
-		checkArgument(fsSrcFile.exists());
-		
-		GLShader vs = new GLShader(VERTEX_SHADER, vsSrcFile);
-		GLShader fs = new GLShader(FRAGMENT_SHADER, fsSrcFile);
+				
+		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
+		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
 		GLProgram p = new GLProgram();
 		
 		p.attachShader(vs).attachShader(fs).init(gl);		
 		return p;
+	}
+	
+	public static final GLProgram loadProgram(String vsPath, String gsPath, String fsPath, GL3 gl) throws Exception {
+		
+		checkNotNull(vsPath);
+		checkNotNull(fsPath);
+		checkNotNull(gsPath);
+		checkNotNull(gl);
+		
+		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
+		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
+		GLShader gs = loadShader(gsPath, GEOMETRY_SHADER);
+		GLProgram p = new GLProgram();
+		
+		p.attachShader(vs).attachShader(fs).attachShader(gs).init(gl);		
+		return p;		
+	}
+	
+	public static final GLShader loadShader(String path, GLShaderType t) throws Exception {
+		
+		checkNotNull(path);
+		File shaderSrcFile = new File(path);
+		checkArgument(shaderSrcFile.exists());
+		GLShader s = new GLShader(t, shaderSrcFile);
+		
+		return s;
 	}
 	
 	public static final int getGlslParam(GLContextBoundResource r, int param) {
