@@ -7,35 +7,35 @@ dependencies {
 
 	compile 'org.slf4j:slf4j-simple:1.7.2'
 			
-	compile 'org.jogamp.gluegen:gluegen-rt:20130313'
+	compile 'org.jogamp.gluegen:gluegen-rt:20130411'
 
-	compile 'org.jogamp.jogl:jogl-core:20130313'
-	compile 'org.jogamp.jogl:jogl-gldesktop:20130313'
-	compile 'org.jogamp.jogl:jogl-swt:20130313'
+	compile 'org.jogamp.jogl:jogl-core:20130411'
+	compile 'org.jogamp.jogl:jogl-gldesktop:20130411'
+	compile 'org.jogamp.jogl:jogl-swt:20130411'
 
-	compile 'org.jogamp.nativewindow:nativewindow-core:20130313'
+	compile 'org.jogamp.nativewindow:nativewindow-core:20130411'
 	
 	if (isWindows) { 
 		
-		compile 'org.jogamp.jogl:jogl-os-win:20130313'
-		compile 'org.jogamp.nativewindow:nativewindow-os-win:20130313'
+		compile 'org.jogamp.jogl:jogl-os-win:20130411'
+		compile 'org.jogamp.nativewindow:nativewindow-os-win:20130411'
 		
 		if (is64bit) {
-			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-amd64:20130313'
-			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-amd64:20130313'
-			compile 'org.jogamp.jogl:jogl-natives-windows-amd64:20130313'
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-amd64:20130411'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-amd64:20130411'
+			compile 'org.jogamp.jogl:jogl-natives-windows-amd64:20130411'
 		} // TODO setup 32 bit dependencies as well
 	} 
 	
 	else if (isLinux) {
 			
-		compile 'org.jogamp.jogl:jogl-os-x11:20130313' // TODO set remaining X11 dependencies.
-		compile 'org.jogamp.nativewindow:nativewindow-os-x11:20130313'
+		compile 'org.jogamp.jogl:jogl-os-x11:20130411' // TODO set remaining X11 dependencies.
+		compile 'org.jogamp.nativewindow:nativewindow-os-x11:20130411'
 		
 		if (is64bit) {
-			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-amd64:20130313'
-			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-amd64:20130313'
-			compile 'org.jogamp.jogl:jogl-natives-linux-amd64:20130313'
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-amd64:20130411'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-amd64:20130411'
+			compile 'org.jogamp.jogl:jogl-natives-linux-amd64:20130411'
 		} // TODO setup 32 bit dependencies as well
 	} 
 	
