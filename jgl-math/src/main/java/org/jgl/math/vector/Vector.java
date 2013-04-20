@@ -22,6 +22,12 @@ public abstract class Vector {
 		if (index == 0) { setX(value); }
 	}
 	
+	public void set(Vector v) {
+		for (int k = 0; k < v.length(); k++) {
+			set(k, v.get(k));
+		}
+	}
+	
 	protected double[] values() { return new double [] {x}; }
 	public int length() { return 1; }
 	
