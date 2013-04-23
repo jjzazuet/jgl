@@ -14,9 +14,20 @@ public class BezierCubicLoop {
 		setPoints(loopPathPoints);
 	}
 
-	
+	public Vector3 pointAt(double t) {
+		
+		Vector3 result = null;
+		
+		
+		
+		return result;
+	}
 	
 	public void setPoints(List<Vector3> points) {
+		
+		checkNotNull(points);
+		checkArgument(!points.isEmpty());
+		
 		this.points = bezierCubicControlPointLoop(checkNotNull(points));
 	}
 }

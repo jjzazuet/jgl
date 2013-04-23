@@ -43,8 +43,8 @@ public class BezierOps {
 	 * Creates a list of bezier curve segment points which, when interpolated
 	 * by a cubic Bezier curve function, will result in a looped path which crosses
 	 * all the source points.
-	 * @param points
-	 * @return
+	 * @param points the points of the desired Bezier path.
+	 * @return a list of control points that define a bezier looped path.
 	 */
 	public static List<Vector3> bezierCubicControlPointLoop(List<Vector3> points) {
 
