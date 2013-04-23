@@ -39,6 +39,13 @@ public class BezierOps {
 		dst.z += ttt * p3.z;
 	}
 	
+	/**
+	 * Creates a list of bezier curve segment points which, when interpolated
+	 * by a cubic Bezier curve function, will result in a looped path which crosses
+	 * all the source points.
+	 * @param points
+	 * @return
+	 */
 	public static List<Vector3> bezierCubicControlPointLoop(List<Vector3> points) {
 
 		int i = 0, n = points.size(), size = n * 3 + 1;
