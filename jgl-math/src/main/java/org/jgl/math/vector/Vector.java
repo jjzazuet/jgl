@@ -41,7 +41,7 @@ public abstract class Vector {
 			sb.append(values[k]).append(' ');
 		}
 		
-		sb.append(']');
+		sb.append("]\n");
 		return sb.toString();
 	}
 	
