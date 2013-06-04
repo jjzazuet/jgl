@@ -31,7 +31,7 @@ public class BezierOpTest {
 	public static final List<Vector3> points = Arrays.asList(_points);
 	public static final List<Vector3> fourPoints = Arrays.asList(_fourPoints);
 	
-	//@Test
+	@Test
 	public void bezierCurveTest() {
 
 		List<Vector3> controlPoints = bezierCubicControlPointLoop(points);
