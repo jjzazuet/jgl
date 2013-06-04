@@ -18,7 +18,11 @@ public class BezierCubicLoop {
 	}
 
 	public Vector3 pointAt(double t) {
-		return null;
+		double pathCurveCount = pathCurves.size();
+		double curveOffset = pathCurveCount * wrap(t);
+		int targetCurve = (int) curveOffset;
+		double curveLocalOffset = curveOffset - targetCurve;
+		return pathCurves.get(targetCurve).pointAt(curveLocalOffset);
 	}
 	
 	public void setPoints(List<Vector3> points) {

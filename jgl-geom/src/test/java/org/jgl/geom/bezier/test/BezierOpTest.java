@@ -20,10 +20,18 @@ public class BezierOpTest {
 			new Vector3(-30.0f,  30.0f,  0.0f),
 			new Vector3(-60.0f,  4.0f,  -30.0f)
 	};
-
+	
+	public static final Vector3[] _fourPoints = new Vector3[] {
+			new Vector3(0, 0, 0),
+			new Vector3(1, 1, 1),
+			new Vector3(2, 2, 2),
+			new Vector3(3, 3, 3)
+	};
+	
 	public static final List<Vector3> points = Arrays.asList(_points);
-
-	@Test
+	public static final List<Vector3> fourPoints = Arrays.asList(_fourPoints);
+	
+	//@Test
 	public void bezierCurveTest() {
 
 		List<Vector3> controlPoints = bezierCubicControlPointLoop(points);
@@ -41,9 +49,20 @@ public class BezierOpTest {
 	
 	@Test
 	public void bezierLoopTest() {
+
+		double iterations = 27;
+		double deltaStep = 0.05;
+		double deltas = iterations / deltaStep;
 		
-		BezierCubicLoop loop = new BezierCubicLoop(points);
+		BezierCubicLoop loop = new BezierCubicLoop(fourPoints);
 		
-		System.out.println(loop);
+		for (double k = 0; k < iterations; k++) {
+			
+			System.out.println(k);
+			
+			for (double d = 0; d < deltas; d += deltaStep) {
+				System.out.println(d);
+			}
+		}
 	}
 }
