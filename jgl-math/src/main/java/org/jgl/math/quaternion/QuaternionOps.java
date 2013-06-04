@@ -14,7 +14,9 @@ public class QuaternionOps {
 	}
 
 	/**
-	 * @see <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html</a>
+	 * @see 
+	 *   <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">
+	 *     http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html</a>
 	 */
 	public static void mulQuat(Vector4 a, Vector4 b, Vector4 dst) {
 		

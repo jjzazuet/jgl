@@ -18,10 +18,18 @@ public class BezierCubicLoop {
 	}
 
 	public Vector3 pointAt(double t) {
+		
+		t = wrap (t);
+		
 		double pathCurveCount = pathCurves.size();
-		double curveOffset = pathCurveCount * wrap(t);
+		double curveOffset = pathCurveCount * t;
 		int targetCurve = (int) curveOffset;
 		double curveLocalOffset = curveOffset - targetCurve;
+		
+		if (targetCurve == pathCurveCount) { // reached the end of the path loop
+			targetCurve = 0;
+		}
+		
 		return pathCurves.get(targetCurve).pointAt(curveLocalOffset);
 	}
 	

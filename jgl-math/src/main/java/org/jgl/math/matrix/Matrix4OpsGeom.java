@@ -52,7 +52,9 @@ public class Matrix4OpsGeom {
 	}
 
 	/** 
-	 * @see <a href="http://www.cprogramming.com/tutorial/3d/rotation.html">http://www.cprogramming.com/tutorial/3d/rotation.html</a>
+	 * @see 
+	 *   <a href="http://www.cprogramming.com/tutorial/3d/rotation.html">
+	 *     http://www.cprogramming.com/tutorial/3d/rotation.html</a>
 	 */
 	public static void rotateLh(Matrix4 dst, Vector3 axis, Angle d) {
 		
@@ -75,7 +77,9 @@ public class Matrix4OpsGeom {
 	}
 	
 	/** 
-	 * @see <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html</a> 
+	 * @see 
+	 *   <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">
+	 *     http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html</a> 
 	 **/
 	public static void fromQuaternion(Matrix4 dst, Vector4 q) {
 	
