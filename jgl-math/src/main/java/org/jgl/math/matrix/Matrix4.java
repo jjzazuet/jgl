@@ -12,9 +12,9 @@ public class Matrix4 {
 	public static final String ROW_FORMAT = "%n[%.6f, %.6f, %.6f, %.6f]";
 	
 	public double m00, m10, m20, m30;
-	public double m01, m11, m21, m31;		
-	public double m02, m12, m22, m32;		
-	public double m03, m13, m23, m33;		
+	public double m01, m11, m21, m31;
+	public double m02, m12, m22, m32;
+	public double m03, m13, m23, m33;
 
 	@Override
 	public String toString() {

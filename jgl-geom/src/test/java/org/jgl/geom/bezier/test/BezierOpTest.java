@@ -51,18 +51,13 @@ public class BezierOpTest {
 	public void bezierLoopTest() {
 
 		double iterations = 8;
-		double deltaStep = 0.15;
+		double deltaStep = 0.25;
 		
 		BezierCubicLoop loop = new BezierCubicLoop(fourPoints);
 		
-		for (double k = 0; k < iterations; k++) {
-			
-			System.out.printf("Iteration [%s]%n", k);
-			
-			for (double d = 0; d < 1.00; d += deltaStep) {
-				double t = k + d;
-				System.out.print(loop.pointAt(t));
-			}
+		for (double d = 0; d <= iterations; d += deltaStep) {
+			Vector3 point = loop.pointAt(d);
+			System.out.printf("[%.3f], %s", d, point);
 		}
 	}
 }
