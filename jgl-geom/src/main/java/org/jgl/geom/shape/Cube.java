@@ -23,6 +23,7 @@ public class Cube implements Shape {
 	private double x, y, z;
 	
 	public Cube() { this(1, 1, 1); }
+	public Cube(double size) { this(size, size, size); }
 	
 	public Cube(double w, double h, double d) {
 		
@@ -173,7 +174,7 @@ public class Cube implements Shape {
 				n[5][0], n[5][1], n[5][2],
 				n[5][0], n[5][1], n[5][2],
 				n[5][0], n[5][1], n[5][2],
-				n[5][0], n[5][1], n[5][2]				
+				n[5][0], n[5][1], n[5][2]
 		};
 		
 		return normals;

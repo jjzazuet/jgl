@@ -36,7 +36,7 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T015Graph());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T015ShadedCube());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
