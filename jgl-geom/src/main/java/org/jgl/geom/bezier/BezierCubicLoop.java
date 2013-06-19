@@ -5,6 +5,7 @@ import static org.jgl.geom.bezier.BezierOps.*;
 import static com.google.common.base.Preconditions.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jgl.math.vector.Vector3;
@@ -12,6 +13,12 @@ import org.jgl.math.vector.Vector3;
 public class BezierCubicLoop {
 
 	private List<BezierCurve4> pathCurves;
+	
+	public BezierCubicLoop(Vector3 ... targetLoopPoints) {
+		checkNotNull(targetLoopPoints);
+		checkArgument(targetLoopPoints.length > 0);
+		setPoints(Arrays.asList(targetLoopPoints));
+	}
 	
 	public BezierCubicLoop(List<Vector3> targetLoopPoints) {
 		setPoints(targetLoopPoints);

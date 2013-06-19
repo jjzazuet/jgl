@@ -12,6 +12,9 @@ import org.junit.Test;
 
 public class GLTestShell {
 
+	public static final int SHELL_PADDING_WIDTH = 16;
+	public static final int SHELL_PADDING_HEIGHT = 40;	
+	
 	Display d;
 	Shell   s;
 	
@@ -24,7 +27,7 @@ public class GLTestShell {
 		s = new Shell(d);
 		
 		s.setLayout(new FillLayout());
-		s.setSize(816, 640);
+		setSize(s, 1280, 720);
 		
 		GLProfile profile = GLProfile.get(GLProfile.GL3);
 		GLCapabilities caps = new GLCapabilities(profile);
@@ -33,9 +36,9 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T014MultiCubeGs());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T015Graph());
 		
-		comp.getScheduler().setFrameTicksPerSecond(60);
+		comp.getScheduler().setFrameTicksPerSecond(30);
 		comp.init();
 
 		s.setText(String.format("GLTestShell [%s]", comp.getTarget().getClass().getName()));
@@ -48,5 +51,9 @@ public class GLTestShell {
 		}
 
 		d.dispose();
+	}
+	
+	public void setSize(Shell target, int width, int height) {
+		target.setSize(width + SHELL_PADDING_WIDTH, height + SHELL_PADDING_HEIGHT);
 	}
 }

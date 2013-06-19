@@ -60,6 +60,13 @@ public class VectorOps {
 		return Math.sqrt(vLength);
 	}
 	
+	public static double distance(Vector a, Vector b) throws Exception {
+		checkDimensions(a, b);
+		Vector sub = a.getClass().newInstance();
+		sub(a, b, sub);
+		return length(sub);
+	}
+	
 	public static void normalize(Vector src, Vector dst) {
 		
 		checkDimensions(src, dst);
