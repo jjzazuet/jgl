@@ -10,7 +10,7 @@ import static org.jgl.opengl.util.GLSLUtils.loadProgram;
 import javax.media.opengl.GL3;
 
 import org.jgl.opengl.*;
-import org.jgl.opengl.util.GlViewSize;
+import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public class T006CartoonSun extends GL3EventListener {
@@ -53,7 +53,7 @@ public class T006CartoonSun extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		
-		double uTime = currentState.elapsedTimeUs * 0.000001;
+		double uTime = currentState.getElapsedTimeSeconds();
 		angle = fullCircles(uTime * 0.05);
 		
 		time.setFloat((float) uTime);
@@ -61,7 +61,7 @@ public class T006CartoonSun extends GL3EventListener {
 	}
 
 	@Override
-	protected void onResize(GL3 gl, GlViewSize newViewport) {
+	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 	}

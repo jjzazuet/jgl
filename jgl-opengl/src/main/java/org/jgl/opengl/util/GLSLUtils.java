@@ -17,7 +17,7 @@ import com.google.common.base.Charsets;
 public class GLSLUtils {
 
 	private static final Logger log = LoggerFactory.getLogger(GLSLUtils.class);
-	
+
 	public static final GLProgram loadProgram(String vsPath, String fsPath, GL3 gl) throws Exception {
 		
 		checkNotNull(vsPath);
@@ -31,35 +31,35 @@ public class GLSLUtils {
 		p.attachShader(vs).attachShader(fs).init(gl);		
 		return p;
 	}
-	
+
 	public static final GLProgram loadProgram(String vsPath, String gsPath, String fsPath, GL3 gl) throws Exception {
 		
 		checkNotNull(vsPath);
 		checkNotNull(fsPath);
 		checkNotNull(gsPath);
 		checkNotNull(gl);
-		
+
 		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
 		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
 		GLShader gs = loadShader(gsPath, GEOMETRY_SHADER);
 		GLProgram p = new GLProgram();
 		
 		p.attachShader(vs).attachShader(fs).attachShader(gs).init(gl);		
-		return p;		
+		return p;
 	}
-	
+
 	public static final GLShader loadShader(String path, GLShaderType t) throws Exception {
-		
+
 		checkNotNull(path);
 		File shaderSrcFile = new File(path);
 		checkArgument(shaderSrcFile.exists());
 		GLShader s = new GLShader(t, shaderSrcFile);
-		
+
 		return s;
 	}
-	
+
 	public static final int getGlslParam(GLContextBoundResource r, int param) {
-		
+
 		checkArgument(r instanceof GLShader || r instanceof GLProgram);
 		IntBuffer b = IntBuffer.allocate(1);
 		

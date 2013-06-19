@@ -1,5 +1,6 @@
 package org.jgl.opengl.test;
 
+import static org.jgl.opengl.util.GLDrawUtils.*;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL3.*;
@@ -11,8 +12,6 @@ import static org.jgl.opengl.util.GLBufferUtils.*;
 import static org.jgl.math.vector.VectorOps.*;
 
 import java.util.LinkedList;
-import java.util.Random;
-
 import javax.media.opengl.GL3;
 
 import org.jgl.geom.bezier.BezierCubicLoop;
@@ -20,7 +19,7 @@ import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
-import org.jgl.opengl.util.GlViewSize;
+import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public class T015Graph extends GL3EventListener {
@@ -45,7 +44,6 @@ public class T015Graph extends GL3EventListener {
 			new Vector3(-10.0f,   0.0f, -10.0f)
 	);
 	
-	private Random r = new Random();
 	private Angle fov = new Angle();
 	
 	private GLProgram p;
@@ -75,9 +73,9 @@ public class T015Graph extends GL3EventListener {
 		LinkedList<Integer> edges = new LinkedList<Integer>();
 		
 		for (int k = 0; k < positions.length; k++) {
-			positions[k++] = r.nextFloat() * 120;
-			positions[k++] = r.nextFloat() * 5;
-			positions[k++] = r.nextFloat() * 120;
+			positions[k++] = (float) (nrand() * 120);
+			positions[k++] = (float) (nrand() * 5);
+			positions[k++] = (float) (nrand() * 120);
 		}
 
 		positionsBuffer = buffer(positions, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
@@ -159,26 +157,21 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		graphVao.bind();
-		edgeIndices.getRawBuffer().clear();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_POINTS, 0, NODE_COUNT * 3);
-		gl.glDrawElements(GL_LINES, 
-				edgeIndices.getRawBuffer().capacity(), 
-				edgeIndices.getBufferMetadata().getGlPrimitiveType(), 
-				edgeIndices.getRawBuffer());
+		glIndexedDraw(GL_LINES, gl, edgeIndices);
 		graphVao.unbind();
 	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
-		double time = currentState.elapsedTimeUs * 0.000001;
-		lookAt(camMat, cameraPath.pointAt(time / 9), 
-				cameraTargetPath.pointAt(time / 7));
+		double time = currentState.getElapsedTimeSeconds();
+		lookAt(camMat, cameraPath.pointAt(time / 9), cameraTargetPath.pointAt(time / 7));
 		uCameraMatrix.setMat4fv(false, camMat);
 	}
 
 	@Override
-	protected void onResize(GL3 gl, GlViewSize newViewport) {
+	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 200);

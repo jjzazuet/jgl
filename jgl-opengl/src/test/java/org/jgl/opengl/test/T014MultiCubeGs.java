@@ -14,7 +14,7 @@ import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
-import org.jgl.opengl.util.GlViewSize;
+import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public class T014MultiCubeGs extends GL3EventListener {
@@ -63,7 +63,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
-		double time = currentState.elapsedTimeUs * 0.000001;
+		double time = currentState.getElapsedTimeSeconds();
 		
 		azimuth.setDegrees(time * 135);
 		elevation.setDegrees(sineWave(time / 20) * 30);
@@ -72,7 +72,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 	}
 
 	@Override
-	protected void onResize(GL3 gl, GlViewSize newViewport) {
+	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 50);

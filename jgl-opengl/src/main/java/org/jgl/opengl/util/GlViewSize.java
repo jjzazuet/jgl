@@ -1,11 +1,11 @@
 package org.jgl.opengl.util;
 
-public class GlViewSize {
+public class GLViewSize {
 	
 	public int x, y;
 	public double width, height;
 	
-	public GlViewSize(int x, int y, double width, double height) {
+	public GLViewSize(int x, int y, double width, double height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;

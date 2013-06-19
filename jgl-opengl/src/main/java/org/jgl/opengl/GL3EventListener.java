@@ -5,7 +5,7 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2ES2.GL_SHADING_LANGUAGE_VERSION;
 
 import javax.media.opengl.*;
-import org.jgl.opengl.util.GlViewSize;
+import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public abstract class GL3EventListener extends GLScheduledEventListener {
@@ -13,7 +13,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	protected abstract void doInit(GL3 gl) throws Exception;
 	protected abstract void doRender(GL3 gl, ExecutionState currentState) throws Exception;
 	protected abstract void doUpdate(GL3 gl, ExecutionState currentState) throws Exception;
-	protected abstract void onResize(GL3 gl, GlViewSize newViewport);
+	protected abstract void onResize(GL3 gl, GLViewSize newViewport);
 	
 	@Override
 	protected void doInit(GLAutoDrawable gad) throws Exception {
@@ -37,7 +37,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	}
 
 	@Override
-	protected void onResize(GLAutoDrawable gad, GlViewSize newViewport) {
+	protected void onResize(GLAutoDrawable gad, GLViewSize newViewport) {
 		onResize((GL3) gad.getGL(), newViewport);
 	}
 }
