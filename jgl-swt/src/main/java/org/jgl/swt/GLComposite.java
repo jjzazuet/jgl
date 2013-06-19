@@ -29,7 +29,7 @@ public class GLComposite extends Composite implements Listener, Runnable, Render
 		target = targetListener;
 		caps = glCaps;
 	}
-	
+
 	public void init() {
 		
 		checkNotNull(caps);
@@ -57,7 +57,7 @@ public class GLComposite extends Composite implements Listener, Runnable, Render
 		try {
 			if (!isDisposed()) {
 				scheduler.stateTick();
-				getDisplay().asyncExec(this);				
+				getDisplay().asyncExec(this);
 			}
 		} catch (Exception e) { propagate(e); }
 	}

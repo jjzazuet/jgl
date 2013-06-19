@@ -29,7 +29,7 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	}
 
 	@Override
-	public void display(GLAutoDrawable arg0) {		
+	public void display(GLAutoDrawable arg0) {
 		try {
 			switch (executionState.method) {
 				case RENDER: doRender(arg0, executionState); break;

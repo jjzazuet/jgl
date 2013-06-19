@@ -1,5 +1,11 @@
 package org.jgl.time;
 
+/**
+ * <a href="http://gafferongames.com/game-physics/fix-your-timestep/">
+ *   Fix Your Timestep (Glenn Fiedler)
+ * </a>
+ * @author jjzazuet
+ */
 public class FixedTimeStepScheduler extends Scheduler {
 
 	public static final int MAX_FRAME_DELTA_SCALE_FACTOR = 3;
