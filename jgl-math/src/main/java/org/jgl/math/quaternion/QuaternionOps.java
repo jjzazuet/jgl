@@ -27,7 +27,7 @@ public class QuaternionOps {
 		double z = (a.w * b.z) + (a.z * b.w) + (a.x * b.y) - (a.y * b.x);
 		double w = (a.w * b.w) - (a.x * b.x) - (a.y * b.y) - (a.z * b.z);
 	
-	    dst.set(x, y, z, w);
+		dst.set(x, y, z, w);
 	}
 
 	public static void setQuaternion(Vector4 dst, Angle a) {

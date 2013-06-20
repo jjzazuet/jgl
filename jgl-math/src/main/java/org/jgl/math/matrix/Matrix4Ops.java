@@ -55,22 +55,22 @@ public class Matrix4Ops {
 	}
 	
 	public static void storeColMaj(FloatBuffer b, Matrix4 ... src) {
-		
+
 		checkNoNulls(src);
 		checkNotNull(b);
 		checkArgument(src.length >= 1);
 		checkArgument(b.capacity() >= src.length * Matrix4.COMPONENT_SIZE);
-		
+
 		b.clear();
-		
+
 		for (Matrix4 m : src) {
 			checkState(b.remaining() >= Matrix4.COMPONENT_SIZE);
 			b.put((float) m.m00); b.put((float) m.m01); b.put((float) m.m02); b.put((float) m.m03);
 			b.put((float) m.m10); b.put((float) m.m11); b.put((float) m.m12); b.put((float) m.m13);
 			b.put((float) m.m20); b.put((float) m.m21); b.put((float) m.m22); b.put((float) m.m23);
-			b.put((float) m.m30); b.put((float) m.m31); b.put((float) m.m32); b.put((float) m.m33);		
+			b.put((float) m.m30); b.put((float) m.m31); b.put((float) m.m32); b.put((float) m.m33);
 		}
-		
+
 		b.flip();
 	}
 }

@@ -12,7 +12,7 @@ import static org.jgl.math.angle.AngleOps.*;
 
 import javax.media.opengl.GL3;
 
-import org.jgl.geom.shape.Sphere;
+import org.jgl.geom.solid.Sphere;
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.matrix.io.BufferedMatrix4;

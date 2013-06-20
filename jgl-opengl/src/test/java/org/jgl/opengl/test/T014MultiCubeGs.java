@@ -9,7 +9,7 @@ import static javax.media.opengl.GL.*;
 
 import javax.media.opengl.GL3;
 
-import org.jgl.geom.shape.Cube;
+import org.jgl.geom.solid.Cube;
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;

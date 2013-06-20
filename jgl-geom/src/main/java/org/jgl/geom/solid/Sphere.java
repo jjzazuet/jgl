@@ -1,12 +1,17 @@
-package org.jgl.geom.shape;
+package org.jgl.geom.solid;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 
-import org.jgl.geom.FaceOrientation;
+import org.jgl.geom.FaceWinding;
+import org.jgl.geom.solid.model.IndexedSolid;
+import org.jgl.geom.solid.model.NormalMappedSolid;
+import org.jgl.geom.solid.model.Solid;
+import org.jgl.geom.solid.model.TangentMappedSolid;
+import org.jgl.geom.solid.model.TexturedSolid;
 import org.jgl.math.vector.Vector4;
 
-public class Sphere implements Shape {
+public class Sphere implements Solid, IndexedSolid, TexturedSolid, NormalMappedSolid, TangentMappedSolid {
 
 	private double radius;
 	private int sections, rings;
@@ -120,8 +125,8 @@ public class Sphere implements Shape {
 	}
 
 	@Override
-	public FaceOrientation getFaceWinding() {
-		return FaceOrientation.CCW;
+	public FaceWinding getFaceWinding() {
+		return FaceWinding.CCW;
 	}
 
 	@Override

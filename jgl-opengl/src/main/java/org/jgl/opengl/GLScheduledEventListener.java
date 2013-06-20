@@ -24,7 +24,10 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	@Override
 	public void init(GLAutoDrawable arg0) {
 		arg0.setAutoSwapBufferMode(false);
-		try { doInit(arg0); } 
+		try { 
+			doInit(arg0);
+			checkError(arg0.getGL());
+		} 
 		catch (Exception e) { propagate(e); }
 	}
 
@@ -35,6 +38,7 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 				case RENDER: doRender(arg0, executionState); break;
 				case UPDATE: doUpdate(arg0, executionState); break;
 			}
+			checkError(arg0.getGL());
 		} catch (Exception e) { propagate(e); }
 	}
 
@@ -47,12 +51,17 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	public void reshape(GLAutoDrawable gad, int x, int y, int w, int h) {
 		glViewSize = new GLViewSize(x, y, w, h);
 		onResize(gad, glViewSize);
+		checkError(gad.getGL());
 	}
 
 	protected final void checkError(GL gl) {
 		if (log.isDebugEnabled()) {
 			checkError.apply(gl);
 		}
+	}
+	
+	protected final int getError(GL gl) {
+		return checkError.get(gl);
 	}
 
 	public GLViewSize getGlViewSize() { return glViewSize; }

@@ -10,7 +10,7 @@ import static org.jgl.math.matrix.Matrix4OpsCam.*;
 
 import javax.media.opengl.GL3;
 
-import org.jgl.geom.shape.Cube;
+import org.jgl.geom.solid.Cube;
 import org.jgl.geom.transform.ModelTransform;
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.io.BufferedMatrix4;
@@ -84,9 +84,9 @@ public class T013StripedCubes extends GL3EventListener {
 		orbit(camMat, origin, 3.5, azimuth, elevation);
 		uCameraMatrix.setMat4fv(false, camMat);
 		cube2Trans.setTranslation(1, 0, 0);
-		cube2Trans.setRotationY(time * 90);
+		cube2Trans.getRotationY().setDegrees(time * 90);
 		cube1Trans.setTranslation(-1, 0, 0);
-		cube1Trans.setRotationZ(time * 180);
+		cube1Trans.getRotationZ().setDegrees(time * 180);
 	}
 
 	@Override

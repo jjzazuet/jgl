@@ -1,8 +1,13 @@
-package org.jgl.geom.shape;
+package org.jgl.geom.solid;
 
-import static org.jgl.geom.FaceOrientation.*;
+import static org.jgl.geom.FaceWinding.*;
 
-import org.jgl.geom.FaceOrientation;
+import org.jgl.geom.FaceWinding;
+import org.jgl.geom.solid.model.IndexedSolid;
+import org.jgl.geom.solid.model.NormalMappedSolid;
+import org.jgl.geom.solid.model.Solid;
+import org.jgl.geom.solid.model.TangentMappedSolid;
+import org.jgl.geom.solid.model.TexturedSolid;
 import org.jgl.math.vector.Vector4;
 import static com.google.common.base.Preconditions.*;
 
@@ -18,7 +23,7 @@ import static com.google.common.base.Preconditions.*;
  *(G)-----(C)
  * </pre>
  */
-public class Cube implements Shape {
+public class Cube implements Solid, IndexedSolid, TexturedSolid, NormalMappedSolid, TangentMappedSolid {
 
 	private double x, y, z;
 	
@@ -118,7 +123,7 @@ public class Cube implements Shape {
 	}
 
 	@Override
-	public FaceOrientation getFaceWinding() { return CW; }
+	public FaceWinding getFaceWinding() { return CW; }
 
 	@Override
 	public float[] getNormals() {

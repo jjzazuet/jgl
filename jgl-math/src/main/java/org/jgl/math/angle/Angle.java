@@ -2,10 +2,17 @@ package org.jgl.math.angle;
 
 public class Angle {
 
+	public static final double TWO_PI  = Math.PI * 2;
+	
 	private double radians;
 
 	public double getRadians() { return radians; }
 	public double getDegrees() { return Math.toDegrees(getRadians()); }
+	
+	public Angle setFullCircles(double value) {
+		this.radians = value * TWO_PI;
+		return this;
+	}
 	
 	public Angle setRadians(double radians) { 
 		this.radians = radians;

@@ -25,34 +25,33 @@ public class ModelTransform {
 	private Vector4 orientY = new Vector4();	
 	private Vector4 orientZ = new Vector4();
 	
-	private Angle rotationXAngle = new Angle();
-	private Angle rotationYAngle = new Angle();
-	private Angle rotationZAngle = new Angle();
+	private Angle rotationX = new Angle();
+	private Angle rotationY = new Angle();
+	private Angle rotationZ = new Angle();
 	
 	public BufferedMatrix4 getModelMatrix() {
-		
+
 		setZero(modelMatrix);
-		
 		scaleXyz(scaleMatrix, scaleVector);
-	
+
 		orientX.set(1, 0, 0, 0);
 		orientY.set(0, 1, 0, 0);
 		orientZ.set(0, 0, 1, 0);
-		
-		setQuaternion(orientX, rotationXAngle);
-		setQuaternion(orientY, rotationYAngle);
-		setQuaternion(orientZ, rotationZAngle);
-		
-		mulQuat(orientX, orientY, orientY); 
-		mulQuat(orientY, orientZ, orientZ); 
-		normalize(orientZ);
-		fromQuaternion(rotationMatrix, orientZ);
-		
+
+		setQuaternion(orientX, rotationX);
+		setQuaternion(orientY, rotationY);
+		setQuaternion(orientZ, rotationZ);
+
+		mulQuat(orientZ, orientY, orientY); 
+		mulQuat(orientY, orientX, orientX); 
+		normalize(orientX);
+		fromQuaternion(rotationMatrix, orientX);
+
 		translateXyz(translationMatrix, translationVector);
-		
+
 		mul(scaleMatrix, rotationMatrix, modelMatrix);
 		mul(translationMatrix, modelMatrix, modelMatrix);
-		
+
 		return modelMatrix;
 	}
 	
@@ -63,20 +62,12 @@ public class ModelTransform {
 	public void setScale(double x, double y, double z) {
 		scaleVector.set(x, y, z);
 	}
-	
-	public void setRotationX(double xDeg) {
-		rotationXAngle.setDegrees(xDeg);
-	}
-
-	public void setRotationY(double yDeg) {
-		rotationYAngle.setDegrees(yDeg);
-	}
-
-	public void setRotationZ(double zDeg) {
-		rotationZAngle.setDegrees(zDeg);
-	}
 
 	public void setTranslation(double x, double y, double z) {
 		translationVector.set(x, y, z);
-	}	
+	}
+
+	public Angle getRotationX() { return rotationX; }
+	public Angle getRotationY() { return rotationY; }
+	public Angle getRotationZ() { return rotationZ; }
 }

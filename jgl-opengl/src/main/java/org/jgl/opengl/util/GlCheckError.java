@@ -8,7 +8,7 @@ import org.slf4j.*;
 public class GlCheckError {
 
 	private static final Logger log = LoggerFactory.getLogger(GlCheckError.class);
-	
+
 	public void apply(GL gl) {
 		if (log.isDebugEnabled()) {
 			int glError = get(gl);
@@ -16,11 +16,11 @@ public class GlCheckError {
 				throw new IllegalStateException(
 						String.format("Invalid OpenGL state: [%s]", glError));
 			}
-		}		
+		}
 	}
-	
+
 	public int get(GL gl) {
 		checkNotNull(gl);
-		return gl.glGetError();		
+		return gl.glGetError();
 	}
 }
