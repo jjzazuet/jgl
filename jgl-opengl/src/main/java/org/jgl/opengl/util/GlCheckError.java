@@ -5,9 +5,9 @@ import static javax.media.opengl.GL.*;
 import javax.media.opengl.GL;
 import org.slf4j.*;
 
-public class GlCheckError {
+public class GLCheckError {
 
-	private static final Logger log = LoggerFactory.getLogger(GlCheckError.class);
+	private static final Logger log = LoggerFactory.getLogger(GLCheckError.class);
 
 	public void apply(GL gl) {
 		if (log.isDebugEnabled()) {

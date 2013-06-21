@@ -3,7 +3,7 @@ package org.jgl.opengl;
 import static com.google.common.base.Throwables.*;
 
 import javax.media.opengl.*;
-import org.jgl.opengl.util.GlCheckError;
+import org.jgl.opengl.util.GLCheckError;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 import org.slf4j.*;
@@ -11,7 +11,7 @@ import org.slf4j.*;
 public abstract class GLScheduledEventListener implements GLEventListener {
 
 	protected static final Logger log = LoggerFactory.getLogger(GLScheduledEventListener.class);
-	protected final GlCheckError checkError = new GlCheckError();
+	protected final GLCheckError checkError = new GLCheckError();
 
 	private GLViewSize glViewSize = new GLViewSize(0, 0, 0, 0);
 	private ExecutionState executionState = new ExecutionState();
