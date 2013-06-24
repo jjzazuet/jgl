@@ -37,24 +37,22 @@ public class Torus implements Solid, IndexedSolid, TexturedSolid, NormalMappedSo
 		float [] vertices = new float[(rings + 1) * (sections + 1) * 3];
 		int k = 0;
 		
-		double rStep = TWO_PI / ((double) rings);
-		double sStep = TWO_PI / ((double) sections);
+		double r_step = TWO_PI / ((double) rings);
+		double s_step = TWO_PI / ((double) sections);
 		double r1 = radiusIn;
 		double r2 = radiusOut - radiusIn;
-		
-		for (int r = 0; r != (rings + 1); ++r) {
+
+		for(int r=0; r!=(rings+1); ++r) {
 			
-			double vx =  cos(r * rStep);
-			double vz = -sin(r * rStep);
+			double vx =  cos(r*r_step);
+			double vz = -sin(r*r_step);
 			
-			for (int s = 0; s != (sections + 1); ++s) {
-				
-				double vr = cos(s * sStep);
-				double vy = sin(s * sStep);
-				
-				vertices[k++] = (float) (vx * (r1 + r2 * (1 + vr)));
-				vertices[k++] = (float) (vy * r2);
-				vertices[k++] = (float) (vz * (r1 + r2 * (1 + vr)));
+			for(int s=0; s!=(sections+1); ++s) {
+				double vr = cos(s*s_step);
+				double vy = sin(s*s_step);
+				vertices[k++] = (float) (vx*(r1 + r2 * (1.0 + vr)));
+				vertices[k++] = (float) (vy*r2);
+				vertices[k++] = (float) (vz*(r1 + r2 * (1.0 + vr)));
 			}
 		}
 		checkState(k == vertices.length);
@@ -66,7 +64,6 @@ public class Torus implements Solid, IndexedSolid, TexturedSolid, NormalMappedSo
 
 		int n = rings * (2 * (sections + 1) + 1);
 		int [] indices = new int[n];
-		
 		int k = 0;
 		int offs = 0;
 
@@ -127,7 +124,6 @@ public class Torus implements Solid, IndexedSolid, TexturedSolid, NormalMappedSo
 				texCoords[k++] = (float) v;
 			}
 		}
-		
 		checkState(k == texCoords.length);
 		return texCoords;
 	}

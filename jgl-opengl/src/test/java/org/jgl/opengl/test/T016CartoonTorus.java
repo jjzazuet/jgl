@@ -23,10 +23,10 @@ import org.jgl.time.util.ExecutionState;
 public class T016CartoonTorus extends GL3EventListener {
 
 	private GLProgram p;
+	private Torus torus = new Torus(1.0, 0.5, 72, 48); // 72, 48
 	private GLVertexArray torusVao = new GLVertexArray();
 	private GLBuffer torusIndices;
 	
-	private Torus torus = new Torus(1.0, 0.5, 72, 48);
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
@@ -70,17 +70,20 @@ public class T016CartoonTorus extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
+		
 		torusVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		gl.glCullFace(GL_FRONT);
-		glIndexedDraw(GL_LINE_LOOP, gl, torusIndices);
+		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, -1);
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		gl.glCullFace(GL_BACK);
-		glIndexedDraw(GL_TRIANGLES, gl, torusIndices);
-
+		gl.glEnable(GL_PRIMITIVE_RESTART);
+		gl.glPrimitiveRestartIndex(torusIndices.getRawBuffer().capacity());
+		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, -1);
+		
 		torusVao.unbind();
 	}
 
