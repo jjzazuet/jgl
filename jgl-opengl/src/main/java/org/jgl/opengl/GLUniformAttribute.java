@@ -99,15 +99,18 @@ public class GLUniformAttribute extends GLAttribute {
 
 	public void setVec4fv(float [] data, int index) { // TODO implement indexed access for other data types.
 		checkElementIndex(index, getSize());
-		getProgram().getGl().glUniform4fv(getIndexLocation(index), getSize(), bufferData(data, 4));
+		getProgram().getGl().glUniform4fv(getIndexLocation(index), 
+				1, // TODO bug, size not valid for single element access
+				bufferData(data, 4));
 		getProgram().checkError().apply(getProgram().getGl());
 	}
 
-	protected FloatBuffer bufferData(float [] data, int componentSize) {
+	protected FloatBuffer bufferData(float [] data, int componentSize) { // TODO fix checks for indexed attributes.
 		checkNotNull(data);
 		checkArgument(componentSize >= 1);
 		checkArgument(data.length >= componentSize);
-		checkArgument(data.length / componentSize == getSize());
+		checkArgument(data.length % componentSize == 0);
+		checkArgument(data.length / componentSize <= getSize());
 		FloatBuffer fb = FloatBuffer.wrap(data);
 		fb.flip();
 		return fb;
