@@ -36,7 +36,7 @@ public class GLTestShell {
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T016CartoonTorus());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T016MetalllicTorus());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
@@ -53,6 +53,7 @@ public class GLTestShell {
 		d.dispose();
 	}
 	
+	// TODO this should be platform specific :P
 	public void setSize(Shell target, int width, int height) {
 		target.setSize(width + SHELL_PADDING_WIDTH, height + SHELL_PADDING_HEIGHT);
 	}
