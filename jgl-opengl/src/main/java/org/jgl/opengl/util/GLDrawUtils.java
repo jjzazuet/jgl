@@ -1,8 +1,8 @@
 package org.jgl.opengl.util;
 
+import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2GL3.GL_PRIMITIVE_RESTART;
-import static com.google.common.base.Preconditions.checkNotNull;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
@@ -13,24 +13,23 @@ public class GLDrawUtils {
 
 	public static final int MINNUS_ONE = -1;
 	
-	public static void glIndexedDraw(int glMode, GL3 gl, GLBuffer buffer, int restartIndex) {
+	public static void glIndexedDraw(int glMode, GL gl, GLBuffer buffer) {
 		checkNotNull(gl);
 		checkNotNull(buffer);
 		buffer.getRawBuffer().clear();
-		
-		if (restartIndex != -1) {
-			gl.glEnable(GL_PRIMITIVE_RESTART);
-			gl.glPrimitiveRestartIndex(restartIndex);
-		}
 
 		gl.glDrawElements(glMode, 
 				buffer.getRawBuffer().capacity(), 
 				buffer.getBufferMetadata().getGlPrimitiveType(), 
 				buffer.getRawBuffer());
-		
-		if (restartIndex != -1) {
-			gl.glDisable(GL_PRIMITIVE_RESTART);
-		}
+	}
+
+	public static void glIndexedDraw(int glMode, GL3 gl, GLBuffer buffer, int restartIndex) {
+		checkArgument(restartIndex >= 0);
+		gl.glEnable(GL_PRIMITIVE_RESTART);
+		gl.glPrimitiveRestartIndex(restartIndex);
+		glIndexedDraw(glMode, gl, buffer);
+		gl.glDisable(GL_PRIMITIVE_RESTART);
 	}
 	
 	public static void glViewPort(GL3 gl, GLViewSize newViewport) {

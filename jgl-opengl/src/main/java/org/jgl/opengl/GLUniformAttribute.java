@@ -70,7 +70,7 @@ public class GLUniformAttribute extends GLAttribute {
 		checkNotNull(v);
 		setVec3f(v.x, v.y, v.z); 
 	}
-
+	// TODO add argument count checks...
 	public void setVec2fv(float [] data) {
 		getProgram().checkBound();
 		getProgram().getGl().glUniform2fv(getLocation(), getSize(), bufferData(data, 2));

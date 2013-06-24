@@ -9,6 +9,8 @@ import java.net.URL;
 
 public class NativeBootstrap {
 
+	public static final String ERROR_UNSUPPORTED_OS = "native.unsupported.os";
+	
 	public static void loadNativeLibrary(String rawName) throws Exception {
 
 		String libFileName = null;
@@ -17,7 +19,7 @@ public class NativeBootstrap {
 			libFileName = format(FORMAT_WIN_LIB, rawName);
 		} else if (isLinux()) {
 			libFileName = format(FORMAT_NIX_LIB, rawName);
-		} else throw new IllegalStateException(String.format("Unsupported OS/architecture: [%s, %s]", osName, osArch));
+		} else throw new IllegalStateException(ERROR_UNSUPPORTED_OS);
 
 		URL location = NativeBootstrap.class.getClassLoader().getResource(libFileName);
 		File tmpDir = new File(TMP_DIR);

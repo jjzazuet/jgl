@@ -12,14 +12,14 @@ public class JoglNativeBoostrap {
 		load("gluegen-rt");
 		
 		if (isLinux()) {
-			load("nativewindow_x11");			
+			load("nativewindow_x11");
 		} else if (isWindows()) {
-			load("nativewindow_win32"); 
-		}		
-		
+			load("nativewindow_win32");
+		}
+
 		load("jogl_desktop"); 
 	}
-	
+
 	public static void load(String libName) throws Exception {
 		NativeBootstrap.loadNativeLibrary(libName);
 		JNILibLoaderBase.addLoaded(libName);

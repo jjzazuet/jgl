@@ -6,17 +6,19 @@ import static org.jgl.math.angle.AngleOps.*;
 import org.jgl.geom.FaceWinding;
 import org.jgl.geom.solid.model.BitangentMapped;
 import org.jgl.geom.solid.model.IndexDrawable;
+import org.jgl.geom.solid.model.IndexRestartable;
 import org.jgl.geom.solid.model.NormalMapped;
 import org.jgl.geom.solid.model.Drawable;
 import org.jgl.geom.solid.model.TangentMapped;
 import org.jgl.geom.solid.model.Textured;
 import org.jgl.math.vector.Vector4;
 
-public class Torus implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, BitangentMapped {
+public class Torus implements Drawable, IndexDrawable, Textured, 
+	NormalMapped, TangentMapped, BitangentMapped, IndexRestartable {
 
 	private final double radiusOut, radiusIn;
 	private final int sections, rings;
-	
+
 	public Torus() {
 		radiusOut = 1.0;
 		radiusIn = 0.5;
@@ -58,11 +60,16 @@ public class Torus implements Drawable, IndexDrawable, Textured, NormalMapped, T
 		checkState(k == vertices.length);
 		return vertices;
 	}
+	
+	@Override
+	public int getPrimitiveRestartIndex() {
+		return rings * (2 * (sections + 1) + 1);
+	}
 
 	@Override
 	public int[] getIndices() {
 
-		int n = rings * (2 * (sections + 1) + 1);
+		int n = getPrimitiveRestartIndex();
 		int [] indices = new int[n];
 		int k = 0;
 		int offs = 0;

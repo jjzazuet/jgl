@@ -69,7 +69,7 @@ public class T013SpiralSphere extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		sphereVao.bind();
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, sphereIndices, -1);
+		glIndexedDraw(GL_TRIANGLE_STRIP, gl, sphereIndices);
 		sphereVao.unbind();
 	}
 
