@@ -1,5 +1,5 @@
 package org.jgl.geom.solid.model;
 
-public interface TangentMappedSolid {
+public interface TangentMapped {
 	public float [] getTangents();
 }

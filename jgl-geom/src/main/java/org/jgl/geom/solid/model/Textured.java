@@ -1,5 +1,5 @@
 package org.jgl.geom.solid.model;
 
-public interface TexturedSolid {
+public interface Textured {
 	public float [] getTexCoords();
 }

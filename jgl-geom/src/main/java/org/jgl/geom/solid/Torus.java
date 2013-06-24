@@ -4,15 +4,15 @@ import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 import static org.jgl.math.angle.AngleOps.*;
 import org.jgl.geom.FaceWinding;
-import org.jgl.geom.solid.model.BitangentMappedSolid;
-import org.jgl.geom.solid.model.IndexedSolid;
-import org.jgl.geom.solid.model.NormalMappedSolid;
-import org.jgl.geom.solid.model.Solid;
-import org.jgl.geom.solid.model.TangentMappedSolid;
-import org.jgl.geom.solid.model.TexturedSolid;
+import org.jgl.geom.solid.model.BitangentMapped;
+import org.jgl.geom.solid.model.IndexDrawable;
+import org.jgl.geom.solid.model.NormalMapped;
+import org.jgl.geom.solid.model.Drawable;
+import org.jgl.geom.solid.model.TangentMapped;
+import org.jgl.geom.solid.model.Textured;
 import org.jgl.math.vector.Vector4;
 
-public class Torus implements Solid, IndexedSolid, TexturedSolid, NormalMappedSolid, TangentMappedSolid, BitangentMappedSolid {
+public class Torus implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, BitangentMapped {
 
 	private final double radiusOut, radiusIn;
 	private final int sections, rings;
@@ -23,7 +23,7 @@ public class Torus implements Solid, IndexedSolid, TexturedSolid, NormalMappedSo
 		sections = 36;
 		rings = 24;
 	}
-	
+
 	public Torus(double radiusOut, double radiusIn, int sections, int rings) {
 		this.radiusOut = radiusOut;
 		this.radiusIn = radiusIn;

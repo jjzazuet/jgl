@@ -4,14 +4,14 @@ import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 
 import org.jgl.geom.FaceWinding;
-import org.jgl.geom.solid.model.IndexedSolid;
-import org.jgl.geom.solid.model.NormalMappedSolid;
-import org.jgl.geom.solid.model.Solid;
-import org.jgl.geom.solid.model.TangentMappedSolid;
-import org.jgl.geom.solid.model.TexturedSolid;
+import org.jgl.geom.solid.model.IndexDrawable;
+import org.jgl.geom.solid.model.NormalMapped;
+import org.jgl.geom.solid.model.Drawable;
+import org.jgl.geom.solid.model.TangentMapped;
+import org.jgl.geom.solid.model.Textured;
 import org.jgl.math.vector.Vector4;
 
-public class Sphere implements Solid, IndexedSolid, TexturedSolid, NormalMappedSolid, TangentMappedSolid {
+public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped {
 
 	private double radius;
 	private int sections, rings;

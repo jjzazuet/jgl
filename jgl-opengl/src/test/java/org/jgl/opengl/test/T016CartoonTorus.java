@@ -65,7 +65,7 @@ public class T016CartoonTorus extends GL3EventListener {
 		glFrontFace(gl, torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 		gl.glEnable(GL_LINE_SMOOTH);
-		gl.glLineWidth(4);
+		//gl.glLineWidth(4);
 	}
 
 	@Override
@@ -76,13 +76,11 @@ public class T016CartoonTorus extends GL3EventListener {
 		
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		gl.glCullFace(GL_FRONT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, -1);
+		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torusIndices.getRawBuffer().capacity());
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		gl.glCullFace(GL_BACK);
-		gl.glEnable(GL_PRIMITIVE_RESTART);
-		gl.glPrimitiveRestartIndex(torusIndices.getRawBuffer().capacity());
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, -1);
+		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torusIndices.getRawBuffer().capacity());
 		
 		torusVao.unbind();
 	}

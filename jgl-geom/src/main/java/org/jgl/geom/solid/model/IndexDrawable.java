@@ -1,5 +1,5 @@
 package org.jgl.geom.solid.model;
 
-public interface IndexedSolid {
+public interface IndexDrawable {
 	public int   [] getIndices();
 }

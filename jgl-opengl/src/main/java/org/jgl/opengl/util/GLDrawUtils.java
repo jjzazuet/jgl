@@ -29,7 +29,7 @@ public class GLDrawUtils {
 				buffer.getRawBuffer());
 		
 		if (restartIndex != -1) {
-			
+			gl.glDisable(GL_PRIMITIVE_RESTART);
 		}
 	}
 	
