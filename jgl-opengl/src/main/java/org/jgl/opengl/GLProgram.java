@@ -14,41 +14,41 @@ public class GLProgram extends GLContextBoundResource {
 	private List<GLShader> shaders = new ArrayList<GLShader>();
 	private Map<String, GLAttribute> uniforms = new HashMap<String, GLAttribute>();
 	private Map<String, GLAttribute> stageAttributes = new HashMap<String, GLAttribute>();
-	
+
 	public GLProgram attachShader(GLShader s) {
 		checkNotNull(s);
 		checkArgument(!shaders.contains(s), resourceMsg("Shader is already attached"));		
 		shaders.add(s);
 		return this;
 	}
-	
+
 	private void link() {
-		
+
 		for (GLShader s : shaders) { 
 			if (!s.isInitialized()) { s.init(getGl()); }
 			getGl().glAttachShader(getGlResourceHandle(), s.getGlResourceHandle());
 			checkError().apply(getGl());
 		}
-		
+
 		getGl().glLinkProgram(getGlResourceHandle());
 		int linkStatus = getGlslParam(this, GL_LINK_STATUS);
-		
+
 		if (linkStatus == GL_FALSE) {
 			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
 		}
-		
+
 		stageAttributes = extractAttributes(GL_ACTIVE_ATTRIBUTES);
 		uniforms = extractAttributes(GL_ACTIVE_UNIFORMS);
 	}
-	
+
 	private Map<String, GLAttribute> extractAttributes(int type) {
-		
+
 		checkArgument(type == GL_ACTIVE_UNIFORMS || type == GL_ACTIVE_ATTRIBUTES);
-		
+
 		int maxLength = getGlslParam(this, 
 				type == GL_ACTIVE_UNIFORMS ? 
 						GL_ACTIVE_UNIFORM_MAX_LENGTH : GL_ACTIVE_ATTRIBUTE_MAX_LENGTH);
-		
+
 		Map<String, GLAttribute> attributes = new HashMap<String, GLAttribute>();
 		IntBuffer lengthBuf = IntBuffer.allocate(1);
 		IntBuffer sizeBuf = IntBuffer.allocate(1);
@@ -79,6 +79,8 @@ public class GLProgram extends GLContextBoundResource {
 				getGl().glGetActiveUniform(getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
 
+				/* TODO bug: for indexed uniform attributes, NVIDIA reports the name as attrib[0]
+				*/
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = getGl().glGetUniformLocation(getGlResourceHandle(), attributeName);
 				at = new GLUniformAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, this);
@@ -105,7 +107,7 @@ public class GLProgram extends GLContextBoundResource {
 	
 	@Override
 	protected void doInit() { 
-		setGlResourceHandle(getGl().glCreateProgram());		
+		setGlResourceHandle(getGl().glCreateProgram());
 		link();
 	}
 
