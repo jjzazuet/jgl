@@ -3,11 +3,9 @@ package org.jgl.math.matrix;
 import static org.jgl.math.Preconditions.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.vector.VectorOps.*;
-import static org.jgl.math.angle.AngleOps.*;
 
 import org.jgl.math.angle.Angle;
-import org.jgl.math.vector.Vector3;
-import org.jgl.math.vector.Vector4;
+import org.jgl.math.vector.*;
 
 public class Matrix4OpsGeom {
 
@@ -29,24 +27,24 @@ public class Matrix4OpsGeom {
 	// TODO possibly remove these functions.
 	public static void rotateXLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		double cosx = cos(a);
-		double sinx = sin(a);
+		double cosx = a.cos();
+		double sinx = a.sin();
 		dst.m11 = cosx; dst.m21 = -sinx;
 		dst.m12 = sinx; dst.m22 =  cosx; 
 	}
 
 	public static void rotateYLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		double cosy = cos(a);
-		double siny = sin(a);
+		double cosy = a.cos();
+		double siny = a.sin();
 		dst.m00 =  cosy; dst.m20 = siny;
 		dst.m02 = -siny; dst.m22 = cosy; 		
 	}
 
 	public static void rotateZLh(Matrix4 dst, Angle a) {
 		setIdentity(dst);
-		double cosz = cos(a);
-		double sinz = sin(a);
+		double cosz = a.cos();
+		double sinz = a.sin();
 		dst.m00 = cosz; dst.m10 = -sinz;
 		dst.m01 = sinz; dst.m11 =  cosz; 		
 	}
@@ -65,8 +63,8 @@ public class Matrix4OpsGeom {
 		normalize(axis, a);
 		setIdentity(dst);
 		
-		double sf = sin(d);
-		double cf = cos(d);
+		double sf = d.sin();
+		double cf = d.cos();
 		double _cf = 1 - cf;
 		double x = a.x, y = a.y, z = a.z;
 		double xx = x*x, xy = x*y, xz = x*z, yy = y*y, yz = y*z, zz = z*z;

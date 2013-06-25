@@ -13,7 +13,6 @@ import org.jgl.math.vector.*;
 
 public class GLUniformAttribute extends GLAttribute {
 
-	// TODO perhaps this may be needed by non-uniform attributes as well.
 	public static final String VARIABLE_INDEX_FORMAT = "%s[%s]";
 
 	public GLUniformAttribute(int index, int location, 
@@ -83,7 +82,8 @@ public class GLUniformAttribute extends GLAttribute {
 
 	public void setVec3fv(float [] data) {
 		checkNotNull(data);
-		checkArgument(data.length == 3);
+		checkArgument(data.length % 3 == 0);
+		checkArgument(data.length / 3 == getSize());
 		getProgram().checkBound();
 		getProgram().getGl().glUniform3fv(getLocation(), getSize(), bufferData(data, 3));
 		getProgram().checkError().apply(getProgram().getGl());
@@ -91,7 +91,8 @@ public class GLUniformAttribute extends GLAttribute {
 
 	public void setVec4fv(float [] data) {
 		checkNotNull(data);
-		checkArgument(data.length == 4);
+		checkArgument(data.length % 4 == 0);
+		checkArgument(data.length / 4 == getSize());
 		getProgram().checkBound();
 		getProgram().getGl().glUniform4fv(getLocation(), getSize(), bufferData(data, 4));
 		getProgram().checkError().apply(getProgram().getGl());
@@ -99,13 +100,11 @@ public class GLUniformAttribute extends GLAttribute {
 
 	public void setVec4fv(float [] data, int index) { // TODO implement indexed access for other data types.
 		checkElementIndex(index, getSize());
-		getProgram().getGl().glUniform4fv(getIndexLocation(index), 
-				1, // TODO bug, size not valid for single element access
-				bufferData(data, 4));
+		getProgram().getGl().glUniform4fv(getIndexLocation(index), 1, bufferData(data, 4));
 		getProgram().checkError().apply(getProgram().getGl());
 	}
 
-	protected FloatBuffer bufferData(float [] data, int componentSize) { // TODO fix checks for indexed attributes.
+	protected FloatBuffer bufferData(float [] data, int componentSize) {
 		checkNotNull(data);
 		checkArgument(componentSize >= 1);
 		checkArgument(data.length >= componentSize);

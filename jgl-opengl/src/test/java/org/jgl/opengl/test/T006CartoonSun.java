@@ -1,7 +1,5 @@
 package org.jgl.opengl.test;
 
-import static org.jgl.math.angle.AngleOps.*;
-import static java.lang.Math.*;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.GLBufferFactory.buffer;
 import static org.jgl.opengl.test.TGeometry.rectangle_verts;
@@ -9,6 +7,7 @@ import static org.jgl.opengl.util.GLSLUtils.loadProgram;
 
 import javax.media.opengl.GL3;
 
+import org.jgl.math.angle.Angle;
 import org.jgl.opengl.*;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
@@ -19,7 +18,7 @@ public class T006CartoonSun extends GL3EventListener {
 	private GLVertexArray rectVao = new GLVertexArray();
 	private GLUniformAttribute time;
 	private GLUniformAttribute sunPos;
-	private double angle = 0;
+	private Angle angle = new Angle();
 	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -54,10 +53,10 @@ public class T006CartoonSun extends GL3EventListener {
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		
 		double uTime = currentState.getElapsedTimeSeconds();
-		angle = fullCircles(uTime * 0.05);
+		angle.setFullCircles(uTime * 0.05);
 		
 		time.setFloat((float) uTime);
-		sunPos.setVec2f(-cos(angle), sin(angle));
+		sunPos.setVec2f(-angle.cos(), angle.sin());
 	}
 
 	@Override

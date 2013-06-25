@@ -11,6 +11,8 @@ import java.util.*;
 
 public class GLProgram extends GLContextBoundResource {
 
+	public static final String LEFT_BRACKET = "[";
+
 	private List<GLShader> shaders = new ArrayList<GLShader>();
 	private Map<String, GLAttribute> uniforms = new HashMap<String, GLAttribute>();
 	private Map<String, GLAttribute> stageAttributes = new HashMap<String, GLAttribute>();
@@ -79,13 +81,16 @@ public class GLProgram extends GLContextBoundResource {
 				getGl().glGetActiveUniform(getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
 
-				/* TODO bug: for indexed uniform attributes, NVIDIA reports the name as attrib[0]
-				*/
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
+
+				if (attributeName.contains(LEFT_BRACKET)) {
+					attributeName = attributeName.substring(0, attributeName.indexOf(LEFT_BRACKET));
+				}
+
 				location = getGl().glGetUniformLocation(getGlResourceHandle(), attributeName);
 				at = new GLUniformAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, this);
 			}
-			
+
 			if (log.isDebugEnabled()) { log.debug(at.toString()); }
 			attributes.put(at.getName(), at);
 		}

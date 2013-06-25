@@ -7,7 +7,6 @@ import static java.lang.Math.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.vector.VectorOps.*;
 import static org.jgl.math.vector.Vector3Ops.*;
-import static org.jgl.math.angle.AngleOps.*;
 
 import org.jgl.math.angle.Angle;
 import org.jgl.math.vector.Vector3;
@@ -46,11 +45,11 @@ public class Matrix4OpsCam {
 		checkNoNulls(dst, target);
 				
 		Vector3 z = new Vector3(
-				cos(elevation) * cos(azimuth), 
-				sin(elevation), 
-				cos(elevation) * -sin(azimuth));
+				elevation.cos() * azimuth.cos(), 
+				elevation.sin(), 
+				elevation.cos() * -azimuth.sin());
 		
-		Vector3 x = new Vector3(-sin(azimuth), 0, -cos(azimuth));
+		Vector3 x = new Vector3(-azimuth.sin(), 0, -azimuth.cos());
 		Vector3 y = new Vector3();
 		
 		cross(z, x, y);

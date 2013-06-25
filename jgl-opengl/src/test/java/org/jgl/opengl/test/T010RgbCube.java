@@ -66,15 +66,11 @@ public class T010RgbCube extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		
-		log.info(newViewport.toString());
-		
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		
 		xFov.setDegrees(48);
-		double ar = newViewport.width / newViewport.height;
-		
-		perspectiveX(projMatrix, xFov, ar, 1, 100);
+		perspectiveX(projMatrix, xFov, newViewport.aspectRatio, 1, 100);
 		projectionMatrixAttr.setMat4fv(false, projMatrix);
 	}
 }

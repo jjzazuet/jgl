@@ -20,22 +20,23 @@ public class GLTestShell {
 
 	@Test
 	public void start() throws Exception {
-		
+
 		JoglNativeBoostrap.joglBootstrap();
-		
+
 		d = new Display();
 		s = new Shell(d);
-		
+
 		s.setLayout(new FillLayout());
 		setSize(s, 784, 584);
-		
+
 		GLProfile profile = GLProfile.get(GLProfile.GL3);
 		GLCapabilities caps = new GLCapabilities(profile);
-		
+
 		caps.setDoubleBuffered(true);
 		caps.setNumSamples(8);
 		caps.setSampleBuffers(false);
 
+		// TODO implement test carousel or something... :P
 		GLComposite comp = new GLComposite(s, SWT.None, caps, new T016MetalllicTorus());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
@@ -52,7 +53,7 @@ public class GLTestShell {
 
 		d.dispose();
 	}
-	
+
 	// TODO this should be platform specific :P
 	public void setSize(Shell target, int width, int height) {
 		target.setSize(width + SHELL_PADDING_WIDTH, height + SHELL_PADDING_HEIGHT);

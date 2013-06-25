@@ -1,7 +1,5 @@
 package org.jgl.opengl.test;
 
-import static java.lang.Math.*;
-import static org.jgl.math.angle.AngleOps.*;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.GLBufferFactory.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
@@ -14,6 +12,7 @@ import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL3;
 
+import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.Matrix2;
 import org.jgl.math.vector.*;
 import org.jgl.opengl.*;
@@ -29,6 +28,7 @@ public class T006NewtonZoom extends GL3EventListener {
 	private Vector2 x = new Vector2();
 	private Vector2 y = new Vector2();
 	private FloatBuffer matBuffer = FloatBuffer.allocate(Matrix2.COMPONENT_SIZE);
+	private Angle a = new Angle();
 	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -61,15 +61,15 @@ public class T006NewtonZoom extends GL3EventListener {
 
 		double uTime = currentState.getElapsedTimeSeconds();
 		double scale = 1.0f / (3.0 * uTime + 1.0f);
-		double angle = fullCircles(uTime * 0.1);
 		
-		x.set(cos(angle), sin(angle));
+		a.setFullCircles(uTime * 0.1);
+		x.set(a.cos(), a.sin());
 		perpendicular(x, y);
 		scale(x, scale);
 		scale(y, scale);
 		
-		m.m00 = x.x; m.m01 = x.y;
-		m.m10 = y.x; m.m11 = y.y;
+		m.m00 = x.x; m.m10 = x.y;
+		m.m01 = y.x; m.m11 = y.y;
 		
 		storeColMaj(matBuffer, m);
 		zoomMatrix.setMat2fv(false, matBuffer, m);

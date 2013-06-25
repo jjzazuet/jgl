@@ -28,7 +28,7 @@ public class TGeometry {
 			 0.5f, -0.5f,
 			 0.5f,  1.0f
 	};
-	
+
 	public static final float [] color_map = new float [] {
 			0.4f, 0.2f, 1.0f, 0.00f,
 			1.0f, 0.2f, 0.2f, 0.30f,
