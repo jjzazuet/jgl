@@ -83,7 +83,7 @@ public class GLUniformAttribute extends GLAttribute {
 	public void setVec3fv(float [] data) {
 		checkNotNull(data);
 		checkArgument(data.length % 3 == 0);
-		checkArgument(data.length / 3 == getSize());
+		checkArgument(data.length == getSize() * 3);
 		getProgram().checkBound();
 		getProgram().getGl().glUniform3fv(getLocation(), getSize(), bufferData(data, 3));
 		getProgram().checkError().apply(getProgram().getGl());
@@ -92,7 +92,7 @@ public class GLUniformAttribute extends GLAttribute {
 	public void setVec4fv(float [] data) {
 		checkNotNull(data);
 		checkArgument(data.length % 4 == 0);
-		checkArgument(data.length / 4 == getSize());
+		checkArgument(data.length == getSize() * 4);
 		getProgram().checkBound();
 		getProgram().getGl().glUniform4fv(getLocation(), getSize(), bufferData(data, 4));
 		getProgram().checkError().apply(getProgram().getGl());

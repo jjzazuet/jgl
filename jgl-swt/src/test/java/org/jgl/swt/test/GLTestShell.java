@@ -37,7 +37,7 @@ public class GLTestShell {
 		caps.setSampleBuffers(false);
 
 		// TODO implement test carousel or something... :P
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T016MetalllicTorus());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T005Manderblot());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
