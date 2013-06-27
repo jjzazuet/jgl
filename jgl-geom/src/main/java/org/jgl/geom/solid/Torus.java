@@ -9,12 +9,13 @@ import org.jgl.geom.solid.model.IndexDrawable;
 import org.jgl.geom.solid.model.IndexRestartable;
 import org.jgl.geom.solid.model.NormalMapped;
 import org.jgl.geom.solid.model.Drawable;
+import org.jgl.geom.solid.model.SphereBound;
 import org.jgl.geom.solid.model.TangentMapped;
 import org.jgl.geom.solid.model.Textured;
 import org.jgl.math.vector.Vector4;
 
 public class Torus implements Drawable, IndexDrawable, Textured, 
-	NormalMapped, TangentMapped, BitangentMapped, IndexRestartable {
+	NormalMapped, TangentMapped, BitangentMapped, IndexRestartable, SphereBound {
 
 	private final double radiusOut, radiusIn;
 	private final int sections, rings;

@@ -4,17 +4,15 @@ import static org.jgl.opengl.util.GLDrawUtils.*;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.math.matrix.Matrix4Ops.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
-import static org.jgl.math.matrix.Matrix4OpsGeom.*;
 import static org.jgl.math.angle.AngleOps.*;
 
 import javax.media.opengl.GL3;
 
 import org.jgl.geom.solid.Sphere;
+import org.jgl.geom.transform.ModelTransform;
 import org.jgl.math.angle.Angle;
-import org.jgl.math.matrix.Matrix4;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
@@ -30,17 +28,13 @@ public class T013SpiralSphere extends GL3EventListener {
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 cameraMat = new BufferedMatrix4();
 
-	private Matrix4 modelTranslationMat = new Matrix4();
-	private Matrix4 modelRotationMat = new Matrix4();
-	private BufferedMatrix4 modelTransformMatrix = new BufferedMatrix4();
+	private ModelTransform modelTransform = new ModelTransform();
 	private GLUniformAttribute uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	
 	private Angle fov = new Angle();
-	private Angle modelRotation = new Angle();
 	private Vector3 eye = new Vector3(2.5, 3.5, 2.5);
 	private Vector3 target = new Vector3();
-	private Vector3 modelTranslation = new Vector3();
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -80,12 +74,9 @@ public class T013SpiralSphere extends GL3EventListener {
 		
 		lookAt(cameraMat, eye, target);
 		uCameraMatrix.setMat4fv(false, cameraMat);
-		modelTranslation.setY(Math.sqrt(1 + sineWave(time / 2.0)));
-		translateXyz(modelTranslationMat, modelTranslation);
-		modelRotation.setDegrees(time * 180);
-		rotateYLh(modelRotationMat, modelRotation);
-		mul(modelTranslationMat, modelRotationMat, modelTransformMatrix);
-		uModelMatrix.setMat4fv(false, modelTransformMatrix);
+		modelTransform.getTranslation().setY(Math.sqrt(1 + sineWave(time / 2.0)));
+		modelTransform.getRotationY().setDegrees(time * 180);
+		uModelMatrix.setMat4fv(false, modelTransform.getModelMatrix());
 	}
 
 	@Override

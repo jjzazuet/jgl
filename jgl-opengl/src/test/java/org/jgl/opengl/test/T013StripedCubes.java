@@ -83,9 +83,9 @@ public class T013StripedCubes extends GL3EventListener {
 		elevation.setDegrees(sineWave(time / 6.3) * 45);
 		orbit(camMat, origin, 3.5, azimuth, elevation);
 		uCameraMatrix.setMat4fv(false, camMat);
-		cube2Trans.setTranslation(1, 0, 0);
+		cube2Trans.getTranslation().set(1, 0, 0);
 		cube2Trans.getRotationY().setDegrees(time * 90);
-		cube1Trans.setTranslation(-1, 0, 0);
+		cube1Trans.getTranslation().set(-1, 0, 0);
 		cube1Trans.getRotationZ().setDegrees(time * 180);
 	}
 

@@ -7,7 +7,6 @@ import java.nio.FloatBuffer;
 
 public class Matrix4Ops {
 
-	// TODO review and test in column major order
 	public static void mul(Matrix4 l, Matrix4 r, Matrix4 dst) {
 		
 		checkNoNulls(l, r, dst);
@@ -32,10 +31,10 @@ public class Matrix4Ops {
 		double m32 = l.m02 * r.m30 + l.m12 * r.m31 + l.m22 * r.m32 + l.m32 * r.m33;
 		double m33 = l.m03 * r.m30 + l.m13 * r.m31 + l.m23 * r.m32 + l.m33 * r.m33;
 
-		dst.m00 = m00; dst.m01 = m01; dst.m02 = m02; dst.m03 = m03;
-		dst.m10 = m10; dst.m11 = m11; dst.m12 = m12; dst.m13 = m13;
-		dst.m20 = m20; dst.m21 = m21; dst.m22 = m22; dst.m23 = m23;
-		dst.m30 = m30; dst.m31 = m31; dst.m32 = m32; dst.m33 = m33;
+		dst.m00 = m00; dst.m10 = m10; dst.m20 = m20; dst.m30 = m30;
+		dst.m01 = m01; dst.m11 = m11; dst.m21 = m21; dst.m31 = m31;
+		dst.m02 = m02; dst.m12 = m12; dst.m22 = m22; dst.m32 = m32;
+		dst.m03 = m03; dst.m13 = m13; dst.m23 = m23; dst.m33 = m33;
 	}
 	
 	public static void setIdentity(Matrix4 m) {

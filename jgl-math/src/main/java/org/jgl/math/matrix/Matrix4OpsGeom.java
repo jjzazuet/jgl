@@ -2,9 +2,6 @@ package org.jgl.math.matrix;
 
 import static org.jgl.math.Preconditions.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
-import static org.jgl.math.vector.VectorOps.*;
-
-import org.jgl.math.angle.Angle;
 import org.jgl.math.vector.*;
 
 public class Matrix4OpsGeom {
@@ -24,56 +21,6 @@ public class Matrix4OpsGeom {
 		dst.m22 = scale.z;
 	}
 
-	// TODO possibly remove these functions.
-	public static void rotateXLh(Matrix4 dst, Angle a) {
-		setIdentity(dst);
-		double cosx = a.cos();
-		double sinx = a.sin();
-		dst.m11 = cosx; dst.m21 = -sinx;
-		dst.m12 = sinx; dst.m22 =  cosx; 
-	}
-
-	public static void rotateYLh(Matrix4 dst, Angle a) {
-		setIdentity(dst);
-		double cosy = a.cos();
-		double siny = a.sin();
-		dst.m00 =  cosy; dst.m20 = siny;
-		dst.m02 = -siny; dst.m22 = cosy; 		
-	}
-
-	public static void rotateZLh(Matrix4 dst, Angle a) {
-		setIdentity(dst);
-		double cosz = a.cos();
-		double sinz = a.sin();
-		dst.m00 = cosz; dst.m10 = -sinz;
-		dst.m01 = sinz; dst.m11 =  cosz; 		
-	}
-
-	/** 
-	 * @see 
-	 *   <a href="http://www.cprogramming.com/tutorial/3d/rotation.html">
-	 *     http://www.cprogramming.com/tutorial/3d/rotation.html</a>
-	 */
-	public static void rotateLh(Matrix4 dst, Vector3 axis, Angle d) {
-		
-		checkNoNulls(axis, dst);
-		
-		Vector3 a = new Vector3();
-		
-		normalize(axis, a);
-		setIdentity(dst);
-		
-		double sf = d.sin();
-		double cf = d.cos();
-		double _cf = 1 - cf;
-		double x = a.x, y = a.y, z = a.z;
-		double xx = x*x, xy = x*y, xz = x*z, yy = y*y, yz = y*z, zz = z*z;
-
-		dst.m00 = cf + xx*_cf;   dst.m10 = xy*_cf - z*sf; dst.m20 = xz*_cf + y*sf;
-		dst.m01 = xy*_cf + z*sf; dst.m11 = cf + yy*_cf;   dst.m21 = yz*_cf - x*sf;
-		dst.m02 = xz*_cf - y*sf; dst.m12 = yz*_cf + x*sf; dst.m22 = cf + zz*_cf;
-	}
-	
 	/** 
 	 * @see 
 	 *   <a href="http://www.arcsynthesis.org/gltut/Positioning/Tut08%20Quaternions.html">

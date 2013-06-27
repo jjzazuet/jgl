@@ -39,11 +39,11 @@ public class T012CheckerCube extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.fs", gl);
 		
-		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3); // TODO tighter component size controls...
+		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cameraMatrixAttr = p.getUniformAttribute("CameraMatrix");
 		projectionMatrixAttr = p.getUniformAttribute("ProjectionMatrix");
-		
+
 		cubeVao.init(gl);
 		p.bind();
 		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();

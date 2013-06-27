@@ -6,6 +6,7 @@ import org.jgl.geom.FaceWinding;
 import org.jgl.geom.solid.model.IndexDrawable;
 import org.jgl.geom.solid.model.NormalMapped;
 import org.jgl.geom.solid.model.Drawable;
+import org.jgl.geom.solid.model.SphereBound;
 import org.jgl.geom.solid.model.TangentMapped;
 import org.jgl.geom.solid.model.Textured;
 import org.jgl.math.vector.Vector4;
@@ -23,7 +24,7 @@ import static com.google.common.base.Preconditions.*;
  *(G)-----(C)
  * </pre>
  */
-public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped {
+public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound {
 
 	private double x, y, z;
 	
