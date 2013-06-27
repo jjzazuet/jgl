@@ -1,4 +1,4 @@
-package org.jgl.opengl;
+package org.jgl.opengl.glsl;
 
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static com.google.common.base.Throwables.*;
@@ -11,6 +11,8 @@ import java.io.File;
 import java.net.*;
 import java.nio.*;
 import java.nio.charset.*;
+
+import org.jgl.opengl.GLContextBoundResource;
 
 import com.google.common.base.Charsets;
 
@@ -78,9 +80,9 @@ public class GLShader extends GLContextBoundResource {
 	protected void doUnbind() { throw new IllegalStateException(); }
 	@Override
 	protected void doDestroy() { getGl().glDeleteShader(getGlResourceHandle()); }
-	
+
 	public GLShaderType getType() { return type; }
-	
+
 	@Override
 	public boolean equals(Object o) {
 		boolean equals = o != null && 

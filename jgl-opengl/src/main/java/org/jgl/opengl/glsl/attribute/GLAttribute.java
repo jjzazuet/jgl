@@ -1,6 +1,8 @@
-package org.jgl.opengl;
+package org.jgl.opengl.glsl.attribute;
 
 import static com.google.common.base.Preconditions.*;
+
+import org.jgl.opengl.glsl.GLProgram;
 
 public abstract class GLAttribute {
 
@@ -51,7 +53,8 @@ public abstract class GLAttribute {
 	public String toString() {
 		return String.format("%s [name:%s, idx:%s, loc:%s, size:%s, glType:%s]", 
 				getClass().getSimpleName(), getName(), 
-				getIndex(), getLocation(), getSize(), getGlType());
+				getIndex(), getLocation(), getSize(), 
+				Integer.toHexString(getGlType()));
 	}
 
 	public int getIndex() { return index; }

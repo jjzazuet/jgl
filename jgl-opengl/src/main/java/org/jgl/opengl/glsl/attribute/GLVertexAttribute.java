@@ -1,6 +1,11 @@
-package org.jgl.opengl;
+package org.jgl.opengl.glsl.attribute;
 
 import static com.google.common.base.Preconditions.*;
+
+import org.jgl.opengl.GLBuffer;
+import org.jgl.opengl.GLBufferMetadata;
+import org.jgl.opengl.GLVertexArray;
+import org.jgl.opengl.glsl.GLProgram;
 
 public class GLVertexAttribute extends GLAttribute {
 
@@ -16,7 +21,7 @@ public class GLVertexAttribute extends GLAttribute {
 		setVao(vao);
 		checkNotNull(paramData);
 		checkArgument(bufferComponentIndex >= 0);
-		
+
 		GLBufferMetadata md = checkNotNull(paramData.getBufferMetadata());
 
 		// TODO add some kind of raw type checking e.g. float(3) = vec3
@@ -33,7 +38,7 @@ public class GLVertexAttribute extends GLAttribute {
 				glIndex, glSize, glPrimitiveType, normalize, glStride, glOffsetPointer);
 		paramData.unbind();
 		getVao().unbind();
-		
+
 		return this;
 	}
 
@@ -42,7 +47,7 @@ public class GLVertexAttribute extends GLAttribute {
 		getVao().getGl().glEnableVertexAttribArray(getLocation());
 		getVao().unbind();
 	}
-	
+
 	public void disable() {
 		getVao().bind();
 		getVao().getGl().glDisableVertexAttribArray(getLocation());

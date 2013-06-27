@@ -8,6 +8,7 @@ import javax.media.opengl.GL3;
 
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
+import org.jgl.opengl.glsl.GLProgram;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 

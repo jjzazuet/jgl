@@ -8,6 +8,7 @@ import static org.jgl.opengl.util.GLSLUtils.*;
 import javax.media.opengl.*;
 
 import org.jgl.opengl.*;
+import org.jgl.opengl.glsl.GLProgram;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 

@@ -1,4 +1,4 @@
-package org.jgl.opengl;
+package org.jgl.opengl.glsl;
 
 import static javax.media.opengl.GL3.*;
 

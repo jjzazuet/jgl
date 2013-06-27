@@ -2,7 +2,7 @@ package org.jgl.opengl.util;
 
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL2.*;
-import static org.jgl.opengl.GLShaderType.*;
+import static org.jgl.opengl.glsl.GLShaderType.*;
 
 import java.io.File;
 import java.nio.*;
@@ -10,6 +10,9 @@ import java.nio.*;
 import javax.media.opengl.GL3;
 
 import org.jgl.opengl.*;
+import org.jgl.opengl.glsl.GLProgram;
+import org.jgl.opengl.glsl.GLShader;
+import org.jgl.opengl.glsl.GLShaderType;
 import org.slf4j.*;
 
 import com.google.common.base.Charsets;

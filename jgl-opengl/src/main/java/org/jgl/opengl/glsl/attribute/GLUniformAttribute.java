@@ -1,4 +1,4 @@
-package org.jgl.opengl;
+package org.jgl.opengl.glsl.attribute;
 
 import static org.jgl.math.matrix.Matrix2Ops.*;
 import static org.jgl.math.matrix.Matrix4Ops.*;
@@ -10,6 +10,7 @@ import javax.media.opengl.GL3;
 import org.jgl.math.matrix.*;
 import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.*;
+import org.jgl.opengl.glsl.GLProgram;
 
 public class GLUniformAttribute extends GLAttribute {
 
