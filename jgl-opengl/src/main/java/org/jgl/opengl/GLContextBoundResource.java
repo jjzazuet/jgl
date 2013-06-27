@@ -25,7 +25,7 @@ public abstract class GLContextBoundResource extends GLResource {
 		if (!initialized) {	
 			doInit();
 			if (log.isDebugEnabled()) {
-				checkError().apply(gl);
+				checkError();
 				log.debug(resourceMsg("Initialized GL resource"));
 			}
 			initialized = true;
@@ -38,14 +38,14 @@ public abstract class GLContextBoundResource extends GLResource {
 		}
 		if (bound) { multipleBindWarn(); }
 		doBind();
-		checkError().apply(gl);
+		checkError();
 		bound = true;
 	}
 	
 	public void unbind() {
 		if (!bound) { multipleBindWarn(); }
 		doUnbind();
-		checkError().apply(gl);
+		checkError();
 		bound = false;
 	}
 		
@@ -54,6 +54,8 @@ public abstract class GLContextBoundResource extends GLResource {
 	public void checkInitialized() {
 		checkState(initialized, resourceMsg("GL resource not initialized"));
 	}
+	
+	public void checkError() { getError().apply(gl); }
 	
 	/** Perform OpenGL resource deallocation. */
 	public void destroy() {
@@ -87,6 +89,7 @@ public abstract class GLContextBoundResource extends GLResource {
 				msg, getClass().getSimpleName(), getGlResourceHandle());
 	}
 
+	// TODO move this to BufferUtils
 	protected final IntBuffer intReadBuffer(int i) {
 		IntBuffer b = IntBuffer.wrap(new int [] {i});
 		b.flip();

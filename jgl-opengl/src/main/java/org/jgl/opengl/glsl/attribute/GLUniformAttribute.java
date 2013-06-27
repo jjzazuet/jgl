@@ -24,11 +24,13 @@ public class GLUniformAttribute extends GLAttribute {
 	public void setFloat(float value) {
 		getProgram().checkBound();
 		getProgram().getGl().glUniform1f(getLocation(), value);
+		getProgram().checkError();
 	}
 
 	public void setInt(int value) {
 		getProgram().checkBound();
 		getProgram().getGl().glUniform1i(getLocation(), value);
+		getProgram().checkError();
 	}
 
 	public void setMat2fv(boolean transpose, FloatBuffer dst, Matrix2 ... src) {
@@ -37,7 +39,7 @@ public class GLUniformAttribute extends GLAttribute {
 		checkArgument(src.length >= 1);
 		storeColMaj(dst, src);
 		getProgram().getGl().glUniformMatrix2fv(getLocation(), src.length, transpose, dst);
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
 	public void setMat4fv(boolean transpose, FloatBuffer dst, Matrix4 ... src) {
@@ -46,7 +48,7 @@ public class GLUniformAttribute extends GLAttribute {
 		checkArgument(src.length >= 1);
 		storeColMaj(dst, src);
 		getProgram().getGl().glUniformMatrix4fv(getLocation(), src.length, transpose, dst);
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
 	public void setMat4fv(boolean transpose, BufferedMatrix4 src) {
@@ -55,7 +57,8 @@ public class GLUniformAttribute extends GLAttribute {
 
 	public void setVec2f(double x, double y) {
 		getProgram().checkBound();
-		getProgram().getGl().glUniform2f(getLocation(), (float) x, (float) y);		
+		getProgram().getGl().glUniform2f(getLocation(), (float) x, (float) y);
+		getProgram().checkError();
 	}
 
 	public void setVec2f(Vector2 v) { 
@@ -78,7 +81,7 @@ public class GLUniformAttribute extends GLAttribute {
 		checkArgument(data.length == 2);
 		getProgram().checkBound();
 		getProgram().getGl().glUniform2fv(getLocation(), getSize(), bufferData(data, 2));
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
 	public void setVec3fv(float [] data) {
@@ -87,7 +90,7 @@ public class GLUniformAttribute extends GLAttribute {
 		checkArgument(data.length == getSize() * 3);
 		getProgram().checkBound();
 		getProgram().getGl().glUniform3fv(getLocation(), getSize(), bufferData(data, 3));
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
 	public void setVec4fv(float [] data) {
@@ -96,15 +99,16 @@ public class GLUniformAttribute extends GLAttribute {
 		checkArgument(data.length == getSize() * 4);
 		getProgram().checkBound();
 		getProgram().getGl().glUniform4fv(getLocation(), getSize(), bufferData(data, 4));
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
 	public void setVec4fv(float [] data, int index) { // TODO implement indexed access for other data types.
 		checkElementIndex(index, getSize());
 		getProgram().getGl().glUniform4fv(getIndexLocation(index), 1, bufferData(data, 4));
-		getProgram().checkError().apply(getProgram().getGl());
+		getProgram().checkError();
 	}
 
+	// TODO move this to GLBufferUtils
 	protected FloatBuffer bufferData(float [] data, int componentSize) {
 		checkNotNull(data);
 		checkArgument(componentSize >= 1);
@@ -115,13 +119,13 @@ public class GLUniformAttribute extends GLAttribute {
 		fb.flip();
 		return fb;
 	}
-	
+
 	protected String variableIndex(String name, int index) {
 		checkNotNull(name);
 		String result = String.format(VARIABLE_INDEX_FORMAT, name, index);
 		return result;
 	}
-	
+
 	protected int getIndexLocation(int index) {
 
 		checkArgument(index >= 0);		
@@ -132,7 +136,7 @@ public class GLUniformAttribute extends GLAttribute {
 		int location = gl.glGetUniformLocation(p.getGlResourceHandle(), 
 				variableIndex(getName(), index));
 
-		p.checkError().apply(gl);
+		p.checkError();
 		return location;
 	}
 }

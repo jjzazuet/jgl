@@ -11,12 +11,12 @@ public class GLResource {
 	private int glResourceHandle = -1;
 	
 	public int getGlResourceHandle() { return glResourceHandle; }
-	public GLCheckError checkError() { return checkError; }
+	public GLCheckError getError() { return checkError; }
 	
 	protected final void setGlResourceHandle(int glResourceHandle) {
 		this.glResourceHandle = glResourceHandle;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		return o != null && 
@@ -24,7 +24,7 @@ public class GLResource {
 				this.getClass().equals(o.getClass()) &&
 				this.glResourceHandle == ((GLResource) o).getGlResourceHandle();
 	}
-	
+
 	@Override
 	public int hashCode() { return glResourceHandle; }
 }
