@@ -2,9 +2,6 @@ package org.jgl.opengl;
 
 import static com.google.common.base.Preconditions.*;
 import static java.lang.String.format;
-
-import java.nio.IntBuffer;
-
 import javax.media.opengl.GL3;
 
 public abstract class GLContextBoundResource extends GLResource {
@@ -87,13 +84,6 @@ public abstract class GLContextBoundResource extends GLResource {
 	public String resourceMsg(String msg) {
 		return format("%s: [%s, %s]", 
 				msg, getClass().getSimpleName(), getGlResourceHandle());
-	}
-
-	// TODO move this to BufferUtils
-	protected final IntBuffer intReadBuffer(int i) {
-		IntBuffer b = IntBuffer.wrap(new int [] {i});
-		b.flip();
-		return b;
 	}
 
 	public GL3 getGl() { return gl; }

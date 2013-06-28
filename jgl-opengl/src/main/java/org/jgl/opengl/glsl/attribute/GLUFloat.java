@@ -20,5 +20,4 @@ public class GLUFloat extends GLUniformAttribute {
 		getProgram().getGl().glUniform1iv(getIndexLocation(index), value.length, bufferData(value));
 		getProgram().checkError();
 	}
-
 }

@@ -1,5 +1,6 @@
 package org.jgl.opengl;
 
+import static org.jgl.opengl.util.GLBufferUtils.*;
 import java.nio.IntBuffer;
 
 public class GLVertexArray extends GLContextBoundResource {
@@ -21,6 +22,6 @@ public class GLVertexArray extends GLContextBoundResource {
 
 	@Override
 	protected void doDestroy() {
-		getGl().glDeleteVertexArrays(1, intReadBuffer(getGlResourceHandle()));
+		getGl().glDeleteVertexArrays(1, intBuffer(getGlResourceHandle()));
 	}
 }

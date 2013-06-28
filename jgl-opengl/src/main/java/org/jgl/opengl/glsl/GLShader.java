@@ -1,5 +1,6 @@
 package org.jgl.opengl.glsl;
 
+import static org.jgl.opengl.util.GLBufferUtils.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static com.google.common.base.Throwables.*;
 import static javax.media.opengl.GL.*;
@@ -45,7 +46,7 @@ public class GLShader extends GLContextBoundResource {
 
 	private void compile() throws CharacterCodingException {
 		
-		IntBuffer b = intReadBuffer(getSource().length());
+		IntBuffer b = intBuffer(getSource().length());
 		String [] lines = new String [] {getSource()};
 
 		getGl().glShaderSource(getGlResourceHandle(), lines.length, lines, b);

@@ -14,6 +14,7 @@ import org.jgl.opengl.glsl.GLProgram;
 
 public class GLUniformAttribute extends GLAttribute {
 
+	public static final int ZERO = 0;
 	public static final String VARIABLE_INDEX_FORMAT = "%s[%s]";
 
 	public GLUniformAttribute(int index, int location, 

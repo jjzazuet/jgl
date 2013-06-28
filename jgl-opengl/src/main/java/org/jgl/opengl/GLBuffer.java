@@ -1,5 +1,6 @@
 package org.jgl.opengl;
 
+import static org.jgl.opengl.util.GLBufferUtils.*;
 import static com.google.common.base.Preconditions.*;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
@@ -37,7 +38,7 @@ public class GLBuffer extends GLContextBoundResource {
 	
 	@Override
 	protected void doDestroy() { 
-		getGl().glDeleteBuffers(1, intReadBuffer(getGlResourceHandle()));
+		getGl().glDeleteBuffers(1, intBuffer(getGlResourceHandle()));
 	}
 
 	public int getGlBufferType() { return glBufferType; }
