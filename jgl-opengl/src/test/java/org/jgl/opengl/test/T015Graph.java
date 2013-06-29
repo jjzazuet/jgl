@@ -20,7 +20,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -49,7 +49,7 @@ public class T015Graph extends GL3EventListener {
 	private Angle fov = new Angle();
 	
 	private GLProgram p;
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
 	private GLVertexArray graphVao = new GLVertexArray();
 	private GLBuffer positionsBuffer, edgeIndices;
 	
@@ -65,12 +65,12 @@ public class T015Graph extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t015Graph/graph.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t015Graph/graph.fs", gl);
-		
+
 		graphVao.init(gl);
 		p.bind();
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+
 		float [] positions = new float[NODE_COUNT * 3];
 		LinkedList<Integer> edges = new LinkedList<Integer>();
 		
@@ -107,7 +107,7 @@ public class T015Graph extends GL3EventListener {
 					m = j;
 				}
 			}
-			
+
 			min_dist *= 2.0;
 			int done = 0;
 			
@@ -117,11 +117,11 @@ public class T015Graph extends GL3EventListener {
 						positions[j*3+0],
 						positions[j*3+1],
 						positions[j*3+2]);
-				
+
 				double dist = distance(pi, pj);
-				
+
 				if (min_dist > dist) {
-					
+
 					double x = dist/min_dist;
 					double nRand = nrand();
 					
@@ -132,7 +132,7 @@ public class T015Graph extends GL3EventListener {
 					}
 				}
 			}
-			
+
 			if (done == 0) {
 				if (i != m) {
 					edges.addLast(i);
@@ -153,7 +153,6 @@ public class T015Graph extends GL3EventListener {
 		gl.glEnable(GL_PROGRAM_POINT_SIZE);
 		gl.glEnable(GL_BLEND);
 		gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
 	}
 
 	@Override
@@ -169,7 +168,7 @@ public class T015Graph extends GL3EventListener {
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
 		lookAt(camMat, cameraPath.pointAt(time / 9), cameraTargetPath.pointAt(time / 7));
-		uCameraMatrix.setMat4fv(false, camMat);
+		uCameraMatrix.setColMaj(camMat);
 	}
 
 	@Override
@@ -177,6 +176,6 @@ public class T015Graph extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 200);
-		uProjectionMatrix.setMat4fv(false, projMat);
+		uProjectionMatrix.setColMaj(projMat);
 	}
 }

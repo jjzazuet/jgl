@@ -78,6 +78,16 @@ public class GLProgram extends GLContextBoundResource {
 		return (GLUFloatVec4) uniforms.get(name);
 	}
 
+	public GLUFloatMat2 getMat2(String name) {
+		checkNameAccess(name);
+		return (GLUFloatMat2) uniforms.get(name);
+	}
+
+	public GLUFloatMat4 getMat4(String name) {
+		checkNameAccess(name);
+		return (GLUFloatMat4) uniforms.get(name);
+	}
+	
 	protected void checkNameAccess(String name) {
 		checkInitialized();
 		checkArgument(uniforms.get(name) != null);

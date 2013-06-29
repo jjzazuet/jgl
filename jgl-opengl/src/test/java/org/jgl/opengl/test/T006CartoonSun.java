@@ -10,7 +10,7 @@ import javax.media.opengl.GL3;
 import org.jgl.math.angle.Angle;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.*;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -18,8 +18,8 @@ public class T006CartoonSun extends GL3EventListener {
 
 	private GLProgram p;
 	private GLVertexArray rectVao = new GLVertexArray();
-	private GLUniformAttribute time;
-	private GLUniformAttribute sunPos;
+	private GLUFloat time;
+	private GLUFloatVec2 sunPos;
 	private Angle angle = new Angle();
 	
 	@Override
@@ -28,18 +28,18 @@ public class T006CartoonSun extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006CartoonSun/cartoonSun.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006CartoonSun/cartoonSun.fs", gl);
 		
-		time = p.getUniformAttribute("Time");
-		sunPos = p.getUniformAttribute("SunPos");
+		time = p.getFloat("Time");
+		sunPos = p.getVec2("SunPos");
 		
 		p.bind();
 		rectVao.init(gl);
 		p.getStageAttribute("Position").set(rectVao, 
 				buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 				false, 0).enable();
-		p.getUniformAttribute("Sun1").setVec3f(0.95f, 0.85f, 0.60f);
-		p.getUniformAttribute("Sun2").setVec3f(0.90f, 0.80f, 0.20f);
-		p.getUniformAttribute("Sky1").setVec3f(0.90f, 0.80f, 0.50f);
-		p.getUniformAttribute("Sky2").setVec3f(0.80f, 0.60f, 0.40f);
+		p.getVec3("Sun1").set(0.95f, 0.85f, 0.60f);
+		p.getVec3("Sun2").set(0.90f, 0.80f, 0.20f);
+		p.getVec3("Sky1").set(0.90f, 0.80f, 0.50f);
+		p.getVec3("Sky2").set(0.80f, 0.60f, 0.40f);
 		gl.glClearDepth(1);
 	}
 
@@ -57,8 +57,8 @@ public class T006CartoonSun extends GL3EventListener {
 		double uTime = currentState.getElapsedTimeSeconds();
 		angle.setFullCircles(uTime * 0.05);
 		
-		time.setFloat((float) uTime);
-		sunPos.setVec2f(-angle.cos(), angle.sin());
+		time.set((float) uTime);
+		sunPos.set(-angle.cos(), angle.sin());
 	}
 
 	@Override

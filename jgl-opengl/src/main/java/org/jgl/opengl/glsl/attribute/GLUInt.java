@@ -9,7 +9,7 @@ public class GLUInt extends GLUniformAttribute {
 		super(index, location, size, glType, name, p);
 	}
 
-	public void set(int value) { set(value, ZERO); }
+	public void set(int value) { set(ZERO, value); }
 
 	public void set(int index, int ... value) {
 		checkNotNull(value);

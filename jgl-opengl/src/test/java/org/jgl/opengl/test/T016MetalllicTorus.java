@@ -17,7 +17,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.*;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -25,7 +25,7 @@ public class T016MetalllicTorus extends GL3EventListener {
 
 	private GLProgram p;
 	private GLBuffer torusIndices;
-	
+
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
@@ -34,10 +34,11 @@ public class T016MetalllicTorus extends GL3EventListener {
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
 	private Vector3 camTarget = new Vector3();
 	private ModelTransform torusTransform = new ModelTransform();
-	
+
 	private GLVertexArray torusVao = new GLVertexArray();
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix, 
-				uModelMatrix, uColorCount, uColor;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
+	private GLUInt uColorCount;
+	private GLUFloatVec4 uColor;
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -55,22 +56,22 @@ public class T016MetalllicTorus extends GL3EventListener {
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		uModelMatrix = p.getUniformAttribute("ModelMatrix");
-		uColorCount = p.getUniformAttribute("ColorCount");
-		uColor = p.getUniformAttribute("Color");
-		
-		uColorCount.setInt(8);
-		uColor.setVec4fv(new float [] {1.0f, 1.0f, 0.9f, 1.00f}, 0);
-		uColor.setVec4fv(new float [] {1.0f, 0.9f, 0.8f, 0.97f}, 1);
-		uColor.setVec4fv(new float [] {0.9f, 0.7f, 0.5f, 0.95f}, 2);
-		uColor.setVec4fv(new float [] {0.5f, 0.5f, 1.0f, 0.95f}, 3);
-		uColor.setVec4fv(new float [] {0.2f, 0.2f, 0.7f, 0.00f}, 4);
-		uColor.setVec4fv(new float [] {0.1f, 0.1f, 0.1f, 0.00f}, 5);
-		uColor.setVec4fv(new float [] {0.2f, 0.2f, 0.2f,-0.10f}, 6);
-		uColor.setVec4fv(new float [] {0.5f, 0.5f, 0.5f,-1.00f}, 7);
-		
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+		uModelMatrix = p.getMat4("ModelMatrix");
+		uColorCount = p.getInt("ColorCount");
+		uColor = p.getVec4("Color");
+
+		uColorCount.set(8);
+		uColor.set(0, new float [] {1.0f, 1.0f, 0.9f, 1.00f});
+		uColor.set(1, new float [] {1.0f, 0.9f, 0.8f, 0.97f});
+		uColor.set(2, new float [] {0.9f, 0.7f, 0.5f, 0.95f});
+		uColor.set(3, new float [] {0.5f, 0.5f, 1.0f, 0.95f});
+		uColor.set(4, new float [] {0.2f, 0.2f, 0.7f, 0.00f});
+		uColor.set(5, new float [] {0.1f, 0.1f, 0.1f, 0.00f});
+		uColor.set(6, new float [] {0.2f, 0.2f, 0.2f,-0.10f});
+		uColor.set(7, new float [] {0.5f, 0.5f, 0.5f,-1.00f});
+
 		gl.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -94,15 +95,15 @@ public class T016MetalllicTorus extends GL3EventListener {
 				3.5, 
 				azimuth.setDegrees(time * 35), 
 				elevation.setDegrees(sineWave(time / 60) * 80));
-		uCameraMatrix.setMat4fv(false, camMat);
+		uCameraMatrix.setColMaj(camMat);
 		torusTransform.getRotationX().setFullCircles(time * 0.25);
-		uModelMatrix.setMat4fv(false, torusTransform.getModelMatrix());
+		uModelMatrix.setColMaj(torusTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMat, fov.setDegrees(80), newViewport.width/newViewport.height, 1, 20);
-		uProjectionMatrix.setMat4fv(false, projMat);
+		uProjectionMatrix.setColMaj(projMat);
 	}
 }

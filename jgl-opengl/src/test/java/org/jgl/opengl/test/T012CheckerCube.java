@@ -15,7 +15,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -32,8 +32,8 @@ public class T012CheckerCube extends GL3EventListener {
 	private Angle elevation = new Angle();
 	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private GLUniformAttribute cameraMatrixAttr;
-	private GLUniformAttribute projectionMatrixAttr;
+	private GLUFloatMat4 cameraMatrixAttr;
+	private GLUFloatMat4 projectionMatrixAttr;
 	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -43,8 +43,8 @@ public class T012CheckerCube extends GL3EventListener {
 		
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		cameraMatrixAttr = p.getUniformAttribute("CameraMatrix");
-		projectionMatrixAttr = p.getUniformAttribute("ProjectionMatrix");
+		cameraMatrixAttr = p.getMat4("CameraMatrix");
+		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
 
 		cubeVao.init(gl);
 		p.bind();
@@ -71,7 +71,7 @@ public class T012CheckerCube extends GL3EventListener {
 		azimuth.setDegrees(time * 135);
 		elevation.setDegrees(sineWave(time / 20) * 90);
 		orbit(cameraMatrix, new Vector3(), 2.7, azimuth, elevation);
-		cameraMatrixAttr.setMat4fv(false, cameraMatrix);
+		cameraMatrixAttr.setColMaj(cameraMatrix);
 	}
 
 	@Override
@@ -79,6 +79,6 @@ public class T012CheckerCube extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMatrix, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 20);
-		projectionMatrixAttr.setMat4fv(false, projMatrix);
+		projectionMatrixAttr.setColMaj(projMatrix);
 	}
 }

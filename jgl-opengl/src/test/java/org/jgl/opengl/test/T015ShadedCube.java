@@ -16,7 +16,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -27,7 +27,7 @@ public class T015ShadedCube extends GL3EventListener {
 	private GLBuffer cubeVertices, cubeNormals;
 	private GLProgram p;
 	
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
 	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private Angle fov = new Angle();
@@ -44,8 +44,8 @@ public class T015ShadedCube extends GL3EventListener {
 		p.bind();
 		cubeVao.init(gl);
 		
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		
@@ -71,13 +71,13 @@ public class T015ShadedCube extends GL3EventListener {
 		orbit(camMatrix, orbitTarget, 3, 
 				azimuth.setDegrees(time * 135), 
 				elevation.setDegrees(sineWave(time / 20) * 90));
-		uCameraMatrix.setMat4fv(false, camMatrix);
+		uCameraMatrix.setColMaj(camMatrix);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 20);
-		uProjectionMatrix.setMat4fv(false, projMatrix);
+		uProjectionMatrix.setColMaj(projMatrix);
 	}
 }

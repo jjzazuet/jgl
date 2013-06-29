@@ -15,7 +15,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.*;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -29,7 +29,7 @@ public class T010RgbCube extends GL3EventListener {
 	private Angle xFov = new Angle();
 	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private GLUniformAttribute projectionMatrixAttr;
+	private GLUFloatMat4 projectionMatrixAttr;
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -39,7 +39,7 @@ public class T010RgbCube extends GL3EventListener {
 		
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		projectionMatrixAttr = p.getUniformAttribute("ProjectionMatrix");
+		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
 		
 		cubeVao.init(gl);
 		
@@ -47,7 +47,7 @@ public class T010RgbCube extends GL3EventListener {
 		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 		lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
-		p.getUniformAttribute("CameraMatrix").setMat4fv(false, cameraMatrix);
+		p.getMat4("CameraMatrix").setColMaj(cameraMatrix);
 
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -73,6 +73,6 @@ public class T010RgbCube extends GL3EventListener {
 		
 		xFov.setDegrees(48);
 		perspectiveX(projMatrix, xFov, newViewport.aspectRatio, 1, 100);
-		projectionMatrixAttr.setMat4fv(false, projMatrix);
+		projectionMatrixAttr.setColMaj(projMatrix);
 	}
 }

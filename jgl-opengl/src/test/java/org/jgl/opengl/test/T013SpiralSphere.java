@@ -17,7 +17,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -31,7 +31,7 @@ public class T013SpiralSphere extends GL3EventListener {
 	private BufferedMatrix4 cameraMat = new BufferedMatrix4();
 
 	private ModelTransform modelTransform = new ModelTransform();
-	private GLUniformAttribute uCameraMatrix, uModelMatrix, uProjectionMatrix;
+	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	
 	private Angle fov = new Angle();
 	private Vector3 eye = new Vector3(2.5, 3.5, 2.5);
@@ -52,9 +52,9 @@ public class T013SpiralSphere extends GL3EventListener {
 		p.getStageAttribute("Position").set(sphereVao, sphereVertices, false, 0).enable();
 		p.getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
 
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		uModelMatrix = p.getUniformAttribute("ModelMatrix");
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+		uModelMatrix = p.getMat4("ModelMatrix");
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -75,10 +75,10 @@ public class T013SpiralSphere extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 		
 		lookAt(cameraMat, eye, target);
-		uCameraMatrix.setMat4fv(false, cameraMat);
+		uCameraMatrix.setColMaj(cameraMat);
 		modelTransform.getTranslation().setY(Math.sqrt(1 + sineWave(time / 2.0)));
 		modelTransform.getRotationY().setDegrees(time * 180);
-		uModelMatrix.setMat4fv(false, modelTransform.getModelMatrix());
+		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
 	}
 
 	@Override
@@ -86,6 +86,6 @@ public class T013SpiralSphere extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 70);
-		uProjectionMatrix.setMat4fv(false, projMat);
+		uProjectionMatrix.setColMaj(projMat);
 	}
 }

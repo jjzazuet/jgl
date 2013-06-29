@@ -18,7 +18,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -37,7 +37,7 @@ public class T016CartoonTorus extends GL3EventListener {
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
 	private ModelTransform modelTransform = new ModelTransform();
 
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix, uModelMatrix;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -53,12 +53,12 @@ public class T016CartoonTorus extends GL3EventListener {
 		
 		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();		
-		p.getUniformAttribute("LightPos").setVec3f(new Vector3(4.0f, 4.0f, -8.0f));
+		p.getVec3("LightPos").set(new Vector3(4.0f, 4.0f, -8.0f));
 
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		uModelMatrix = p.getUniformAttribute("ModelMatrix");
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+		uModelMatrix = p.getMat4("ModelMatrix");
 		
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -67,7 +67,8 @@ public class T016CartoonTorus extends GL3EventListener {
 		glFrontFace(gl, torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 		gl.glEnable(GL_LINE_SMOOTH);
-		//gl.glLineWidth(4);
+		// TODO bug: this command fails with Intel HD4000 cards...
+		gl.glLineWidth(4);
 	}
 
 	@Override
@@ -94,14 +95,14 @@ public class T016CartoonTorus extends GL3EventListener {
 				elevation.setDegrees(sineWave(time / 20.0) * 60));
 		modelTransform.getRotationY().setFullCircles(time * .25);
 		modelTransform.getRotationX().setFullCircles(.25);
-		uCameraMatrix.setMat4fv(false, camMat);
-		uModelMatrix.setMat4fv(false, modelTransform.getModelMatrix());
+		uCameraMatrix.setColMaj(camMat);
+		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMat, fov.setDegrees(75), newViewport.width / newViewport.height, 1, 30);
-		uProjectionMatrix.setMat4fv(false, projMat);
+		uProjectionMatrix.setColMaj(projMat);
 	}
 }

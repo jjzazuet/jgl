@@ -1,5 +1,6 @@
 package org.jgl.opengl.glsl.attribute;
 
+import static org.jgl.opengl.util.GLBufferUtils.*;
 import static com.google.common.base.Preconditions.*;
 
 import java.nio.*;
@@ -23,14 +24,14 @@ public abstract class GLUniformAttribute extends GLAttribute {
 		checkNotNull(data);
 		checkArgument(data.length <= getSize());
 		checkArgument(data.length % getSize() == 0);
-		return bufferData(data);
+		return floatBuffer(data);
 	}
 
 	protected IntBuffer bufferData(int ... data) {
 		checkNotNull(data);
 		checkArgument(data.length <= getSize());
 		checkArgument(data.length % getSize() == 0);
-		return bufferData(data);
+		return intBuffer(data);
 	}
 
 	protected String variableIndex(String name, int index) {

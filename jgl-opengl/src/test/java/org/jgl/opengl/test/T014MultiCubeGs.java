@@ -15,7 +15,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -28,7 +28,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 	private Cube cube = new Cube();
 	private GLProgram p;
 	private GLVertexArray cubeVao = new GLVertexArray();
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
 	private GLBuffer cubeVertices;
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
@@ -41,14 +41,14 @@ public class T014MultiCubeGs extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t014MultiCubeGs/multiCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t014MultiCubeGs/multiCube.gs",
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t014MultiCubeGs/multiCube.fs", gl);
-		
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		
+
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+
 		cubeVao.init(gl);
 		p.bind();
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-		
+
 		gl.glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -70,7 +70,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 		azimuth.setDegrees(time * 135);
 		elevation.setDegrees(sineWave(time / 20) * 30);
 		orbit(camMat, origin, 18.5, azimuth, elevation);
-		uCameraMatrix.setMat4fv(false, camMat);
+		uCameraMatrix.setColMaj(camMat);
 	}
 
 	@Override
@@ -78,6 +78,6 @@ public class T014MultiCubeGs extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 50);
-		uProjectionMatrix.setMat4fv(false, projMat);		
+		uProjectionMatrix.setColMaj(projMat);		
 	}
 }

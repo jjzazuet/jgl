@@ -81,7 +81,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 		}
 		
 		checkState(k == normals.length);
-		return normals; // TODO report resulting component size.
+		return normals;
 	}
 
 	@Override

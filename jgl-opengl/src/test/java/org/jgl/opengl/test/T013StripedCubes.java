@@ -1,6 +1,5 @@
 package org.jgl.opengl.test;
 
-
 import static javax.media.opengl.GL.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.perspectiveX;
 import static org.jgl.math.angle.AngleOps.*;
@@ -17,7 +16,7 @@ import org.jgl.math.matrix.io.BufferedMatrix4;
 import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -27,7 +26,7 @@ public class T013StripedCubes extends GL3EventListener {
 	private Cube cube = new Cube();
 	private GLBuffer cubeVerts;
 	private GLVertexArray cubeVao = new GLVertexArray();
-	private GLUniformAttribute uProjectionMatrix, uCameraMatrix, uModelMatrix;
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 	
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
@@ -53,9 +52,9 @@ public class T013StripedCubes extends GL3EventListener {
 		p.bind();
 		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
 		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
-		uProjectionMatrix = p.getUniformAttribute("ProjectionMatrix");
-		uCameraMatrix = p.getUniformAttribute("CameraMatrix");
-		uModelMatrix = p.getUniformAttribute("ModelMatrix");
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+		uModelMatrix = p.getMat4("ModelMatrix");
 		
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -68,10 +67,10 @@ public class T013StripedCubes extends GL3EventListener {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		cubeVao.bind();
-		uModelMatrix.setMat4fv(false, cube1Trans.getModelMatrix());		
+		uModelMatrix.setColMaj(cube1Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());		
 				
-		uModelMatrix.setMat4fv(false, cube2Trans.getModelMatrix());
+		uModelMatrix.setColMaj(cube2Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
@@ -84,7 +83,7 @@ public class T013StripedCubes extends GL3EventListener {
 		azimuth.setDegrees(time * 15);
 		elevation.setDegrees(sineWave(time / 6.3) * 45);
 		orbit(camMat, origin, 3.5, azimuth, elevation);
-		uCameraMatrix.setMat4fv(false, camMat);
+		uCameraMatrix.setColMaj(camMat);
 		cube2Trans.getTranslation().set(1, 0, 0);
 		cube2Trans.getRotationY().setDegrees(time * 90);
 		cube1Trans.getTranslation().set(-1, 0, 0);
@@ -96,6 +95,6 @@ public class T013StripedCubes extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 30);
-		uProjectionMatrix.setMat4fv(false, projMat);		
+		uProjectionMatrix.setColMaj(projMat);		
 	}
 }

@@ -17,7 +17,7 @@ import org.jgl.math.matrix.Matrix2;
 import org.jgl.math.vector.*;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
+import org.jgl.opengl.glsl.attribute.GLUFloatMat2;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -25,7 +25,7 @@ public class T006NewtonZoom extends GL3EventListener {
 
 	private GLProgram p;
 	private GLVertexArray rectVao = new GLVertexArray();
-	private GLUniformAttribute zoomMatrix;
+	private GLUFloatMat2 zoomMatrix;
 	private Matrix2 m = new Matrix2();
 	private Vector2 x = new Vector2();
 	private Vector2 y = new Vector2();
@@ -38,15 +38,15 @@ public class T006NewtonZoom extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006NewtonZoom/newtonZoom.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t006NewtonZoom/newtonZoom.fs", gl);
 		
-		zoomMatrix = p.getUniformAttribute("ZoomMatrix");
+		zoomMatrix = p.getMat2("ZoomMatrix");
 		
 		p.bind();
 		rectVao.init(gl);
 		p.getStageAttribute("Position").set(rectVao, 
 				buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 				false, 0).enable();
-		p.getUniformAttribute("Color1").setVec3f(0.2f, 0.02f, 0.05f);
-		p.getUniformAttribute("Color2").setVec3f(1.0f, 0.95f, 0.98f);
+		p.getVec3("Color1").set(0.2f, 0.02f, 0.05f);
+		p.getVec3("Color2").set(1.0f, 0.95f, 0.98f);
 		gl.glClearDepth(1);
 	}
 
@@ -74,7 +74,7 @@ public class T006NewtonZoom extends GL3EventListener {
 		m.m01 = y.x; m.m11 = y.y;
 		
 		storeColMaj(matBuffer, m);
-		zoomMatrix.setMat2fv(false, matBuffer, m);
+		zoomMatrix.setColMaj(matBuffer, m);
 	}
 
 	@Override
