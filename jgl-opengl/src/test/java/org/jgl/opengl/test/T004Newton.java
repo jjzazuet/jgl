@@ -28,8 +28,8 @@ public class T004Newton extends GL3EventListener {
 		rectVao.init(gl);
 		p.bind();
 		p.getStageAttribute("Position").set(rectVao, rectangleBuffer, false, 0).enable();
-		p.getUniformAttribute("Color1").setVec3f(new Vector3(0.2f, 0.02f, 0.05f));
-		p.getUniformAttribute("Color2").setVec3f(new Vector3(1.0f, 0.98f, 0.98f));
+		p.getVec3("Color1").set(new Vector3(0.2f, 0.02f, 0.05f));
+		p.getVec3("Color2").set(new Vector3(1.0f, 0.98f, 0.98f));
 		gl.glDisable(GL_DEPTH_TEST);	
 	}
 

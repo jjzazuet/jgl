@@ -9,9 +9,7 @@ import java.nio.IntBuffer;
 import java.util.*;
 
 import org.jgl.opengl.GLContextBoundResource;
-import org.jgl.opengl.glsl.attribute.GLAttribute;
-import org.jgl.opengl.glsl.attribute.GLUniformAttribute;
-import org.jgl.opengl.glsl.attribute.GLVertexAttribute;
+import org.jgl.opengl.glsl.attribute.*;
 
 public class GLProgram extends GLContextBoundResource {
 
@@ -55,12 +53,36 @@ public class GLProgram extends GLContextBoundResource {
 		return (GLVertexAttribute) stageAttributes.get(name); 
 	}
 	
-	public GLUniformAttribute getUniformAttribute(String name) {
-		checkInitialized();
-		checkArgument(uniforms.get(name) != null);
-		return (GLUniformAttribute) uniforms.get(name);
+	public GLUInt getInt(String name) {
+		checkNameAccess(name);
+		return (GLUInt) uniforms.get(name);
 	}
 	
+	public GLUFloat getFloat(String name) {
+		checkNameAccess(name);
+		return (GLUFloat) uniforms.get(name);
+	}
+
+	public GLUFloatVec2 getVec2(String name) {
+		checkNameAccess(name);
+		return (GLUFloatVec2) uniforms.get(name);
+	}
+
+	public GLUFloatVec3 getVec3(String name) {
+		checkNameAccess(name);
+		return (GLUFloatVec3) uniforms.get(name);
+	}
+
+	public GLUFloatVec4 getVec4(String name) {
+		checkNameAccess(name);
+		return (GLUFloatVec4) uniforms.get(name);
+	}
+
+	protected void checkNameAccess(String name) {
+		checkInitialized();
+		checkArgument(uniforms.get(name) != null);
+	}
+
 	@Override
 	protected void doInit() { 
 		setGlResourceHandle(getGl().glCreateProgram());

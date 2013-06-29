@@ -56,7 +56,33 @@ public class GLAttributeFactory {
 				}
 
 				location = p.getGl().glGetUniformLocation(p.getGlResourceHandle(), attributeName);
-				at = new GLUniformAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, p);
+				int uniformType = typeBuf.get();
+				
+				switch (uniformType) {
+					case GL_INT:
+						at = new GLUInt(k, location, sizeBuf.get(), GL_INT, attributeName, p);
+						break;
+					case GL_FLOAT: 
+						at = new GLUFloat(k, location, sizeBuf.get(), GL_FLOAT, attributeName, p);
+						break;
+					case GL_FLOAT_VEC2: 
+						at = new GLUFloatVec2(k, location, sizeBuf.get(), GL_FLOAT_VEC2, attributeName, p);
+						break;
+					case GL_FLOAT_VEC3: 
+						at = new GLUFloatVec3(k, location, sizeBuf.get(), GL_FLOAT_VEC3, attributeName, p);
+						break;
+					case GL_FLOAT_VEC4: 
+						at = new GLUFloatVec4(k, location, sizeBuf.get(), GL_FLOAT_VEC4, attributeName, p);
+						break;
+					case GL_FLOAT_MAT2:
+						at = new GLUFloatMat2(k, location, sizeBuf.get(), GL_FLOAT_MAT2, attributeName, p);
+						break;
+					case GL_FLOAT_MAT4:
+						at = new GLUFloatMat4(k, location, sizeBuf.get(), GL_FLOAT_MAT4, attributeName, p);
+						break;
+					default: throw new IllegalStateException(
+							String.format("Unsupported uniform type: [%s]", Integer.toHexString(uniformType)));
+				}
 			}
 
 			if (log.isDebugEnabled()) { log.debug(at.toString()); }

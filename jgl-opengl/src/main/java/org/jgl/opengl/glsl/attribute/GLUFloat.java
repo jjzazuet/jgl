@@ -1,8 +1,6 @@
 package org.jgl.opengl.glsl.attribute;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
+import static com.google.common.base.Preconditions.*;
 import org.jgl.opengl.glsl.GLProgram;
 
 public class GLUFloat extends GLUniformAttribute {
@@ -17,7 +15,7 @@ public class GLUFloat extends GLUniformAttribute {
 		checkNotNull(value);
 		checkArgument(value.length <= getSize());
 		getProgram().checkBound();
-		getProgram().getGl().glUniform1iv(getIndexLocation(index), value.length, bufferData(value));
+		getProgram().getGl().glUniform1fv(getIndexLocation(index), value.length, bufferData(value));
 		getProgram().checkError();
 	}
 }
