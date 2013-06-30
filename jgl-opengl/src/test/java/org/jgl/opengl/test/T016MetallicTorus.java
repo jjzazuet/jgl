@@ -21,7 +21,7 @@ import org.jgl.opengl.glsl.attribute.*;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
-public class T016MetalllicTorus extends GL3EventListener {
+public class T016MetallicTorus extends GL3EventListener {
 
 	private GLProgram p;
 	private GLBuffer torusIndices;

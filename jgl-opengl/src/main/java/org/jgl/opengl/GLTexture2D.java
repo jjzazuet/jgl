@@ -16,21 +16,23 @@ public class GLTexture2D extends GLContextBoundResource {
 		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
 		getGl().glTexParameterf(getTextureTarget(), parameter, value);
+		checkError();
 	}
 	
 	public void setParameter(int parameter, int value) {
 		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
 		getGl().glTexParameteri(getTextureTarget(), parameter, value);
+		checkError();
 	}
 	
 	public void loadData(GLTexture2DImage image) {
 		
 		checkInitialized();
+		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
 		this.image = image;
 		
-		bind();
 		getGl().glTexImage2D(getTextureTarget(), ZERO, 
 				getImage().getMetadata().getInternalFormat(), 
 				getImage().getMetadata().getWidth(), 
@@ -39,7 +41,6 @@ public class GLTexture2D extends GLContextBoundResource {
 				getImage().getMetadata().getPixelDataType(), 
 				getImage().getImageData());
 		checkError();
-		unbind();
 	}
 	@Override
 	protected void doInit() {
@@ -53,7 +54,7 @@ public class GLTexture2D extends GLContextBoundResource {
 	protected void doBind() {
 		checkState(getTextureTarget() != MINUS_ONE);
 		checkState(getTextureUnitEnum() != MINUS_ONE);
-		getGl().glActiveTexture(getTextureUnit());
+		getGl().glActiveTexture(getTextureUnitEnum());
 		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
 		checkError();
 	}

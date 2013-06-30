@@ -27,9 +27,9 @@ public class GLTextureMetadata {
 
 	public int getInternalFormat() { return internalFormat; }
 	public void setInternalFormat(int internalFormat) {
-		boolean baseFormat = GLConstants.GL_TEXTURE_BASE_INTERNAL_FORMAT.contains(getInternalFormat());
-		boolean sizedFormat = GLConstants.GL_TEXTURE_SIZED_INTERNAL_FORMAT.contains(getInternalFormat());
-		boolean compressedFormat = GLConstants.GL_TEXTURE_COMPRESSED_INTERNAL_FORMAT.contains(getInternalFormat());
+		boolean baseFormat = GLConstants.GL_TEXTURE_BASE_INTERNAL_FORMAT.contains(internalFormat);
+		boolean sizedFormat = GLConstants.GL_TEXTURE_SIZED_INTERNAL_FORMAT.contains(internalFormat);
+		boolean compressedFormat = GLConstants.GL_TEXTURE_COMPRESSED_INTERNAL_FORMAT.contains(internalFormat);
 		checkArgument(baseFormat || sizedFormat || compressedFormat);
 		this.internalFormat = internalFormat;
 	}
