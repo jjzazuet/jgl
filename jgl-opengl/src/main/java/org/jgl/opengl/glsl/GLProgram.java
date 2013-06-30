@@ -87,7 +87,12 @@ public class GLProgram extends GLContextBoundResource {
 		checkNameAccess(name);
 		return (GLUFloatMat4) uniforms.get(name);
 	}
-	
+
+	public GLUSampler2D getSampler2D(String name) {
+		checkNameAccess(name);
+		return (GLUSampler2D) uniforms.get(name);
+	}
+
 	protected void checkNameAccess(String name) {
 		checkInitialized();
 		checkArgument(uniforms.get(name) != null);
@@ -103,7 +108,7 @@ public class GLProgram extends GLContextBoundResource {
 	protected void doBind() { getGl().glUseProgram(getGlResourceHandle()); }
 
 	@Override
-	protected void doUnbind() { getGl().glUseProgram(0); }
+	protected void doUnbind() { getGl().glUseProgram(ZERO); }
 
 	@Override
 	protected void doDestroy() {

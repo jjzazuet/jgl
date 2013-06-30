@@ -18,7 +18,7 @@ import org.jgl.opengl.GLContextBoundResource;
 import com.google.common.base.Charsets;
 
 public class GLShader extends GLContextBoundResource {
-	
+
 	private final GLShaderType type;
 	private String shaderSourceText = null;
 	private URL sourceLocation = null;
@@ -29,18 +29,18 @@ public class GLShader extends GLContextBoundResource {
 		this(t);
 		sourceLocation = checkNotNull(srcLocation);
 	}
-	
+
 	public GLShader(GLShaderType t, File srcFile) throws MalformedURLException {
 		this(t);
 		checkNotNull(srcFile);
 		checkArgument(srcFile.exists());
 		sourceLocation = srcFile.toURI().toURL();
 	}
-	
+
 	public GLShader(GLShaderType t, String srcText) {
 		this(t);
 		checkNotNull(srcText);
-		checkArgument(srcText.length() != 0);
+		checkArgument(srcText.length() != ZERO);
 		shaderSourceText = srcText;
 	}
 
@@ -57,7 +57,7 @@ public class GLShader extends GLContextBoundResource {
 			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
 		}
 	}
-	
+
 	@Override
 	protected void doInit() { 
 		try {
@@ -67,7 +67,7 @@ public class GLShader extends GLContextBoundResource {
 			compile();			
 		} catch (Exception e) { propagate(e); }
 	}
-	
+
 	public String getSource() {
 		if (shaderSourceText == null) {
 			shaderSourceText = readUrl(sourceLocation, Charsets.UTF_8);
@@ -76,9 +76,9 @@ public class GLShader extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doBind() { throw new IllegalStateException(); }
+	protected void doBind() { throw new UnsupportedOperationException(); }
 	@Override
-	protected void doUnbind() { throw new IllegalStateException(); }
+	protected void doUnbind() { throw new UnsupportedOperationException(); }
 	@Override
 	protected void doDestroy() { getGl().glDeleteShader(getGlResourceHandle()); }
 
@@ -88,7 +88,7 @@ public class GLShader extends GLContextBoundResource {
 	public boolean equals(Object o) {
 		boolean equals = o != null && 
 				o instanceof GLShader && 
-				getSource().compareTo(((GLShader) o).getSource()) == 0;
+				getSource().compareTo(((GLShader) o).getSource()) == ZERO;
 		return equals;
 	}
 }

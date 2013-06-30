@@ -19,7 +19,7 @@ public abstract class GLContextBoundResource extends GLResource {
 		
 		this.gl = checkNotNull(gl);
 		
-		if (!initialized) {	
+		if (!isInitialized()) {	
 			doInit();
 			if (log.isDebugEnabled()) {
 				checkError();
@@ -45,15 +45,15 @@ public abstract class GLContextBoundResource extends GLResource {
 		checkError();
 		bound = false;
 	}
-		
+
 	public boolean isInitialized() { return initialized; }
 	
 	public void checkInitialized() {
 		checkState(initialized, resourceMsg("GL resource not initialized"));
 	}
-	
+
 	public void checkError() { getError().apply(gl); }
-	
+
 	/** Perform OpenGL resource deallocation. */
 	public void destroy() {
 		doDestroy();
@@ -61,26 +61,26 @@ public abstract class GLContextBoundResource extends GLResource {
 			log.debug(resourceMsg("GL resource destroyed"));
 		}
 	}
-	
+
 	/** Determine if this object is bound to the OpenGL context. */
 	public boolean isBound() { return bound; }
-	
+
 	/** Verify bind state.
 	 * @throws IllegalStateException if the resource is not bound to the OpenGL context. */
 	public void checkBound() {
 		checkState(bound, resourceMsg("Unbound GL resource"));
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[rh: %s, bound: %s, init: %s]", 
 				getClass().getSimpleName(), getGlResourceHandle(), isBound(), initialized);
 	}
-	
+
 	private void multipleBindWarn() {
 		log.warn(resourceMsg("Multiple bind/unbind request"));		
 	}
-	
+
 	public String resourceMsg(String msg) {
 		return format("%s: [%s, %s]", 
 				msg, getClass().getSimpleName(), getGlResourceHandle());

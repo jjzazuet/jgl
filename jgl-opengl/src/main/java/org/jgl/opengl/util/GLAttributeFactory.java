@@ -2,7 +2,7 @@ package org.jgl.opengl.util;
 
 import static com.google.common.base.Charsets.*;
 import static com.google.common.base.Preconditions.*;
-import static javax.media.opengl.GL2ES2.*;
+import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 
 import java.nio.*;
@@ -31,12 +31,12 @@ public class GLAttributeFactory {
 			GLAttribute at;
 			String attributeName;
 			int location;
-			
+
 			lengthBuf.clear(); sizeBuf.clear(); typeBuf.clear();
 			nameBuf = ByteBuffer.allocate(maxLength + 1);
-			
+
 			if (type == GL_ACTIVE_ATTRIBUTES) {
-				
+
 				p.getGl().glGetActiveAttrib(p.getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
 
@@ -45,7 +45,7 @@ public class GLAttributeFactory {
 				at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, p);
 				
 			} else {
-				
+
 				p.getGl().glGetActiveUniform(p.getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
 
@@ -57,7 +57,7 @@ public class GLAttributeFactory {
 
 				location = p.getGl().glGetUniformLocation(p.getGlResourceHandle(), attributeName);
 				int uniformType = typeBuf.get();
-				
+
 				switch (uniformType) {
 					case GL_INT:
 						at = new GLUInt(k, location, sizeBuf.get(), GL_INT, attributeName, p);
@@ -79,6 +79,9 @@ public class GLAttributeFactory {
 						break;
 					case GL_FLOAT_MAT4:
 						at = new GLUFloatMat4(k, location, sizeBuf.get(), GL_FLOAT_MAT4, attributeName, p);
+						break;
+					case GL_SAMPLER_2D:
+						at = new GLUSampler2D(k, location, sizeBuf.get(), GL_SAMPLER_2D, attributeName, p);
 						break;
 					default: throw new IllegalStateException(
 							String.format("Unsupported uniform type: [%s]", Integer.toHexString(uniformType)));

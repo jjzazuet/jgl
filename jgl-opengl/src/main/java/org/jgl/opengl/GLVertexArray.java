@@ -18,7 +18,7 @@ public class GLVertexArray extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doUnbind() { getGl().glBindVertexArray(0); }
+	protected void doUnbind() { getGl().glBindVertexArray(ZERO); }
 
 	@Override
 	protected void doDestroy() {

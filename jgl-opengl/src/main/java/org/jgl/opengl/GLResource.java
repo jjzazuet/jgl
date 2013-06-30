@@ -7,8 +7,10 @@ public class GLResource {
 
 	protected static final Logger log = LoggerFactory.getLogger(GLResource.class);
 	private final GLCheckError checkError = new GLCheckError();
-
-	private int glResourceHandle = -1;
+	public static final int MINUS_ONE = -1;
+	public static final int ZERO = 0;
+	
+	private int glResourceHandle = MINUS_ONE;
 	
 	public int getGlResourceHandle() { return glResourceHandle; }
 	public GLCheckError getError() { return checkError; }

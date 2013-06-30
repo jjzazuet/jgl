@@ -22,7 +22,7 @@ public class GLSLUtils {
 	private static final Logger log = LoggerFactory.getLogger(GLSLUtils.class);
 
 	public static final GLProgram loadProgram(String vsPath, String fsPath, GL3 gl) throws Exception {
-		
+
 		checkNotNull(vsPath);
 		checkNotNull(fsPath);
 		checkNotNull(gl);
@@ -30,13 +30,13 @@ public class GLSLUtils {
 		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
 		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
 		GLProgram p = new GLProgram();
-		
-		p.attachShader(vs).attachShader(fs).init(gl);		
+
+		p.attachShader(vs).attachShader(fs).init(gl);
 		return p;
 	}
 
 	public static final GLProgram loadProgram(String vsPath, String gsPath, String fsPath, GL3 gl) throws Exception {
-		
+
 		checkNotNull(vsPath);
 		checkNotNull(fsPath);
 		checkNotNull(gsPath);
@@ -46,8 +46,8 @@ public class GLSLUtils {
 		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
 		GLShader gs = loadShader(gsPath, GEOMETRY_SHADER);
 		GLProgram p = new GLProgram();
-		
-		p.attachShader(vs).attachShader(fs).attachShader(gs).init(gl);		
+
+		p.attachShader(vs).attachShader(fs).attachShader(gs).init(gl);
 		return p;
 	}
 
@@ -65,24 +65,24 @@ public class GLSLUtils {
 
 		checkArgument(r instanceof GLShader || r instanceof GLProgram);
 		IntBuffer b = IntBuffer.allocate(1);
-		
+
 		if (r instanceof GLShader) {
 			r.getGl().glGetShaderiv(r.getGlResourceHandle(), param, b);			
 		} else if (r instanceof GLProgram) {
 			r.getGl().glGetProgramiv(r.getGlResourceHandle(), param, b);
 		}
-		
+
 		return b.get();
 	}
-	
+
 	public static final String getGlslLog(GLContextBoundResource r) {
 
 		checkArgument(r instanceof GLShader || r instanceof GLProgram);
-		
+
 		int logLength = getGlslParam(r, GL_INFO_LOG_LENGTH);
-		String glslLog = "[]";
+		String glslLog = "[???]";
 		ByteBuffer logData = ByteBuffer.allocate(logLength + 1);
-		
+
 		if (r instanceof GLShader) {
 			r.getGl().glGetShaderInfoLog(r.getGlResourceHandle(), logLength, null, logData);			
 		} else if (r instanceof GLProgram) {
@@ -94,7 +94,7 @@ public class GLSLUtils {
 		} catch (Exception e) { 
 			log.error(r.resourceMsg("Unable to retrieve GL resource error log"), e); 
 		}
-		
+
 		return glslLog;
 	}
 }

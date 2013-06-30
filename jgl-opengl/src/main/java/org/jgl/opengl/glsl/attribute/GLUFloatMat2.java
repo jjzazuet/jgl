@@ -20,7 +20,7 @@ public class GLUFloatMat2 extends GLUniformAttribute {
 		getProgram().getGl().glUniformMatrix2fv(getIndexLocation(index), ONE, false, dst);
 		getProgram().checkError();
 	}
-	
+
 	public void setColMaj(FloatBuffer dst, Matrix2 src) {
 		setColMaj(ZERO, dst, src);
 	}

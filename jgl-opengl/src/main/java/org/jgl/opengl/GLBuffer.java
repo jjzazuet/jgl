@@ -33,7 +33,7 @@ public class GLBuffer extends GLContextBoundResource {
 	
 	@Override
 	protected void doUnbind() { 
-		getGl().glBindBuffer(getGlBufferType(), 0);
+		getGl().glBindBuffer(getGlBufferType(), ZERO);
 	}
 	
 	@Override
