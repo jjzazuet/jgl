@@ -68,8 +68,8 @@ public class T013StripedCubes extends GL3EventListener {
 
 		cubeVao.bind();
 		uModelMatrix.setColMaj(cube1Trans.getModelMatrix());
-		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());		
-				
+		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
+
 		uModelMatrix.setColMaj(cube2Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();

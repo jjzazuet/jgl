@@ -56,10 +56,11 @@ public class GLConstants {
 			 * TODO undefined constants? */
 			}));
 
-	public static final Set<Integer> GL_TEXTURE_TARGET = new HashSet<Integer>(
-			Arrays.asList(new Integer[] { GL_TEXTURE_1D, GL_TEXTURE_2D,
-					GL_TEXTURE_3D, GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY,
-					GL_TEXTURE_RECTANGLE, GL_TEXTURE_CUBE_MAP }));
+	public static final Set<Integer> GL_TEXTURE_TARGET = new HashSet<Integer>(Arrays.asList(new Integer[] { 
+			GL_TEXTURE_1D, GL_TEXTURE_2D, GL_TEXTURE_3D,
+			GL_TEXTURE_1D_ARRAY, GL_TEXTURE_2D_ARRAY, GL_TEXTURE_RECTANGLE, 
+			GL_TEXTURE_CUBE_MAP, GL_TEXTURE_CUBE_MAP_ARRAY, GL_TEXTURE_BUFFER,
+			GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_2D_MULTISAMPLE_ARRAY }));
 
 	public static final Set<Integer> GL_TEXTURE_PARAMETER = new HashSet<Integer>(
 			Arrays.asList(new Integer[] {

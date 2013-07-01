@@ -58,7 +58,7 @@ public class T010RgbCube extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		gl.glDrawArrays(GL_TRIANGLES, 0, 36);
+		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
 

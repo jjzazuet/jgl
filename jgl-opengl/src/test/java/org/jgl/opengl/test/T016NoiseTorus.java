@@ -2,8 +2,6 @@ package org.jgl.opengl.test;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
-import static javax.media.opengl.GL2GL3.GL_FILL;
-import static javax.media.opengl.GL2GL3.GL_LINE;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
 import static org.jgl.opengl.util.GLDrawUtils.*;
@@ -11,6 +9,7 @@ import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
 
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 import javax.media.opengl.GL3;
@@ -86,14 +85,16 @@ public class T016NoiseTorus extends GL3EventListener {
 					texData[v*s+u] = (byte) (r.nextInt() % 0x100);	
 				}
 			}
-			
-			GLTexture2DImage noiseImage = new GLTexture2DImage(texData);
-			
+
+			GLTexture2DImage noiseImage = new GLTexture2DImage();
+
+			noiseImage.setImageData(ByteBuffer.wrap(texData));
 			noiseImage.getMetadata().setWidth(s);
 			noiseImage.getMetadata().setHeight(s);
 			noiseImage.getMetadata().setInternalFormat(GL_RED);
 			noiseImage.getMetadata().setPixelDataFormat(GL_RED);
-			
+			noiseImage.getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
+
 			noiseTexture.loadData(noiseImage);
 			noiseTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			noiseTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -101,7 +102,7 @@ public class T016NoiseTorus extends GL3EventListener {
 			noiseTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
 			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_G, GL_RED);
 			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_B, GL_RED);
-			
+
 			p.getSampler2D("TexUnit").set(noiseTexture);
 		}
 		

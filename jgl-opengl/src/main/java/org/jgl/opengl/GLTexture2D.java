@@ -72,9 +72,18 @@ public class GLTexture2D extends GLContextBoundResource {
 		checkError();
 	}
 
+	public void generateMipMap() {
+		checkBound();
+		getGl().glGenerateMipmap(getTextureTarget());
+		checkError();
+	}
+
 	public GLTexture2DImage getImage() { return image; }
 	public int getTextureTarget() { return textureTarget; }
-	public void setTextureTarget(int textureTarget) { this.textureTarget = textureTarget; }
+	public void setTextureTarget(int textureTarget) {
+		checkArgument(GL_TEXTURE_TARGET.contains(textureTarget));
+		this.textureTarget = textureTarget; 
+	}
 
 	public int getTextureUnitEnum() { return GL_TEXTURE0 + textureUnit; }
 	public int getTextureUnit() { return textureUnit; }

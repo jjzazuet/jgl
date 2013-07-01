@@ -28,6 +28,7 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	
 	private GLProgram p;
 	private GLVertexArray cubeVao = new GLVertexArray();
+	private GLBuffer cubeVertices;
 	private GLUInt uFrontFacing;
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	
@@ -47,7 +48,7 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 		cubeVao.init(gl);
 		p.bind();
 		
-		GLBuffer cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
@@ -76,10 +77,10 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glCullFace(GL_FRONT);
 		uFrontFacing.set(0);
-		gl.glDrawArraysInstanced(GL_TRIANGLES, 0, 36, instructionCount);
+		gl.glDrawArraysInstanced(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity(), instructionCount);
 		gl.glCullFace(GL_BACK);
 		uFrontFacing.set(1);
-		gl.glDrawArraysInstanced(GL_TRIANGLES, 0, 36, instructionCount);
+		gl.glDrawArraysInstanced(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity(), instructionCount);
 		cubeVao.unbind();
 	}
 

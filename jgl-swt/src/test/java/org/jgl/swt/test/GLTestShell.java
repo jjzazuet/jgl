@@ -34,10 +34,10 @@ public class GLTestShell {
 
 		caps.setDoubleBuffered(true);
 		caps.setNumSamples(8);
-		caps.setSampleBuffers(true);
+		caps.setSampleBuffers(false);
 
 		// TODO implement test carousel or something... :P
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T019SubsurfaceScattering());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T022ParallaxMapping());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();

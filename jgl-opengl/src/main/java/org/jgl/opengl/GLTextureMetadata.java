@@ -9,9 +9,13 @@ import static com.google.common.base.Preconditions.*;
 public class GLTextureMetadata {
 
 	public static final int ZERO = 0;
+	public static final int MINUS_ONE = -1;
 
-	private int width, height;
-	private int internalFormat, pixelDataFormat, pixelDataType;
+	private int width = MINUS_ONE;
+	private int height = MINUS_ONE;
+	private int internalFormat = MINUS_ONE;
+	private int pixelDataFormat = MINUS_ONE;
+	private int pixelDataType = MINUS_ONE;
 
 	public int getWidth() { return width; }
 	public void setWidth(int width) {
