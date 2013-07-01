@@ -27,17 +27,17 @@ public class GLTestShell {
 		s = new Shell(d);
 
 		s.setLayout(new FillLayout());
-		setSize(s, 784, 584);
+		setSize(s, 800, 600);
 
 		GLProfile profile = GLProfile.get(GLProfile.GL3);
 		GLCapabilities caps = new GLCapabilities(profile);
 
 		caps.setDoubleBuffered(true);
 		caps.setNumSamples(8);
-		caps.setSampleBuffers(false);
+		caps.setSampleBuffers(true);
 
 		// TODO implement test carousel or something... :P
-		GLComposite comp = new GLComposite(s, SWT.None, caps, new T016NoiseTorus());
+		GLComposite comp = new GLComposite(s, SWT.None, caps, new T017PhongTorus());
 
 		comp.getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
