@@ -1,5 +1,6 @@
 package org.jgl.opengl.util;
 
+import static java.lang.String.format;
 import static com.google.common.base.Charsets.*;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL2.*;
@@ -14,6 +15,7 @@ import org.slf4j.*;
 
 public class GLAttributeFactory {
 
+	public static final int ZERO = 0;
 	public static final String LEFT_BRACKET = "[";
 	private static final Logger log = LoggerFactory.getLogger(GLUniformAttribute.class);
 
@@ -28,7 +30,7 @@ public class GLAttributeFactory {
 
 		for (int k = 0; k < attributeCount; k++) {
 
-			GLAttribute at;
+			GLAttribute at = null;
 			String attributeName;
 			int location;
 
@@ -42,8 +44,13 @@ public class GLAttributeFactory {
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = p.getGl().glGetAttribLocation(p.getGlResourceHandle(), attributeName);
-				at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, p);
-				
+
+				if (location < ZERO) {
+					log.error(p.resourceMsg(format("Invalid active attribute: [%s, %s, %s, %s]", 
+							location, sizeBuf.get(), Integer.toHexString(typeBuf.get()), attributeName)));
+				} else {
+					at = new GLVertexAttribute(k, location, sizeBuf.get(), typeBuf.get(), attributeName, p);
+				}
 			} else {
 
 				p.getGl().glGetActiveUniform(p.getGlResourceHandle(), k, nameBuf.limit(), 
@@ -88,8 +95,10 @@ public class GLAttributeFactory {
 				}
 			}
 
-			if (log.isDebugEnabled()) { log.debug(at.toString()); }
-			programAttributes.put(at.getName(), at);
+			if (at != null) {
+				if (log.isDebugEnabled()) { log.debug(at.toString()); }
+				programAttributes.put(at.getName(), at);
+			}
 		}
 
 		return programAttributes;

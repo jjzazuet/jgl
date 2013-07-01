@@ -11,8 +11,6 @@ import org.jgl.opengl.GLBuffer;
 
 public class GLDrawUtils {
 
-	public static final int MINNUS_ONE = -1;
-	
 	public static void glIndexedDraw(int glMode, GL gl, GLBuffer buffer) {
 		checkNotNull(gl);
 		checkNotNull(buffer);
