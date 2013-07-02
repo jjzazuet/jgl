@@ -48,8 +48,8 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 		cubeVao.init(gl);
 		p.bind();
 		
-		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();

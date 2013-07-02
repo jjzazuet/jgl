@@ -46,8 +46,8 @@ public class T015ShadedCube extends GL3EventListener {
 		
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");
-		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();

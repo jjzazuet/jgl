@@ -3,13 +3,10 @@ package org.jgl.geom.solid;
 import static org.jgl.geom.FaceWinding.*;
 
 import org.jgl.geom.FaceWinding;
-import org.jgl.geom.solid.model.IndexDrawable;
-import org.jgl.geom.solid.model.NormalMapped;
-import org.jgl.geom.solid.model.Drawable;
-import org.jgl.geom.solid.model.SphereBound;
-import org.jgl.geom.solid.model.TangentMapped;
-import org.jgl.geom.solid.model.Textured;
+import org.jgl.geom.io.GeometryBuffer;
+import org.jgl.geom.solid.model.*;
 import org.jgl.math.vector.Vector4;
+
 import static com.google.common.base.Preconditions.*;
 
 /**
@@ -41,8 +38,8 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 	}
 
 	@Override
-	public float[] getVertices() {
-		
+	public GeometryBuffer<Float> getVertices() {
+
 		float hX = (float) (x / 2);
 		float hY = (float) (y / 2);
 		float hZ = (float) (z / 2);
@@ -60,43 +57,43 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 		
 		int A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7;
 		
-		float [] positions = new float [] {
-				
+		Float [] positions = new Float [] {
+
 				c[A][0], c[A][1], c[A][2],
 				c[D][0], c[D][1], c[D][2],
 				c[B][0], c[B][1], c[B][2],
 				c[B][0], c[B][1], c[B][2],
 				c[D][0], c[D][1], c[D][2],
 				c[C][0], c[C][1], c[C][2],
-		
+
 				c[A][0], c[A][1], c[A][2],
 				c[B][0], c[B][1], c[B][2],
 				c[E][0], c[E][1], c[E][2],
 				c[B][0], c[B][1], c[B][2],
 				c[F][0], c[F][1], c[F][2],
 				c[E][0], c[E][1], c[E][2],
-		
+
 				c[B][0], c[B][1], c[B][2],
 				c[C][0], c[C][1], c[C][2],
 				c[F][0], c[F][1], c[F][2],
 				c[C][0], c[C][1], c[C][2],
 				c[G][0], c[G][1], c[G][2],
 				c[F][0], c[F][1], c[F][2],
-		
+
 				c[E][0], c[E][1], c[E][2],
 				c[F][0], c[F][1], c[F][2],
 				c[G][0], c[G][1], c[G][2],
 				c[E][0], c[E][1], c[E][2],
 				c[G][0], c[G][1], c[G][2],
 				c[H][0], c[H][1], c[H][2],
-		
+
 				c[C][0], c[C][1], c[C][2],
 				c[D][0], c[D][1], c[D][2],
 				c[H][0], c[H][1], c[H][2],
 				c[C][0], c[C][1], c[C][2],
 				c[H][0], c[H][1], c[H][2],
 				c[G][0], c[G][1], c[G][2],
-		
+
 				c[A][0], c[A][1], c[A][2],
 				c[E][0], c[E][1], c[E][2],
 				c[D][0], c[D][1], c[D][2],
@@ -104,14 +101,14 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				c[E][0], c[E][1], c[E][2],
 				c[H][0], c[H][1], c[H][2]
 		};
-		
-		return positions;
+
+		GeometryBuffer<Float> gb = new GeometryBuffer<Float>(3, positions);
+		return gb;
 	}
 
 	@Override
-	public int[] getIndices() {
-		
-		int [] a = new int[] { 
+	public GeometryBuffer<Integer> getIndices() {
+		Integer [] a = new Integer[] { 
 				0,   1,  5,  2, // +x
 				19, 22, 23, 18, // -x
 				6,   7, 10, 11, // +y
@@ -119,15 +116,14 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				12, 13, 16, 17, // +z
 				31, 35, 32, 30  // -z
 		};
-		
-		return a;
+		return new GeometryBuffer<Integer>(4, a);
 	}
 
 	@Override
 	public FaceWinding getFaceWinding() { return CW; }
 
 	@Override
-	public float[] getNormals() {
+	public GeometryBuffer<Float> getNormals() {
 
 		float [][] n = new float [][] {
 				{ 1, 0, 0 },
@@ -138,7 +134,7 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				{ 0, 0,-1 }
 			};
 		
-		float [] normals = new float [] {
+		Float [] normals = new Float [] {
 				
 				n[0][0], n[0][1], n[0][2],
 				n[0][0], n[0][1], n[0][2],
@@ -182,64 +178,61 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				n[5][0], n[5][1], n[5][2],
 				n[5][0], n[5][1], n[5][2]
 		};
-		
-		return normals;
+		return new GeometryBuffer<Float>(3, normals);
 	}
 
 	@Override
-	public float[] getTexCoords() {
+	public GeometryBuffer<Float> getTexCoords() {
 
-		float [] a = new float [] {
-				
-				1, 1, 0,
-				1, 0, 0,
-				0, 1, 0,
-				0, 1, 0,
-				1, 0, 0,
-				0, 0, 0,
+		Float [] a = new Float [] {
+				1.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 0.0f,
+				0.0f, 1.0f, 0.0f,
+				0.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.0f,
 
-				1, 1, 1,
-				1, 0, 1,
-				0, 1, 1,
-				1, 0, 1,
-				0, 0, 1,
-				0, 1, 1,
+				1.0f, 1.0f, 1.0f,
+				1.0f, 0.0f, 1.0f,
+				0.0f, 1.0f, 1.0f,
+				1.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 1.0f,
+				0.0f, 1.0f, 1.0f,
 
-				1, 1, 2,
-				1, 0, 2,
-				0, 1, 2,
-				1, 0, 2,
-				0, 0, 2,
-				0, 1, 2,
+				1.0f, 1.0f, 2.0f,
+				1.0f, 0.0f, 2.0f,
+				0.0f, 1.0f, 2.0f,
+				1.0f, 0.0f, 2.0f,
+				0.0f, 0.0f, 2.0f,
+				0.0f, 1.0f, 2.0f,
 
-				0, 1, 3,
-				1, 1, 3,
-				1, 0, 3,
-				0, 1, 3,
-				1, 0, 3,
-				0, 0, 3,
+				0.0f, 1.0f, 3.0f,
+				1.0f, 1.0f, 3.0f,
+				1.0f, 0.0f, 3.0f,
+				0.0f, 1.0f, 3.0f,
+				1.0f, 0.0f, 3.0f,
+				0.0f, 0.0f, 3.0f,
 
-				1, 1, 4,
-				1, 0, 4,
-				0, 0, 4,
-				1, 1, 4,
-				0, 0, 4,
-				0, 1, 4,
+				1.0f, 1.0f, 4.0f,
+				1.0f, 0.0f, 4.0f,
+				0.0f, 0.0f, 4.0f,
+				1.0f, 1.0f, 4.0f,
+				0.0f, 0.0f, 4.0f,
+				0.0f, 1.0f, 4.0f,
 
-				0, 1, 5,
-				1, 1, 5,
-				0, 0, 5,
-				0, 0, 5,
-				1, 1, 5,
-				1, 0, 5
-			};
-		
-		return a;
+				0.0f, 1.0f, 5.0f,
+				1.0f, 1.0f, 5.0f,
+				0.0f, 0.0f, 5.0f,
+				0.0f, 0.0f, 5.0f,
+				1.0f, 1.0f, 5.0f,
+				1.0f, 0.0f, 5.0f
+		};
+		return new GeometryBuffer<Float>(3, a);
 	}
 
 	@Override
-	public float[] getTangents() {
-		
+	public GeometryBuffer<Float> getTangents() {
+
 		float [][] n = new float [][] {
 				{ 0,  0, -1},
 				{+1,  0,  0},
@@ -248,9 +241,8 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				{-1,  0,  0},
 				{-1,  0,  0}
 			};
-		
-		
-		float []_tangents = new float [] {
+
+		Float []_tangents = new Float [] {
 				n[0][0], n[0][1], n[0][2],
 				n[0][0], n[0][1], n[0][2],
 				n[0][0], n[0][1], n[0][2],
@@ -294,7 +286,7 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				n[5][0], n[5][1], n[5][2]
 			};
 
-		return _tangents;
+		return new GeometryBuffer<Float>(3, _tangents);
 	}
 
 	@Override

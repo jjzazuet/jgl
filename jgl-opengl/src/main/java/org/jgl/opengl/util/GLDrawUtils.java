@@ -11,22 +11,22 @@ import org.jgl.opengl.GLBuffer;
 
 public class GLDrawUtils {
 
-	public static void glIndexedDraw(int glMode, GL gl, GLBuffer buffer) {
-		checkNotNull(gl);
+	public static void glIndexedDraw(int glMode, GLBuffer buffer) {
 		checkNotNull(buffer);
 		buffer.getRawBuffer().clear();
-
-		gl.glDrawElements(glMode, 
+		buffer.getGl().glDrawElements(glMode, 
 				buffer.getRawBuffer().capacity(), 
 				buffer.getBufferMetadata().getGlPrimitiveType(), 
 				buffer.getRawBuffer());
+		buffer.checkError();
 	}
 
-	public static void glIndexedDraw(int glMode, GL3 gl, GLBuffer buffer, int restartIndex) {
+	public static void glIndexedDraw(int glMode, GLBuffer buffer, int restartIndex) {
 		checkArgument(restartIndex >= 0);
+		GL3 gl = buffer.getGl();
 		gl.glEnable(GL_PRIMITIVE_RESTART);
 		gl.glPrimitiveRestartIndex(restartIndex);
-		glIndexedDraw(glMode, gl, buffer);
+		glIndexedDraw(glMode, buffer);
 		gl.glDisable(GL_PRIMITIVE_RESTART);
 	}
 	

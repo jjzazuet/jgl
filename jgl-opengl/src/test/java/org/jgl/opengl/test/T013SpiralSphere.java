@@ -40,9 +40,9 @@ public class T013SpiralSphere extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		GLBuffer sphereVertices = buffer(sphere.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer sphereTexCoords = buffer(sphere.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
-		sphereIndices = buffer(sphere.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer sphereVertices = buffer(sphere.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer sphereTexCoords = buffer(sphere.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		sphereIndices = buffer(sphere.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t013SpiralSphere/spiralSphere.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t013SpiralSphere/spiralSphere.fs", gl);
@@ -65,7 +65,7 @@ public class T013SpiralSphere extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		sphereVao.bind();
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, sphereIndices);
+		glIndexedDraw(GL_TRIANGLE_STRIP, sphereIndices);
 		sphereVao.unbind();
 	}
 

@@ -1,5 +1,7 @@
 package org.jgl.geom.solid.model;
 
+import org.jgl.geom.io.GeometryBuffer;
+
 public interface BitangentMapped {
-	public float [] getBitangents();
+	public GeometryBuffer<Float> getBitangents();
 }

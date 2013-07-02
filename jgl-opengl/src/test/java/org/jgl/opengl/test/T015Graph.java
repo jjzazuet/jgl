@@ -160,7 +160,7 @@ public class T015Graph extends GL3EventListener {
 		graphVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_POINTS, 0, NODE_COUNT * 3);
-		glIndexedDraw(GL_LINES, gl, edgeIndices);
+		glIndexedDraw(GL_LINES, edgeIndices);
 		graphVao.unbind();
 	}
 

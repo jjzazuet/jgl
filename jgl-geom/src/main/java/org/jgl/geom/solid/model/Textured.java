@@ -1,5 +1,7 @@
 package org.jgl.geom.solid.model;
 
+import org.jgl.geom.io.GeometryBuffer;
+
 public interface Textured {
-	public float [] getTexCoords();
+	public GeometryBuffer<Float> getTexCoords();
 }

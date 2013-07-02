@@ -37,8 +37,8 @@ public class T010RgbCube extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t010RgbCube/rgbCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t010RgbCube/rgbCube.fs", gl);
 		
-		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
 		
 		cubeVao.init(gl);

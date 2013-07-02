@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 import static org.jgl.math.angle.AngleOps.*;
 import org.jgl.geom.FaceWinding;
+import org.jgl.geom.io.GeometryBuffer;
 import org.jgl.geom.solid.model.BitangentMapped;
 import org.jgl.geom.solid.model.IndexDrawable;
 import org.jgl.geom.solid.model.IndexRestartable;
@@ -33,11 +34,11 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 		this.sections = sections;
 		this.rings = rings;
 	}
-	
-	@Override
-	public float[] getVertices() {
 
-		float [] vertices = new float[(rings + 1) * (sections + 1) * 3];
+	@Override
+	public GeometryBuffer<Float> getVertices() {
+
+		Float [] vertices = new Float[(rings + 1) * (sections + 1) * 3];
 		int k = 0;
 		
 		double r_step = TWO_PI / ((double) rings);
@@ -59,19 +60,19 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			}
 		}
 		checkState(k == vertices.length);
-		return vertices;
+		return new GeometryBuffer<Float>(3, vertices);
 	}
-	
+
 	@Override
 	public int getPrimitiveRestartIndex() {
 		return rings * (2 * (sections + 1) + 1);
 	}
 
 	@Override
-	public int[] getIndices() {
+	public GeometryBuffer<Integer> getIndices() {
 
 		int n = getPrimitiveRestartIndex();
-		int [] indices = new int[n];
+		Integer [] indices = new Integer[n];
 		int k = 0;
 		int offs = 0;
 
@@ -84,13 +85,13 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			offs += sections + 1;
 		}
 		checkState(k == indices.length);
-		return indices;
+		return new GeometryBuffer<Integer>(3, indices);
 	}
 
 	@Override
-	public float[] getNormals() {
+	public GeometryBuffer<Float> getNormals() {
 
-		float [] normals = new float[(rings + 1) * (sections + 1) * 3];
+		Float [] normals = new Float[(rings + 1) * (sections + 1) * 3];
 		int k = 0;
 
 		double r_step = (TWO_PI) / ((double) rings);
@@ -111,13 +112,13 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			}
 		}
 		checkState(k == normals.length);
-		return normals;
+		return new GeometryBuffer<Float>(3, normals);
 	}
 
 	@Override
-	public float[] getTexCoords() {
-		
-		float[] texCoords = new float [(rings + 1) * (sections + 1) * 2];
+	public GeometryBuffer<Float> getTexCoords() {
+
+		Float[] texCoords = new Float [(rings + 1) * (sections + 1) * 2];
 		int k = 0;
 		double r_step = 1.0 / ((double) rings);
 		double s_step = 1.0 / ((double) sections);
@@ -133,13 +134,13 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			}
 		}
 		checkState(k == texCoords.length);
-		return texCoords;
+		return new GeometryBuffer<Float>(2, texCoords);
 	}
 
 	@Override
-	public float[] getTangents() {
+	public GeometryBuffer<Float> getTangents() {
 
-		float [] tangents = new float[(rings + 1) * (sections + 1) * 3];
+		Float [] tangents = new Float[(rings + 1) * (sections + 1) * 3];
 		int k = 0;
 		double r_step = TWO_PI / ((double) rings);
 
@@ -150,12 +151,12 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			
 			for(int s=0; s!=(sections+1); ++s) {
 				tangents[k++] = (float) tx;
-				tangents[k++] = 0;
+				tangents[k++] = (float) 0;
 				tangents[k++] = (float) tz;
 			}
 		}
 		checkState(k == tangents.length);
-		return tangents;
+		return new GeometryBuffer<Float>(3, tangents);
 	}
 
 	@Override
@@ -170,9 +171,9 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 	}
 
 	@Override
-	public float[] getBitangents() {
-		
-		float[] bitangents = new float [(rings + 1) * (sections + 1) * 3];
+	public GeometryBuffer<Float> getBitangents() {
+
+		Float[] bitangents = new Float [(rings + 1) * (sections + 1) * 3];
 		int k = 0;
 
 		double r_step = (TWO_PI) / ((double) rings);
@@ -197,9 +198,9 @@ public class Torus implements Drawable, IndexDrawable, Textured,
 			}
 		}
 		checkState(k == bitangents.length);
-		return bitangents;
+		return new GeometryBuffer<Float>(3, bitangents);
 	}
-	
+
 	public double getRadiusOut() { return radiusOut; }
 	public double getRadiusIn() { return radiusIn; }
 	public int getRings() { return rings; }

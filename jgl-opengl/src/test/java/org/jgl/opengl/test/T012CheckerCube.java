@@ -41,8 +41,8 @@ public class T012CheckerCube extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.fs", gl);
 		
-		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cameraMatrixAttr = p.getMat4("CameraMatrix");
 		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
 
@@ -58,7 +58,7 @@ public class T012CheckerCube extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}

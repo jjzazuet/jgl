@@ -44,9 +44,9 @@ public class T017PhongTorus extends GL3EventListener {
 		p.bind();
 		torusVao.init(gl);
 
-		GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		p.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
@@ -72,7 +72,7 @@ public class T017PhongTorus extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		torusVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 

@@ -8,6 +8,51 @@ import java.util.List;
 
 public class GLBufferUtils {
 
+	public static byte[] primitiveArray(Byte [] i) {
+		checkNotNull(i);
+		byte [] arr = new byte[i.length];
+		for (int k = 0; k < i.length; k++) {
+			arr[k] = i[k];
+		}
+		return arr;
+	}
+
+	public static short[] primitiveArray(Short [] i) {
+		checkNotNull(i);
+		short [] arr = new short[i.length];
+		for (int k = 0; k < i.length; k++) {
+			arr[k] = i[k];
+		}
+		return arr;
+	}
+
+	public static double[] primitiveArray(Double [] i) {
+		checkNotNull(i);
+		double [] arr = new double[i.length];
+		for (int k = 0; k < i.length; k++) {
+			arr[k] = i[k];
+		}
+		return arr;
+	}
+
+	public static float[] primitiveArray(Float [] i) {
+		checkNotNull(i);
+		float [] arr = new float[i.length];
+		for (int k = 0; k < i.length; k++) {
+			arr[k] = i[k];
+		}
+		return arr;
+	}
+
+	public static int[] primitiveArray(Integer [] i) {
+		checkNotNull(i);
+		int [] arr = new int[i.length];
+		for (int k = 0; k < i.length; k++) {
+			arr[k] = i[k];
+		}
+		return arr;
+	}
+
 	public static int[] toIntArray(List<Integer> list) {
 		checkNotNull(list);
 		checkArgument(list.size() > 0);

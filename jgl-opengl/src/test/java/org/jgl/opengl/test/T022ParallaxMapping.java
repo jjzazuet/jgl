@@ -53,10 +53,10 @@ public class T022ParallaxMapping extends GL3EventListener {
 		p.bind();
 		cubeVao.init(gl);
 		
-		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer cubeTangents = buffer(cube.getTangents(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer cubeTangents = buffer(cube.getTangents(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLTexture2D bumpTexture = new GLTexture2D();
 
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();

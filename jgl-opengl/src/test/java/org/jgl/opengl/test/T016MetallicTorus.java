@@ -49,13 +49,13 @@ public class T016MetallicTorus extends GL3EventListener {
 		torusVao.init(gl);
 		p.bind();
 
-		GLBuffer torusPositions = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusPositions = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Position").set(torusVao, torusPositions, false, 0).enable();
 
-		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 
-		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");
 		uModelMatrix = p.getMat4("ModelMatrix");
@@ -84,7 +84,7 @@ public class T016MetallicTorus extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		torusVao.bind();
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 

@@ -48,14 +48,14 @@ public class T016CartoonTorus extends GL3EventListener {
 		p.bind();
 		torusVao.init(gl);
 		
-		GLBuffer torusVerts = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusVerts = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Position").set(torusVao, torusVerts, false, 0).enable();
 		
-		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();		
 		p.getVec3("LightPos").set(new Vector3(4.0f, 4.0f, -8.0f));
 
-		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");
 		uModelMatrix = p.getMat4("ModelMatrix");
@@ -68,7 +68,7 @@ public class T016CartoonTorus extends GL3EventListener {
 		gl.glCullFace(GL_BACK);
 		gl.glEnable(GL_LINE_SMOOTH);
 		// TODO bug: this command fails with Intel HD4000 cards...
-		gl.glLineWidth(4);
+		//gl.glLineWidth(4);
 	}
 
 	@Override
@@ -79,11 +79,11 @@ public class T016CartoonTorus extends GL3EventListener {
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		gl.glCullFace(GL_FRONT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		gl.glCullFace(GL_BACK);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 

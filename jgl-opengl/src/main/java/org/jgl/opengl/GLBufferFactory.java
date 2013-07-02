@@ -1,24 +1,49 @@
 package org.jgl.opengl;
 
+import static org.jgl.opengl.util.GLBufferUtils.*;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import java.nio.*;
 
 import javax.media.opengl.GL3;
+import org.jgl.geom.io.GeometryBuffer;
 
 public class GLBufferFactory {
+
+	public static GLBuffer buffer(GeometryBuffer<? extends Number> gb, GL3 gl, int glBufferType, int glUsageHint) {
+
+		checkNotNull(gb);
+
+		Number [] data = gb.getData();
+		
+		if (data instanceof Float[]) {
+			return buffer(primitiveArray((Float[]) data), gl, glBufferType, glUsageHint, gb.getComponentSize());
+		} else if (data instanceof Double[]) {
+			return buffer(primitiveArray((Double[]) data), gl, glBufferType, glUsageHint, gb.getComponentSize());
+		} else if (data instanceof Integer[]) {
+			return buffer(primitiveArray((Integer[]) data), gl, glBufferType, glUsageHint, gb.getComponentSize());
+		} else if (data instanceof Short[]) {
+			return buffer(primitiveArray((Short[]) data), gl, glBufferType, glUsageHint, gb.getComponentSize());
+		} else if (data instanceof Byte[]) {
+			return buffer(primitiveArray((Byte[]) data), gl, glBufferType, glUsageHint, gb.getComponentSize());	
+		} else {
+			throw new IllegalArgumentException(
+					String.format("Invalid geometry buffer type [%s]", 
+							gb.getData().getClass().getCanonicalName()));
+		}
+	}
 
 	public static GLBuffer buffer(float [] data, GL3 gl, int glBufferType, int glUsageHint, int componentSize) {
 		return createBuffer(data, gl, glBufferType, glUsageHint, 
 				new GLBufferMetadata(new int [] { componentSize }, GL_FLOAT));
 	}
-			
+
 	public static GLBuffer buffer(double [] data, GL3 gl, int glBufferType, int glUsageHint, int componentSize) {
 		return createBuffer(data, gl, glBufferType, glUsageHint, 
 				new GLBufferMetadata(new int [] { componentSize }, GL_DOUBLE));
 	}
-	
+
 	public static GLBuffer buffer(int [] data, GL3 gl, int glBufferType, int glUsageHint, int componentSize) {
 		return createBuffer(data, gl, glBufferType, glUsageHint, 
 				new GLBufferMetadata(new int [] { componentSize }, GL_UNSIGNED_INT));
@@ -26,14 +51,14 @@ public class GLBufferFactory {
 
 	public static GLBuffer buffer(short [] data, GL3 gl, int glBufferType, int glUsageHint, int componentSize) {
 		return createBuffer(data, gl, glBufferType, glUsageHint, 
-				new GLBufferMetadata(new int [] { componentSize }, GL_SHORT));
+				new GLBufferMetadata(new int [] { componentSize }, GL_UNSIGNED_SHORT));
 	}
-	
+
 	public static GLBuffer buffer(byte [] data, GL3 gl, int glBufferType, int glUsageHint, int componentSize) {
 		return createBuffer(data, gl, glBufferType, glUsageHint, 
-				new GLBufferMetadata(new int [] { componentSize }, GL_BYTE));
+				new GLBufferMetadata(new int [] { componentSize }, GL_UNSIGNED_BYTE));
 	}
-	
+
 	protected static GLBuffer createBuffer(Object dataArray, GL3 gl, int glBufferType, int glUsageHint, GLBufferMetadata md) {
 
 		checkNotNull(dataArray);
@@ -81,7 +106,7 @@ public class GLBufferFactory {
 		}
 
 		glSizeIptr = glSizeIptr * md.getByteSizeof(md.getGlPrimitiveType());
-		
+
 		targetBuffer.flip();
 		glBuffer.init(gl);
 		glBuffer.bind();

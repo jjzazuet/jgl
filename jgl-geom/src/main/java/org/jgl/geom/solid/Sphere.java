@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.*;
 import static java.lang.Math.*;
 
 import org.jgl.geom.FaceWinding;
+import org.jgl.geom.io.GeometryBuffer;
 import org.jgl.geom.solid.model.IndexDrawable;
 import org.jgl.geom.solid.model.NormalMapped;
 import org.jgl.geom.solid.model.Drawable;
@@ -26,24 +27,23 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 	public Sphere() { this(1, 18, 12); }
 
 	@Override
-	public float[] getVertices() {
-		
-		float [] n = getNormals();
-		
+	public GeometryBuffer<Float> getVertices() {
+
+		Float [] n = getNormals().getData();
+
 		if (getRadius() != 1) {
 			for (int i = 0; i < n.length; i++) {
 				n[i] = (float) (n[i] * getRadius());
 			}
 		}
-		
-		return n;
+		return new GeometryBuffer<Float>(3, n);
 	}
 
 	@Override
-	public int[] getIndices() {
-		
+	public GeometryBuffer<Integer> getIndices() {
+
 		int n = (getRings() + 1)*(2 * (getSections() + 1) + 1);
-		int [] indices = new int [n];
+		Integer [] indices = new Integer [n];
 		int k = 0;
 		int offs = 0;
 		
@@ -57,13 +57,13 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 		}
 		
 		checkState(k == indices.length);
-		return indices;
+		return new GeometryBuffer<Integer>(3, indices);
 	}
 
 	@Override
-	public float[] getNormals() {
+	public GeometryBuffer<Float> getNormals() {
 
-		float [] normals = new float [((getRings() + 2) * (getSections() + 1)) * 3];
+		Float [] normals = new Float [((getRings() + 2) * (getSections() + 1)) * 3];
 		int k = 0;
 		double rStep = (1 * PI) / ((double) (getRings() + 1));
 		double sStep = (2 * PI) / ((double) getSections());
@@ -79,15 +79,15 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 				normals[k++] = (float) (r_rad * -sin(s * sStep));
 			}
 		}
-		
+
 		checkState(k == normals.length);
-		return normals;
+		return new GeometryBuffer<Float>(3, normals);
 	}
 
 	@Override
-	public float[] getTexCoords() {
-		
-		float [] texCoords = new float [((getRings() + 2) * (getSections() + 1)) * 2];
+	public GeometryBuffer<Float> getTexCoords() {
+
+		Float [] texCoords = new Float [((getRings() + 2) * (getSections() + 1)) * 2];
 		int k = 0;
 		double r_step = 1.0 / ((double) (getRings() + 1));
 		double s_step = 1.0 / ((double) getSections());
@@ -101,28 +101,28 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 				texCoords[k++] = (float) r_lat;
 			}
 		}
-		
-		checkState(k == texCoords.length); // 2 values per vertex
-		return texCoords;
+
+		checkState(k == texCoords.length);
+		return new GeometryBuffer<Float>(2, texCoords);
 	}
 
 	@Override
-	public float[] getTangents() {
-		
-		float [] dest = new float[((getRings() + 2) * (getSections() + 1)) * 3];
+	public GeometryBuffer<Float> getTangents() {
+
+		Float [] dest = new Float[((getRings() + 2) * (getSections() + 1)) * 3];
 		int k = 0;
 		double s_step = (2.0 * PI) / ((double) getSections());
 
 		for(int r = 0; r != (getRings() + 2); ++r) {
 			for(int s = 0; s != (getSections() + 1); ++s) {
 				dest[k++] = (float) -sin(s*s_step);
-				dest[k++] = 0;
+				dest[k++] = (float) 0;
 				dest[k++] = (float) -cos(s*s_step);
 			}
 		}
 
 		checkState(k == dest.length);
-		return dest;
+		return new GeometryBuffer<Float>(3, dest);
 	}
 
 	@Override

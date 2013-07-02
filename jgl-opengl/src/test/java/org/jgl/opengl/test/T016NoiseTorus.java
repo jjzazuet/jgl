@@ -58,19 +58,19 @@ public class T016NoiseTorus extends GL3EventListener {
 		p.bind();
 		torusVao.init(gl);
 
-		GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
 
-		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 
-		GLBuffer torusTexCoords = buffer(torus.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
+		GLBuffer torusTexCoords = buffer(torus.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		p.getStageAttribute("TexCoord").set(torusVao, torusTexCoords, false, 0).enable();
 
 		uCameraMatrix = p.getMat4("CameraMatrix");
 		uModelMatrix = p.getMat4("ModelMatrix");
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		noiseTexture.init(gl); {
 			
@@ -123,11 +123,11 @@ public class T016NoiseTorus extends GL3EventListener {
 		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		gl.glCullFace(GL_FRONT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		gl.glCullFace(GL_BACK);
-		glIndexedDraw(GL_TRIANGLE_STRIP, gl, torusIndices, torus.getPrimitiveRestartIndex());
+		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 

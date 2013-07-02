@@ -36,7 +36,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t014MultiCubeGs/multiCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t014MultiCubeGs/multiCube.gs",

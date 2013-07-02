@@ -15,8 +15,6 @@ dependencies {
 
 	compile 'org.jogamp.nativewindow:nativewindow-core:20130411'
 
-	testCompile 'com.google.seeds:seeds-primitives:14.0'
-
 	if (isWindows) { 
 
 		compile 'org.jogamp.jogl:jogl-os-win:20130411'
