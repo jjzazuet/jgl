@@ -95,15 +95,15 @@ public class T016MetallicTorus extends GL3EventListener {
 				3.5, 
 				azimuth.setDegrees(time * 35), 
 				elevation.setDegrees(sineWave(time / 60) * 80));
-		uCameraMatrix.setColMaj(camMat);
+		uCameraMatrix.set(camMat);
 		torusTransform.getRotationX().setFullCircles(time * 0.25);
-		uModelMatrix.setColMaj(torusTransform.getModelMatrix());
+		uModelMatrix.set(torusTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMat, fov.setDegrees(80), newViewport.width/newViewport.height, 1, 20);
-		uProjectionMatrix.setColMaj(projMat);
+		uProjectionMatrix.set(projMat);
 	}
 }

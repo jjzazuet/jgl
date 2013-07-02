@@ -70,7 +70,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 		azimuth.setDegrees(time * 135);
 		elevation.setDegrees(sineWave(time / 20) * 30);
 		orbit(camMat, origin, 18.5, azimuth, elevation);
-		uCameraMatrix.setColMaj(camMat);
+		uCameraMatrix.set(camMat);
 	}
 
 	@Override
@@ -78,6 +78,6 @@ public class T014MultiCubeGs extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 50);
-		uProjectionMatrix.setColMaj(projMat);		
+		uProjectionMatrix.set(projMat);
 	}
 }

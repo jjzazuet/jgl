@@ -75,10 +75,10 @@ public class T013SpiralSphere extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 		
 		lookAt(cameraMat, eye, target);
-		uCameraMatrix.setColMaj(cameraMat);
+		uCameraMatrix.set(cameraMat);
 		modelTransform.getTranslation().setY(Math.sqrt(1 + sineWave(time / 2.0)));
 		modelTransform.getRotationY().setDegrees(time * 180);
-		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
+		uModelMatrix.set(modelTransform.getModelMatrix());
 	}
 
 	@Override
@@ -86,6 +86,6 @@ public class T013SpiralSphere extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 70);
-		uProjectionMatrix.setColMaj(projMat);
+		uProjectionMatrix.set(projMat);
 	}
 }

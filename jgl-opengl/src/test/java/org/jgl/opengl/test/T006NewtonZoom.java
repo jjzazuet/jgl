@@ -14,6 +14,7 @@ import javax.media.opengl.GL3;
 
 import org.jgl.math.angle.Angle;
 import org.jgl.math.matrix.Matrix2;
+import org.jgl.math.matrix.io.BufferedMatrix2;
 import org.jgl.math.vector.*;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.GLProgram;
@@ -26,7 +27,7 @@ public class T006NewtonZoom extends GL3EventListener {
 	private GLProgram p;
 	private GLVertexArray rectVao = new GLVertexArray();
 	private GLUFloatMat2 zoomMatrix;
-	private Matrix2 m = new Matrix2();
+	private BufferedMatrix2 m = new BufferedMatrix2();
 	private Vector2 x = new Vector2();
 	private Vector2 y = new Vector2();
 	private FloatBuffer matBuffer = FloatBuffer.allocate(Matrix2.COMPONENT_SIZE);
@@ -74,7 +75,7 @@ public class T006NewtonZoom extends GL3EventListener {
 		m.m01 = y.x; m.m11 = y.y;
 		
 		storeColMaj(matBuffer, m);
-		zoomMatrix.setColMaj(matBuffer, m);
+		zoomMatrix.set(m);
 	}
 
 	@Override

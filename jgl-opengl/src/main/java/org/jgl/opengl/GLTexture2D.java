@@ -44,8 +44,8 @@ public class GLTexture2D extends GLContextBoundResource {
 	}
 	@Override
 	protected void doInit() {
-		IntBuffer i1 = IntBuffer.allocate(1);
-		getGl().glGenTextures(1, i1);
+		IntBuffer i1 = IntBuffer.allocate(ONE);
+		getGl().glGenTextures(ONE, i1);
 		setGlResourceHandle(i1.get());
 		checkError();
 	}
@@ -68,7 +68,7 @@ public class GLTexture2D extends GLContextBoundResource {
 
 	@Override
 	protected void doDestroy() {
-		getGl().glDeleteTextures(1, intBuffer(getGlResourceHandle()));
+		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
 		checkError();
 	}
 
@@ -88,4 +88,14 @@ public class GLTexture2D extends GLContextBoundResource {
 	public int getTextureUnitEnum() { return GL_TEXTURE0 + textureUnit; }
 	public int getTextureUnit() { return textureUnit; }
 	public void setTextureUnit(int textureUnit) { this.textureUnit = textureUnit; }
+	
+	@Override
+	public String toString() {
+		return String.format("%s [target: %s, textureUnit: %s, glTextureUnit: %s, image:%s]",
+				super.toString(), 
+				Integer.toHexString(getTextureTarget()),
+				getTextureUnit(),
+				Integer.toHexString(getTextureUnitEnum()),
+				getImage());
+	}
 }

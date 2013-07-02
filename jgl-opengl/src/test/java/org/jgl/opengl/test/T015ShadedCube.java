@@ -71,13 +71,13 @@ public class T015ShadedCube extends GL3EventListener {
 		orbit(camMatrix, orbitTarget, 3, 
 				azimuth.setDegrees(time * 135), 
 				elevation.setDegrees(sineWave(time / 20) * 90));
-		uCameraMatrix.setColMaj(camMatrix);
+		uCameraMatrix.set(camMatrix);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 20);
-		uProjectionMatrix.setColMaj(projMatrix);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

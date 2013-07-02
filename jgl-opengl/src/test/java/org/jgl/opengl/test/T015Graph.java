@@ -168,7 +168,7 @@ public class T015Graph extends GL3EventListener {
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
 		lookAt(camMat, cameraPath.pointAt(time / 9), cameraTargetPath.pointAt(time / 7));
-		uCameraMatrix.setColMaj(camMat);
+		uCameraMatrix.set(camMat);
 	}
 
 	@Override
@@ -176,6 +176,6 @@ public class T015Graph extends GL3EventListener {
 		gl.glViewport(newViewport.x, newViewport.y, 
 				(int) newViewport.width, (int) newViewport.height);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 200);
-		uProjectionMatrix.setColMaj(projMat);
+		uProjectionMatrix.set(projMat);
 	}
 }

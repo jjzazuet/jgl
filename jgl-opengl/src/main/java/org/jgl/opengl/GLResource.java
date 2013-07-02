@@ -9,12 +9,13 @@ public class GLResource {
 	private final GLCheckError checkError = new GLCheckError();
 	public static final int MINUS_ONE = -1;
 	public static final int ZERO = 0;
-	
+	public static final int ONE = 1;
+
 	private int glResourceHandle = MINUS_ONE;
-	
+
 	public int getGlResourceHandle() { return glResourceHandle; }
 	public GLCheckError getError() { return checkError; }
-	
+
 	protected final void setGlResourceHandle(int glResourceHandle) {
 		this.glResourceHandle = glResourceHandle;
 	}

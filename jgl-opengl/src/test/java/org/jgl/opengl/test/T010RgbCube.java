@@ -47,7 +47,7 @@ public class T010RgbCube extends GL3EventListener {
 		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 		lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
-		p.getMat4("CameraMatrix").setColMaj(cameraMatrix);
+		p.getMat4("CameraMatrix").set(cameraMatrix);
 
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -73,6 +73,6 @@ public class T010RgbCube extends GL3EventListener {
 		
 		xFov.setDegrees(48);
 		perspectiveX(projMatrix, xFov, newViewport.aspectRatio, 1, 100);
-		projectionMatrixAttr.setColMaj(projMatrix);
+		projectionMatrixAttr.set(projMatrix);
 	}
 }

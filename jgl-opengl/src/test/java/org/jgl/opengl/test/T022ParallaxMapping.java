@@ -49,10 +49,10 @@ public class T022ParallaxMapping extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t022ParallaxMapping/parallaxMapping.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t022ParallaxMapping/parallaxMapping.fs", gl);
-		
+
 		p.bind();
 		cubeVao.init(gl);
-		
+
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTangents = buffer(cube.getTangents(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
@@ -75,7 +75,7 @@ public class T022ParallaxMapping extends GL3EventListener {
 		bumpTexture.bind(); {
 
 			SphereBumpMap bumpMap = new SphereBumpMap(512, 512, 2, 2);
-			
+
 			bumpTexture.loadData(bumpMap);
 			bumpTexture.generateMipMap();
 			bumpTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -117,19 +117,19 @@ public class T022ParallaxMapping extends GL3EventListener {
 		orbit(cameraMatrix, camTarget, 3.0, 
 				azimuth.setDegrees(-45), 
 				elevation.setDegrees(sineWave(time / 30.0) * 70));
-		uCameraMatrix.setColMaj(cameraMatrix);
+		uCameraMatrix.set(cameraMatrix);
 		
 		double circle = -time * 0.025;
 		modelTransform.getRotationX().setFullCircles(circle);
 		modelTransform.getRotationY().setFullCircles(circle);
 		modelTransform.getRotationZ().setFullCircles(circle);
-		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
+		uModelMatrix.set(modelTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(54), newViewport.aspectRatio, 1, 10);
-		uProjectionMatrix.setColMaj(projMatrix);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

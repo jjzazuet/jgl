@@ -10,9 +10,7 @@ import java.nio.*;
 import javax.media.opengl.GL3;
 
 import org.jgl.opengl.*;
-import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.GLShader;
-import org.jgl.opengl.glsl.GLShaderType;
+import org.jgl.opengl.glsl.*;
 import org.slf4j.*;
 
 import com.google.common.base.Charsets;
@@ -27,8 +25,8 @@ public class GLSLUtils {
 		checkNotNull(fsPath);
 		checkNotNull(gl);
 				
-		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
-		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
+		GLShader vs = loadVertexShader(vsPath);
+		GLShader fs = loadFragmentShader(fsPath);
 		GLProgram p = new GLProgram();
 
 		p.attachShader(vs).attachShader(fs).init(gl);
@@ -42,9 +40,9 @@ public class GLSLUtils {
 		checkNotNull(gsPath);
 		checkNotNull(gl);
 
-		GLShader vs = loadShader(vsPath, VERTEX_SHADER);
-		GLShader fs = loadShader(fsPath, FRAGMENT_SHADER);
-		GLShader gs = loadShader(gsPath, GEOMETRY_SHADER);
+		GLShader vs = loadVertexShader(vsPath);
+		GLShader fs = loadFragmentShader(fsPath);
+		GLShader gs = loadGeometryShader(gsPath);
 		GLProgram p = new GLProgram();
 
 		p.attachShader(vs).attachShader(fs).attachShader(gs).init(gl);
@@ -59,6 +57,18 @@ public class GLSLUtils {
 		GLShader s = new GLShader(t, shaderSrcFile);
 
 		return s;
+	}
+
+	public static final GLShader loadVertexShader(String vsPath) throws Exception {
+		return loadShader(vsPath, VERTEX_SHADER);
+	}
+
+	public static final GLShader loadFragmentShader(String fsPath) throws Exception {
+		return loadShader(fsPath, FRAGMENT_SHADER);
+	}
+
+	public static final GLShader loadGeometryShader(String gsPath) throws Exception {
+		return loadShader(gsPath, GEOMETRY_SHADER);
 	}
 
 	public static final int getGlslParam(GLContextBoundResource r, int param) {

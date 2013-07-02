@@ -89,15 +89,15 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 		orbit(camMatrix, camTarget, 3, azimuth.setDegrees(time * 50), 
 				elevation.setDegrees(sineWave(time / 16.0) * 80));
-		uCameraMatrix.setColMaj(camMatrix);
+		uCameraMatrix.set(camMatrix);
 		cubeTransform.getRotationY().setDegrees(time * 25);
-		uModelMatrix.setColMaj(cubeTransform.getModelMatrix());
+		uModelMatrix.set(cubeTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov, newViewport.aspectRatio, 1, 20);
-		uProjectionMatrix.setColMaj(projMatrix);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

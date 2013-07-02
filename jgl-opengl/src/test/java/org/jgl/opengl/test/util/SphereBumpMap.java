@@ -16,6 +16,7 @@ public class SphereBumpMap extends GLTexture2DImage {
 	public static final int ZERO = 0;
 	private int xrep = 1;
 	private int yrep = 1;
+	private FloatBuffer imageDataArray = null;
 	
 	public SphereBumpMap(int width, int height, int xrep, int yrep) {
 
@@ -35,57 +36,57 @@ public class SphereBumpMap extends GLTexture2DImage {
 	}
 
 	@Override
-	public void setImageData(Buffer imageData) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public Buffer getImageData() {
 
-		int width = getMetadata().getWidth();
-		int height = getMetadata().getHeight();
-		double one = 1;
-		double invw = (2.0f*xrep)/width;
-		double invh = (2.0f*yrep)/height;
-		int hi = width / xrep;
-		int hj = height/yrep;
+		if (imageDataArray == null) {
 
-		List<Float> data = new ArrayList<Float>();
-		Vector3 z = new Vector3();
-		Vector3 n = new Vector3();
-		Vector3 v = new Vector3();
+			int width = getMetadata().getWidth();
+			int height = getMetadata().getHeight();
+			double one = 1;
+			double invw = (2.0f*xrep)/width;
+			double invh = (2.0f*yrep)/height;
+			int hi = width / xrep;
+			int hj = height/yrep;
 
-		for(int j=0; j!=height; ++j) {
+			List<Float> data = new ArrayList<Float>();
+			Vector3 z = new Vector3();
+			Vector3 n = new Vector3();
+			Vector3 v = new Vector3();
 
-			double y = ((j % hj) - hj/2) * invh;
+			for(int j=0; j!=height; ++j) {
 
-			for(int i=0; i!=width; ++i) {
+				double y = ((j % hj) - hj/2) * invh;
 
-				double x = ((i % hi) - hi/2)*invw;
-				double l = Math.sqrt(x*x + y*y);
-				double d = Math.sqrt(one-l*l);
+				for(int i=0; i!=width; ++i) {
 
-				z.set(0.0, 0.0, one);
-				n.set(-x, -y, d);
-				
-				if (l >= one) {
-					v.set(z);
-				} else {
-					add(z, n, v);
-					normalize(n);
+					double x = ((i % hi) - hi/2)*invw;
+					double l = Math.sqrt(x*x + y*y);
+					double d = Math.sqrt(one-l*l);
+
+					z.set(0.0, 0.0, one);
+					n.set(-x, -y, d);
+					
+					if (l >= one) {
+						v.set(z);
+					} else {
+						add(z, n, v);
+						normalize(n);
+					}
+
+					if(l >= one) d = 0;
+
+					data.add((float) v.x);
+					data.add((float) v.y);
+					data.add((float) v.z);
+					data.add((float) d);
 				}
-
-				if(l >= one) d = 0;
-
-				data.add((float) v.x);
-				data.add((float) v.y);
-				data.add((float) v.z);
-				data.add((float) d);
 			}
+
+			float [] dataArray = Floats.toArray(data);
+			imageDataArray = FloatBuffer.wrap(dataArray);
+			setImageData(imageDataArray);
 		}
 
-		float [] dataArray = Floats.toArray(data);
-		FloatBuffer db = FloatBuffer.wrap(dataArray);
-		return db;
+		return imageDataArray;
 	}
 }

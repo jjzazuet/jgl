@@ -95,14 +95,14 @@ public class T016CartoonTorus extends GL3EventListener {
 				elevation.setDegrees(sineWave(time / 20.0) * 60));
 		modelTransform.getRotationY().setFullCircles(time * .25);
 		modelTransform.getRotationX().setFullCircles(.25);
-		uCameraMatrix.setColMaj(camMat);
-		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
+		uCameraMatrix.set(camMat);
+		uModelMatrix.set(modelTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMat, fov.setDegrees(75), newViewport.width / newViewport.height, 1, 30);
-		uProjectionMatrix.setColMaj(projMat);
+		uProjectionMatrix.set(projMat);
 	}
 }

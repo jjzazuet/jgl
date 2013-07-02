@@ -21,8 +21,8 @@ public class GLBuffer extends GLContextBoundResource {
 	
 	@Override
 	protected void doInit() { 
-		IntBuffer b = IntBuffer.allocate(1);
-		getGl().glGenBuffers(1, b);
+		IntBuffer b = IntBuffer.allocate(ONE);
+		getGl().glGenBuffers(ONE, b);
 		setGlResourceHandle(b.get());
 	}
 
@@ -38,7 +38,7 @@ public class GLBuffer extends GLContextBoundResource {
 	
 	@Override
 	protected void doDestroy() { 
-		getGl().glDeleteBuffers(1, intBuffer(getGlResourceHandle()));
+		getGl().glDeleteBuffers(ONE, intBuffer(getGlResourceHandle()));
 	}
 
 	public int getGlBufferType() { return glBufferType; }

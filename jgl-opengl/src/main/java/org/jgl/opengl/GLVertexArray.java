@@ -7,8 +7,8 @@ public class GLVertexArray extends GLContextBoundResource {
 	
 	@Override
 	protected void doInit() {
-		IntBuffer b = IntBuffer.allocate(1);
-		getGl().glGenVertexArrays(1, b);
+		IntBuffer b = IntBuffer.allocate(ONE);
+		getGl().glGenVertexArrays(ONE, b);
 		setGlResourceHandle(b.get());
 	}
 
@@ -22,6 +22,6 @@ public class GLVertexArray extends GLContextBoundResource {
 
 	@Override
 	protected void doDestroy() {
-		getGl().glDeleteVertexArrays(1, intBuffer(getGlResourceHandle()));
+		getGl().glDeleteVertexArrays(ONE, intBuffer(getGlResourceHandle()));
 	}
 }

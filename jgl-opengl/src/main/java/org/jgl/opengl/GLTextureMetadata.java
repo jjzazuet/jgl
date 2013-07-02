@@ -49,4 +49,14 @@ public class GLTextureMetadata {
 		checkArgument(GLConstants.GL_TEXTURE_PIXEL_DATA_TYPE.contains(type));
 		this.pixelDataType = type;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s [w:%s, h:%s, internalFormat:%s, pixelFormat:%s, pixelType:%s]", 
+				getClass().getSimpleName(),
+				getWidth(), getHeight(), 
+				Integer.toHexString(getInternalFormat()), 
+				Integer.toHexString(getPixelDataFormat()), 
+				Integer.toHexString(getPixelDataType()));
+	}
 }

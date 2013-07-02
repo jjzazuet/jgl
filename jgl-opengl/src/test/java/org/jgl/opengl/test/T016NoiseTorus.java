@@ -139,15 +139,15 @@ public class T016NoiseTorus extends GL3EventListener {
 		orbit(cameraMatrix, camTarget, 4.5,
 				azimuth.setDegrees(time * 35), 
 				elevation.setDegrees(sineWave(time / 20.0) * 60));
-		uCameraMatrix.setColMaj(cameraMatrix);
+		uCameraMatrix.set(cameraMatrix);
 		modelTransform.getRotationX().setFullCircles(time * 0.25);
-		uModelMatrix.setColMaj(modelTransform.getModelMatrix());
+		uModelMatrix.set(modelTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.aspectRatio, 1, 20);
-		uProjectionMatrix.setColMaj(projMatrix);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

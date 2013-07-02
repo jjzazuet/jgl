@@ -5,20 +5,31 @@ import static com.google.common.base.Preconditions.*;
 
 import java.nio.*;
 import java.util.*;
+
 import javax.media.opengl.GL3;
 import org.jgl.opengl.glsl.GLProgram;
 
-public abstract class GLUniformAttribute extends GLAttribute {
+public abstract class GLUniformAttribute<T> extends GLAttribute {
 
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
 	public static final String VARIABLE_INDEX_FORMAT = "%s[%s]";
+	
 	private Map<Integer, Integer> indexLocations = new HashMap<Integer, Integer>();
 
 	public GLUniformAttribute(int index, int location, 
 			int size, int glType, String name, GLProgram p) {
 		super(index, location, size, glType, name, p);
 	}
+
+	public void set(int index, T value) {
+		checkElementIndex(index, getSize());
+		checkNotNull(value);
+		doSet(index, value);
+	}
+
+	public void set(T value) { set(ZERO, value); }
+	protected abstract void doSet(int index, T value);
 
 	protected FloatBuffer bufferData(float ... data) {
 		checkNotNull(data);
@@ -63,7 +74,6 @@ public abstract class GLUniformAttribute extends GLAttribute {
 				indexLocations.put(ZERO, getLocation());
 			}
 		}
-
 		return indexLocations.get(index);
 	}
 }

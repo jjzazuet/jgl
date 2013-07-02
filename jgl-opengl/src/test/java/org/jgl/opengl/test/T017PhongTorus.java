@@ -81,13 +81,13 @@ public class T017PhongTorus extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 		orbit(camMatrix, camTarget, 5.0, azimuth.setDegrees(time * 135), 
 				elevation.setDegrees(sineWave(time / 20.0) * 90));
-		uCameraMatrix.setColMaj(camMatrix);
+		uCameraMatrix.set(camMatrix);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		glViewPort(gl, newViewport);
 		perspectiveX(projMatrix, fov, newViewport.aspectRatio, 1, 30);
-		uProjectionMatrix.setColMaj(projMatrix);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

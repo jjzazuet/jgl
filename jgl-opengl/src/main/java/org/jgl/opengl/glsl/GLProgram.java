@@ -27,7 +27,7 @@ public class GLProgram extends GLContextBoundResource {
 	private void link() {
 
 		for (GLShader s : shaders) { 
-			if (!s.isInitialized()) { s.init(getGl()); }
+			s.init(getGl());
 			getGl().glAttachShader(getGlResourceHandle(), s.getGlResourceHandle());
 			checkError();
 		}

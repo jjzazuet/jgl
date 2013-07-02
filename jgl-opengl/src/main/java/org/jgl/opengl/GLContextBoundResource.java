@@ -21,18 +21,18 @@ public abstract class GLContextBoundResource extends GLResource {
 		
 		if (!isInitialized()) {	
 			doInit();
+			checkError();
 			if (log.isDebugEnabled()) {
-				checkError();
-				log.debug(resourceMsg("Initialized GL resource"));
+				log.debug(resourceMsg("GL resource initialized."));
 			}
 			initialized = true;
+		} else if (log.isDebugEnabled()) {
+			log.debug(resourceMsg("GL Resource already initialized."));
 		}
 	}
 	
 	public void bind() {
-		if (!initialized) { 
-			throw new IllegalStateException(resourceMsg("Resouce not initialized")); 
-		}
+		checkInitialized();
 		if (bound) { multipleBindWarn(); }
 		doBind();
 		checkError();
@@ -49,7 +49,7 @@ public abstract class GLContextBoundResource extends GLResource {
 	public boolean isInitialized() { return initialized; }
 	
 	public void checkInitialized() {
-		checkState(initialized, resourceMsg("GL resource not initialized"));
+		checkState(initialized, resourceMsg("GL resource not initialized."));
 	}
 
 	public void checkError() { getError().apply(gl); }
@@ -57,8 +57,9 @@ public abstract class GLContextBoundResource extends GLResource {
 	/** Perform OpenGL resource deallocation. */
 	public void destroy() {
 		doDestroy();
+		checkError();
 		if (log.isDebugEnabled()) {
-			log.debug(resourceMsg("GL resource destroyed"));
+			log.debug(resourceMsg("GL resource destroyed."));
 		}
 	}
 

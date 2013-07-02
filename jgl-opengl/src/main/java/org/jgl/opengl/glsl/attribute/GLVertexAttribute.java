@@ -20,9 +20,8 @@ public class GLVertexAttribute extends GLAttribute {
 
 		setVao(vao);
 		checkNotNull(paramData);
-		checkArgument(bufferComponentIndex >= 0);
-
 		GLBufferMetadata md = checkNotNull(paramData.getBufferMetadata());
+		checkElementIndex(bufferComponentIndex, md.getComponentCount());
 
 		// TODO add some kind of raw type checking e.g. float(3) = vec3
 		getVao().bind();
@@ -56,8 +55,9 @@ public class GLVertexAttribute extends GLAttribute {
 
 	public GLVertexArray getVao() { return vao; }
 
-	public void setVao(GLVertexArray vao) { 
+	public void setVao(GLVertexArray vao) {
+		checkNotNull(vao);
 		checkArgument(vao.isInitialized());
-		this.vao = checkNotNull(vao); 
+		this.vao = vao; 
 	}
 }
