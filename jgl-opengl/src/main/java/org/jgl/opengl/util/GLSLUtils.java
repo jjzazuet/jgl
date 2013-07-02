@@ -77,11 +77,11 @@ public class GLSLUtils {
 		IntBuffer b = IntBuffer.allocate(1);
 
 		if (r instanceof GLShader) {
-			r.getGl().glGetShaderiv(r.getGlResourceHandle(), param, b);			
+			r.getGl().glGetShaderiv(r.getGlResourceHandle(), param, b);
 		} else if (r instanceof GLProgram) {
 			r.getGl().glGetProgramiv(r.getGlResourceHandle(), param, b);
 		}
-
+		r.checkError();
 		return b.get();
 	}
 
@@ -94,10 +94,12 @@ public class GLSLUtils {
 		ByteBuffer logData = ByteBuffer.allocate(logLength + 1);
 
 		if (r instanceof GLShader) {
-			r.getGl().glGetShaderInfoLog(r.getGlResourceHandle(), logLength, null, logData);			
+			r.getGl().glGetShaderInfoLog(r.getGlResourceHandle(), logLength, null, logData);
 		} else if (r instanceof GLProgram) {
 			r.getGl().glGetProgramInfoLog(r.getGlResourceHandle(), logLength, null, logData);
 		}
+
+		r.checkError();
 
 		try {
 			glslLog = Charsets.UTF_8.newDecoder().decode(logData).toString();

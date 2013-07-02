@@ -9,6 +9,7 @@ public abstract class GLContextBoundResource extends GLResource {
 	private GL3 gl = null;
 	private boolean bound = false;
 	private boolean initialized = false;
+	private boolean destroyed = false;
 
 	protected abstract void doInit();
 	protected abstract void doBind();
@@ -22,12 +23,12 @@ public abstract class GLContextBoundResource extends GLResource {
 		if (!isInitialized()) {	
 			doInit();
 			checkError();
+			initialized = true;
 			if (log.isDebugEnabled()) {
 				log.debug(resourceMsg("GL resource initialized."));
 			}
-			initialized = true;
 		} else if (log.isDebugEnabled()) {
-			log.debug(resourceMsg("GL Resource already initialized."));
+			log.debug(resourceMsg("GL resource already initialized."));
 		}
 	}
 	
@@ -46,18 +47,12 @@ public abstract class GLContextBoundResource extends GLResource {
 		bound = false;
 	}
 
-	public boolean isInitialized() { return initialized; }
-	
-	public void checkInitialized() {
-		checkState(initialized, resourceMsg("GL resource not initialized."));
-	}
-
-	public void checkError() { getError().apply(gl); }
-
-	/** Perform OpenGL resource deallocation. */
+	/** Perform OpenGL resource deallocation. Can only be called once per resource. */
 	public void destroy() {
+		checkState(!isDestroyed(), resourceMsg("GL resource already destroyed!"));
 		doDestroy();
 		checkError();
+		destroyed = true;
 		if (log.isDebugEnabled()) {
 			log.debug(resourceMsg("GL resource destroyed."));
 		}
@@ -65,12 +60,20 @@ public abstract class GLContextBoundResource extends GLResource {
 
 	/** Determine if this object is bound to the OpenGL context. */
 	public boolean isBound() { return bound; }
+	public boolean isInitialized() { return initialized; }
+	public boolean isDestroyed() { return destroyed; }
+	
+	public void checkInitialized() {
+		checkState(initialized, resourceMsg("GL resource not initialized."));
+	}
 
 	/** Verify bind state.
 	 * @throws IllegalStateException if the resource is not bound to the OpenGL context. */
 	public void checkBound() {
 		checkState(bound, resourceMsg("Unbound GL resource"));
 	}
+
+	public void checkError() { getError().apply(gl); }
 
 	@Override
 	public String toString() {

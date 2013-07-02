@@ -105,10 +105,14 @@ public class GLProgram extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doBind() { getGl().glUseProgram(getGlResourceHandle()); }
+	protected void doBind() { 
+		getGl().glUseProgram(getGlResourceHandle()); 
+	}
 
 	@Override
-	protected void doUnbind() { getGl().glUseProgram(ZERO); }
+	protected void doUnbind() { 
+		getGl().glUseProgram(ZERO); 
+	}
 
 	@Override
 	protected void doDestroy() {

@@ -41,6 +41,7 @@ public class GLAttributeFactory {
 
 				p.getGl().glGetActiveAttrib(p.getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
+				p.checkError();
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 				location = p.getGl().glGetAttribLocation(p.getGlResourceHandle(), attributeName);
@@ -55,6 +56,7 @@ public class GLAttributeFactory {
 
 				p.getGl().glGetActiveUniform(p.getGlResourceHandle(), k, nameBuf.limit(), 
 						lengthBuf, sizeBuf, typeBuf, nameBuf);
+				p.checkError();
 
 				attributeName = UTF_8.decode(nameBuf).toString().trim();
 

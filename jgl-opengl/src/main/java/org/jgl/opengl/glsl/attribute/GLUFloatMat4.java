@@ -23,16 +23,8 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 		getProgram().checkError();
 	}
 
-	public void colMaj(FloatBuffer dst, Matrix4 src) {
-		colMaj(ZERO, dst, src);
-	}
-
 	public void colMaj(int index, BufferedMatrix4 src) {
 		colMaj(index, src.getBackingBuffer(), src);
-	}
-
-	public void colMaj(BufferedMatrix4 src) {
-		colMaj(ZERO, src.getBackingBuffer(), src);
 	}
 
 	@Override

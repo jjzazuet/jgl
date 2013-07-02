@@ -47,7 +47,6 @@ public class GLTexture2D extends GLContextBoundResource {
 		IntBuffer i1 = IntBuffer.allocate(ONE);
 		getGl().glGenTextures(ONE, i1);
 		setGlResourceHandle(i1.get());
-		checkError();
 	}
 
 	@Override
@@ -56,20 +55,17 @@ public class GLTexture2D extends GLContextBoundResource {
 		checkState(getTextureUnitEnum() != MINUS_ONE);
 		getGl().glActiveTexture(getTextureUnitEnum());
 		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
-		checkError();
 	}
 
 	@Override
 	protected void doUnbind() {
 		getGl().glActiveTexture(getTextureUnitEnum());
 		getGl().glBindTexture(getTextureTarget(), ZERO);
-		checkError();
 	}
 
 	@Override
 	protected void doDestroy() {
 		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
-		checkError();
 	}
 
 	public void generateMipMap() {
