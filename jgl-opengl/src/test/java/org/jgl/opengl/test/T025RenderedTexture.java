@@ -15,6 +15,7 @@ import org.jgl.geom.solid.Cube;
 import org.jgl.geom.solid.Torus;
 import org.jgl.opengl.GL3EventListener;
 import org.jgl.opengl.GLBuffer;
+import org.jgl.opengl.GLTexture2D;
 import org.jgl.opengl.GLVertexArray;
 import org.jgl.opengl.glsl.GLProgram;
 import org.jgl.opengl.glsl.GLShader;
@@ -70,6 +71,10 @@ public class T025RenderedTexture extends GL3EventListener {
 			torusProgram.getVec3("LightPos").set(2.0f, 3.0f, 4.0f);
 		}
 		torusProgram.unbind();
+
+		GLTexture2D fboColorAttachment = new GLTexture2D();
+		
+		fboColorAttachment.init(gl);
 	}
 
 	@Override
