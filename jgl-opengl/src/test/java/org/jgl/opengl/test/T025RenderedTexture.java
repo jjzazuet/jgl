@@ -8,12 +8,14 @@ import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
-import static org.jgl.math.vector.VectorOps.*;
 
 import javax.media.opengl.GL3;
 
-import org.jgl.geom.solid.Cube;
-import org.jgl.geom.solid.Torus;
+import org.jgl.geom.solid.*;
+import org.jgl.geom.transform.ModelTransform;
+import org.jgl.math.angle.Angle;
+import org.jgl.math.matrix.io.BufferedMatrix4;
+import org.jgl.math.vector.Vector3;
 import org.jgl.opengl.*;
 import org.jgl.opengl.glsl.*;
 import org.jgl.opengl.util.*;
@@ -28,9 +30,20 @@ public class T025RenderedTexture extends GL3EventListener {
 	private GLProgram cubeProgram;
 	private GLProgram torusProgram;
 	private GLFrameBuffer fbo = new GLFrameBuffer();
+	private GLBuffer torusIndices;
+	private GLBuffer cubeVertices;
 
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLVertexArray torusVao = new GLVertexArray();
+
+	private Angle fov = new Angle();
+	private Angle elevation = new Angle();
+	private Angle azimuth = new Angle();
+	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
+	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
+	private ModelTransform torusTransform = new ModelTransform();
+	private ModelTransform cubeTransform = new ModelTransform();
+	private Vector3 camTarget = new Vector3();
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -42,37 +55,8 @@ public class T025RenderedTexture extends GL3EventListener {
 		cubeProgram = new GLProgram().attachShader(vertexShader).attachShader(cubeFragmentShader);
 		torusProgram = new GLProgram().attachShader(vertexShader).attachShader(torusFragmentShader);
 
-		cubeProgram.init(gl);
-		cubeVao.init(gl);
-		torusProgram.init(gl);
-		torusVao.init(gl);
-
-		cubeProgram.bind(); {
-			GLBuffer cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-
-			cubeProgram.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-			cubeProgram.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
-			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-		}
-		cubeProgram.unbind();
-
-		torusProgram.bind(); {
-			GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			GLBuffer torusTexCoords = buffer(torus.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-
-			torusProgram.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
-			torusProgram.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
-			torusProgram.getStageAttribute("TexCoord").set(torusVao, torusTexCoords, false, 0).enable();
-			torusProgram.getVec3("LightPos").set(2.0f, 3.0f, 4.0f);
-		}
-		torusProgram.unbind();
-
 		fbo.init(gl);
-		fbo.setBindMode(GL_FRAMEBUFFER);
+		fbo.setBindMode(GL_DRAW_FRAMEBUFFER);
 		fbo.setColorAttachment(0);
 		fbo.getColorAttachmentFormat().setWidth(width);
 		fbo.getColorAttachmentFormat().setHeight(height);
@@ -88,6 +72,41 @@ public class T025RenderedTexture extends GL3EventListener {
 		fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
 		fbo.initAttachments();
 
+		cubeProgram.init(gl);
+		cubeVao.init(gl);
+		torusProgram.init(gl);
+		torusVao.init(gl);
+
+		cubeProgram.bind(); {
+			cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+			cubeProgram.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+			cubeProgram.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
+			fbo.getColorAttachment(0).bind();
+			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment(0));
+			fbo.getColorAttachment(0).unbind();
+		}
+		cubeProgram.unbind();
+
+		torusProgram.bind(); {
+			GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer torusTexCoords = buffer(torus.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+			torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
+			torusProgram.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
+			torusProgram.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
+			torusProgram.getStageAttribute("TexCoord").set(torusVao, torusTexCoords, false, 0).enable();
+			torusProgram.getVec3("LightPos").set(2.0f, 3.0f, 4.0f);
+			perspectiveX(projMatrix, fov.setDegrees(60), 1, 1, 30);
+			torusProgram.getMat4("ProjectionMatrix").set(projMatrix);
+		}
+		torusProgram.unbind();
+
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
 		gl.glCullFace(GL_BACK);
@@ -96,20 +115,59 @@ public class T025RenderedTexture extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 
-		fbo.setBindMode(GL_DRAW_FRAMEBUFFER);
 		fbo.bind();
-		glViewPort(gl, texSide, texSide);
-		gl.glClearDepth(1.0f);
-		gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		torusProgram.bind();
+		torusProgram.bind(); {
+			glViewPort(gl, texSide, texSide);
+			gl.glClearDepth(1.0f);
+			gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
+			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			torusVao.bind();
+			glFrontFace(gl, torus.getFaceWinding());
+			glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+			torusVao.unbind();
+		} torusProgram.unbind();
 		fbo.unbind();
+
+		cubeProgram.bind(); {
+			glViewPort(gl, width, height);
+			gl.glClearDepth(1.0f);
+			gl.glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
+			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			cubeVao.bind();
+			glFrontFace(gl, cube.getFaceWinding());
+			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+			cubeVao.unbind();
+		} cubeProgram.unbind();
 	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
-		
+		double time = currentState.getElapsedTimeSeconds();
+
+		torusProgram.bind(); {
+			orbit(cameraMatrix, camTarget, 3.5, 
+					azimuth.setDegrees(time * 25), 
+					elevation.setDegrees(sineWave(time / 30.0) * 90));
+			torusProgram.getMat4("CameraMatrix").set(cameraMatrix);
+			double rotation = time * 0.5;
+			torusTransform.getRotationX().setFullCircles(rotation);
+			torusTransform.getRotationY().setFullCircles(rotation);
+			torusTransform.getRotationZ().setFullCircles(rotation);
+			torusProgram.getMat4("ModelMatrix").set(torusTransform.getModelMatrix());
+		} torusProgram.unbind();
+
+		cubeProgram.bind(); {
+			perspectiveX(projMatrix, fov.setDegrees(70), 
+					(double) width / (double) height, 1, 30);
+			cubeProgram.getMat4("ProjectionMatrix").set(projMatrix);
+			orbit(cameraMatrix, camTarget, 3, 
+					azimuth.setDegrees(time * 35), 
+					elevation.setDegrees(sineWave(time / 20.0) * 60));
+			cubeProgram.getMat4("CameraMatrix").set(cameraMatrix);
+			cubeTransform.getRotationX().setFullCircles(time * 0.25);
+			cubeProgram.getMat4("ModelMatrix").set(cubeTransform.getModelMatrix());
+		} cubeProgram.unbind();
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 
 public class GLFrameBuffer extends GLContextBoundResource {
 
-	private int bindMode = MINUS_ONE;
+	private int bindTarget = MINUS_ONE;
 	private boolean attachmentsInitialized = false;	
 	private Map<Integer, GLTexture2D> colorAttachments = new HashMap<Integer, GLTexture2D>();
 	private Map<Integer, Integer> colorAttachmentParameters = new HashMap<Integer, Integer>();
@@ -40,48 +40,52 @@ public class GLFrameBuffer extends GLContextBoundResource {
 			colorAttachment.loadData(attachmentImage);
 
 			for (Entry<Integer, Integer> colorParam : getColorAttachmentParameters().entrySet()) {
-				colorAttachment.setParameter(
-						colorParam.getKey(), colorParam.getValue());
+				colorAttachment.setParameter(colorParam.getKey(), colorParam.getValue());
 			}
 
-			colorAttachment.unbind();
-			getGl().glFramebufferTexture2D(
-					GL_FRAMEBUFFER, glColorAttachment, 
-					colorAttachment.getTextureTarget(), 
-					colorAttachment.getGlResourceHandle(), ZERO);
+			getGl().glFramebufferTexture(getBindTarget(), glColorAttachment, colorAttachment.getGlResourceHandle(), ZERO);
 			checkError();
+			colorAttachment.unbind();
 		}
 
 		depthStencilBuffer.init(getGl());
 		depthStencilBuffer.initStorage();
+		depthStencilBuffer.bind();
 
 		int depthStencilInternalFormat = depthStencilBuffer.getBufferFormat().getInternalFormat();
 		checkState(depthStencilInternalFormat == GL_DEPTH_COMPONENT
 				|| depthStencilInternalFormat == GL_DEPTH_STENCIL);
 
 		if (depthStencilInternalFormat == GL_DEPTH_COMPONENT) {
-			getGl().glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
-					GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
+			getGl().glFramebufferRenderbuffer(getBindTarget(),
+					GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
 			checkError();
 		} else if (depthStencilInternalFormat == GL_DEPTH_STENCIL) {
-			getGl().glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
-					GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
+			getGl().glFramebufferRenderbuffer(getBindTarget(),
+					GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
 			checkError();
-			getGl().glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
-					GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
+			getGl().glFramebufferRenderbuffer(getBindTarget(), 
+					GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
 			checkError();
 		}
+		depthStencilBuffer.unbind();
 
 		int fbStatus = getGl().glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		checkError();
 		checkState(fbStatus == GL_FRAMEBUFFER_COMPLETE, 
 				resourceMsg("Unable to initialize Framebuffer [%s]"), 
 				Integer.toHexString(fbStatus));
+		attachmentsInitialized = true;
 		unbind();
 
 		if (log.isDebugEnabled()) {
 			log.debug(resourceMsg("Framebuffer attachments initialized."));
 		}
+	}
+
+	public GLTexture2D getColorAttachment(int colorAttachmentIndex) {
+		checkElementIndex(colorAttachmentIndex, getColorAttachments().size());
+		return getColorAttachments().get(colorAttachmentIndex);
 	}
 
 	public void setColorAttachment(int colorAttachmentIndex) {
@@ -101,12 +105,12 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 	@Override
 	protected void doBind() {
-		getGl().glBindFramebuffer(getBindMode(), getGlResourceHandle());
+		getGl().glBindFramebuffer(getBindTarget(), getGlResourceHandle());
 	}
 
 	@Override
 	protected void doUnbind() {
-		getGl().glBindFramebuffer(getBindMode(), ZERO);
+		getGl().glBindFramebuffer(getBindTarget(), ZERO);
 	}
 
 	@Override
@@ -120,13 +124,13 @@ public class GLFrameBuffer extends GLContextBoundResource {
 	public GLRenderBuffer getDepthStencilBuffer() { return depthStencilBuffer; }
 	public boolean isAttachmentsInitialized() { return attachmentsInitialized; }
 
-	public int getBindMode() { 
-		checkState(getBindMode() != MINUS_ONE);
-		return bindMode; 
+	public int getBindTarget() { 
+		checkState(bindTarget != MINUS_ONE);
+		return bindTarget; 
 	}
 
 	public void setBindMode(int bindMode) {
 		checkArgument(GL_FRAMEBUFFER_TARGET.contains(bindMode));
-		this.bindMode = bindMode;
+		this.bindTarget = bindMode;
 	}
 }

@@ -4,8 +4,6 @@ import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2GL3.GL_PRIMITIVE_RESTART;
 
-import java.nio.IntBuffer;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
