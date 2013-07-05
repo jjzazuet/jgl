@@ -14,15 +14,9 @@ import javax.media.opengl.GL3;
 
 import org.jgl.geom.solid.Cube;
 import org.jgl.geom.solid.Torus;
-import org.jgl.opengl.GL3EventListener;
-import org.jgl.opengl.GLBuffer;
-import org.jgl.opengl.GLFrameBuffer;
-import org.jgl.opengl.GLTexture2D;
-import org.jgl.opengl.GLVertexArray;
-import org.jgl.opengl.glsl.GLProgram;
-import org.jgl.opengl.glsl.GLShader;
-import org.jgl.opengl.util.GLBufferUtils;
-import org.jgl.opengl.util.GLViewSize;
+import org.jgl.opengl.*;
+import org.jgl.opengl.glsl.*;
+import org.jgl.opengl.util.*;
 import org.jgl.time.util.ExecutionState;
 
 public class T025RenderedTexture extends GL3EventListener {
