@@ -73,4 +73,8 @@ public class GLConstants {
 					GL_TEXTURE_SWIZZLE_G, GL_TEXTURE_SWIZZLE_B,
 					GL_TEXTURE_SWIZZLE_A, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T,
 					GL_TEXTURE_WRAP_R }));
+
+	public static final Set<Integer> GL_FRAMEBUFFER_TARGET = new HashSet<Integer>(
+			Arrays.asList(new Integer[] { GL_DRAW_FRAMEBUFFER,
+					GL_READ_FRAMEBUFFER, GL_FRAMEBUFFER }));
 }

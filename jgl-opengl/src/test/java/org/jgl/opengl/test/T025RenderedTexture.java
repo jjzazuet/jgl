@@ -1,6 +1,7 @@
 package org.jgl.opengl.test;
 
 import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
 import static org.jgl.opengl.util.GLDrawUtils.*;
@@ -15,6 +16,7 @@ import org.jgl.geom.solid.Cube;
 import org.jgl.geom.solid.Torus;
 import org.jgl.opengl.GL3EventListener;
 import org.jgl.opengl.GLBuffer;
+import org.jgl.opengl.GLFrameBuffer;
 import org.jgl.opengl.GLTexture2D;
 import org.jgl.opengl.GLVertexArray;
 import org.jgl.opengl.glsl.GLProgram;
@@ -25,14 +27,17 @@ import org.jgl.time.util.ExecutionState;
 
 public class T025RenderedTexture extends GL3EventListener {
 
+	int texSide = 512;
+	int width = texSide, height = texSide;
 	private Cube cube = new Cube();
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);
 	private GLProgram cubeProgram;
 	private GLProgram torusProgram;
+	private GLFrameBuffer fbo = new GLFrameBuffer();
 
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLVertexArray torusVao = new GLVertexArray();
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -72,23 +77,50 @@ public class T025RenderedTexture extends GL3EventListener {
 		}
 		torusProgram.unbind();
 
-		GLTexture2D fboColorAttachment = new GLTexture2D();
-		
-		fboColorAttachment.init(gl);
+		fbo.init(gl);
+		fbo.setBindMode(GL_FRAMEBUFFER);
+		fbo.setColorAttachment(0);
+		fbo.getColorAttachmentFormat().setWidth(width);
+		fbo.getColorAttachmentFormat().setHeight(height);
+		fbo.getColorAttachmentFormat().setInternalFormat(GL_RGBA);
+		fbo.getColorAttachmentFormat().setPixelDataFormat(GL_RGBA);
+		fbo.getColorAttachmentFormat().setPixelDataType(GL_UNSIGNED_BYTE);
+		fbo.getDepthStencilBuffer().getBufferFormat().setWidth(texSide);
+		fbo.getDepthStencilBuffer().getBufferFormat().setHeight(texSide);
+		fbo.getDepthStencilBuffer().getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
+		fbo.getColorAttachmentParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		fbo.getColorAttachmentParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
+		fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
+		fbo.initAttachments();
+
+		gl.glEnable(GL_DEPTH_TEST);
+		gl.glEnable(GL_CULL_FACE);
+		gl.glCullFace(GL_BACK);
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 
+		fbo.setBindMode(GL_DRAW_FRAMEBUFFER);
+		fbo.bind();
+		glViewPort(gl, texSide, texSide);
+		gl.glClearDepth(1.0f);
+		gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		torusProgram.bind();
+		fbo.unbind();
 	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
+		
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-
+		width = (int) newViewport.width;
+		height = (int) newViewport.height;
 	}
 }
