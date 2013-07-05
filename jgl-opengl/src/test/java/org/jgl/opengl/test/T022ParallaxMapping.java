@@ -71,7 +71,6 @@ public class T022ParallaxMapping extends GL3EventListener {
 
 		bumpTexture.init(gl);
 		bumpTexture.setTextureTarget(GL_TEXTURE_2D);
-		bumpTexture.setTextureUnit(0);
 		bumpTexture.bind(); {
 
 			SphereBumpMap bumpMap = new SphereBumpMap(512, 512, 2, 2);

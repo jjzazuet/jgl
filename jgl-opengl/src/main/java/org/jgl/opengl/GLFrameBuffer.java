@@ -9,38 +9,52 @@ import java.util.*;
 
 public class GLFrameBuffer extends GLContextBoundResource {
 
+	private boolean attachmentsInitialized = false;	
 	private Map<Integer, GLTexture2D> colorAttachments = new HashMap<Integer, GLTexture2D>();
-	private GLTextureMetadata colorAttachmentFormat;
-	
-	public void setColorAttachment(int colorAttachmentIndex) {
+	private GLTextureMetadata colorAttachmentFormat = new GLTextureMetadata();
+	private GLRenderBuffer depthStencilRenderBuffer = new GLRenderBuffer();
 
-		checkState(getColorAttachmentFormat() != null, "Color attachment format not set!");
+	public void initAttachments() {
+
+		checkInitialized();
+		GLTexture2DImage attachmentImage = new GLTexture2DImage();
+		attachmentImage.getMetadata().setFrom(getColorAttachmentFormat());
+
+		for (GLTexture2D colorAttachment : getColorAttachments().values()) {
+			colorAttachment.init(getGl());
+			colorAttachment.setTextureTarget(GL_TEXTURE_2D);
+			colorAttachment.bind();
+			colorAttachment.loadData(attachmentImage);
+			colorAttachment.unbind();
+		}
+
+		depthStencilRenderBuffer.init(getGl()); // TODO finish init
+	}
+
+	public void setColorAttachment(int colorAttachmentIndex) {
 		checkArgument(colorAttachmentIndex >= ZERO);
 		checkArgument(
 				!getColorAttachments().containsKey(colorAttachmentIndex),
-				"Color attachment already set!");
+				resourceMsg("Color attachment already set."));
 		colorAttachments.put(colorAttachmentIndex, new GLTexture2D());
 	}
 
 	@Override
 	protected void doInit() {
-
 		IntBuffer ib = IntBuffer.allocate(ONE);
 		getGl().glGenFramebuffers(ONE, ib);
 		setGlResourceHandle(ib.get());
-		checkError();
-
-		// initialize color attachments
 	}
 
 	@Override
 	protected void doBind() {
-
+		checkState(isAttachmentsInitialized(), resourceMsg("Color/Depth/Stencil attachments not initialized."));
+		getGl().glBindFramebuffer(GL_FRAMEBUFFER, getGlResourceHandle());
 	}
 
 	@Override
 	protected void doUnbind() {
-
+		getGl().glBindFramebuffer(GL_FRAMEBUFFER, ZERO);
 	}
 
 	@Override
@@ -49,9 +63,7 @@ public class GLFrameBuffer extends GLContextBoundResource {
 	}
 
 	public Map<Integer, GLTexture2D> getColorAttachments() { return colorAttachments; }
-	public GLTextureMetadata getColorAttachmentFormat() { return colorAttachmentFormat; }
-
-	public void setColorAttachmentFormat(GLTextureMetadata colorAttachmentFormat) {
-		this.colorAttachmentFormat = checkNotNull(colorAttachmentFormat);
-	}
+	public GLTextureMetadata getColorAttachmentFormat()    { return colorAttachmentFormat; }
+	public GLRenderBuffer getDepthStencilRenderBuffer() { return depthStencilRenderBuffer; }
+	public boolean isAttachmentsInitialized() { return attachmentsInitialized; }
 }

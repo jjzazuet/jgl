@@ -38,17 +38,17 @@ public class T016NoiseTorus extends GL3EventListener {
 	private GLVertexArray torusVao = new GLVertexArray();
 	private GLBuffer torusIndices;
 	private GLTexture2D noiseTexture = new GLTexture2D();
-	
+
 	private Angle fov = new Angle();
 	private Angle elevation = new Angle();
 	private Angle azimuth = new Angle();
-	
+
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private ModelTransform modelTransform = new ModelTransform();
 	private Vector3 camTarget = new Vector3();
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -73,13 +73,12 @@ public class T016NoiseTorus extends GL3EventListener {
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		noiseTexture.init(gl); {
-			
+
 			noiseTexture.setTextureTarget(GL_TEXTURE_2D);
-			noiseTexture.setTextureUnit(0);
 			noiseTexture.bind();
 			int s = 256;
 			byte [] texData = new byte[s*s];
-			
+
 			for(int v=0;v!=s;++v) {
 				for(int u=0;u!=s;++u) {
 					texData[v*s+u] = (byte) (r.nextInt() % 0x100);	
@@ -105,9 +104,9 @@ public class T016NoiseTorus extends GL3EventListener {
 
 			p.getSampler2D("TexUnit").set(noiseTexture);
 		}
-		
+
 		p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-		
+
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -134,7 +133,7 @@ public class T016NoiseTorus extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState)
 			throws Exception {
-		
+
 		double time = currentState.getElapsedTimeSeconds();
 		orbit(cameraMatrix, camTarget, 4.5,
 				azimuth.setDegrees(time * 35), 

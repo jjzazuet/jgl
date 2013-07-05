@@ -1,10 +1,12 @@
 package org.jgl.opengl;
 
 import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
 import static com.google.common.base.Preconditions.*;
 import static org.jgl.opengl.util.GLBufferUtils.*;
 import static org.jgl.opengl.GLConstants.*;
 import java.nio.IntBuffer;
+import java.util.Random;
 
 public class GLTexture2D extends GLContextBoundResource {
 
@@ -27,12 +29,12 @@ public class GLTexture2D extends GLContextBoundResource {
 	}
 	
 	public void loadData(GLTexture2DImage image) {
-		
+
 		checkInitialized();
 		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
 		this.image = image;
-		
+
 		getGl().glTexImage2D(getTextureTarget(), ZERO, 
 				getImage().getMetadata().getInternalFormat(), 
 				getImage().getMetadata().getWidth(), 
@@ -42,11 +44,21 @@ public class GLTexture2D extends GLContextBoundResource {
 				getImage().getImageData());
 		checkError();
 	}
+
 	@Override
 	protected void doInit() {
+
 		IntBuffer i1 = IntBuffer.allocate(ONE);
 		getGl().glGenTextures(ONE, i1);
+		checkError();
 		setGlResourceHandle(i1.get());
+
+		i1.clear();
+		getGl().glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, i1);
+		checkError();
+		int maxTextureUnits = i1.get();
+		int textureUnit = new Random().nextInt(maxTextureUnits - ZERO + 1) + ZERO;
+		setTextureUnit(textureUnit);
 	}
 
 	@Override
@@ -83,8 +95,11 @@ public class GLTexture2D extends GLContextBoundResource {
 
 	public int getTextureUnitEnum() { return GL_TEXTURE0 + textureUnit; }
 	public int getTextureUnit() { return textureUnit; }
-	public void setTextureUnit(int textureUnit) { this.textureUnit = textureUnit; }
-	
+	protected void setTextureUnit(int textureUnit) { 
+		checkArgument(textureUnit > MINUS_ONE);
+		this.textureUnit = textureUnit; 
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s [target: %s, textureUnit: %s, glTextureUnit: %s, image:%s]",

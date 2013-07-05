@@ -3,6 +3,9 @@ package org.jgl.opengl.util;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2GL3.GL_PRIMITIVE_RESTART;
+
+import java.nio.IntBuffer;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
@@ -11,6 +14,9 @@ import org.jgl.opengl.GLBuffer;
 
 public class GLDrawUtils {
 
+	public static final int ZERO = 0;
+	public static final int ONE = 1;
+	
 	public static void glIndexedDraw(int glMode, GLBuffer buffer) {
 		checkNotNull(buffer);
 		buffer.getRawBuffer().clear();
@@ -22,7 +28,7 @@ public class GLDrawUtils {
 	}
 
 	public static void glIndexedDraw(int glMode, GLBuffer buffer, int restartIndex) {
-		checkArgument(restartIndex >= 0);
+		checkArgument(restartIndex >= ZERO);
 		GL3 gl = buffer.getGl();
 		gl.glEnable(GL_PRIMITIVE_RESTART);
 		gl.glPrimitiveRestartIndex(restartIndex);
@@ -39,7 +45,7 @@ public class GLDrawUtils {
 
 	public static void glViewPort(GL3 gl, int width, int height) {
 		checkNotNull(gl);
-		gl.glViewport(0, 0, width, height);
+		gl.glViewport(ZERO, ZERO, width, height);
 	}
 
 	public static int getGlFrontFace(FaceWinding fw) {
