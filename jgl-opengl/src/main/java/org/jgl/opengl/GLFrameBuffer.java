@@ -26,9 +26,17 @@ public class GLFrameBuffer extends GLContextBoundResource {
 			colorAttachment.bind();
 			colorAttachment.loadData(attachmentImage);
 			colorAttachment.unbind();
+			// attach a texture to FBO color attachement point
+			// glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureId, 0);
 		}
 
 		depthStencilRenderBuffer.init(getGl()); // TODO finish init
+		depthStencilRenderBuffer.initStorage();
+		
+		// attach a renderbuffer to depth attachment point
+		// glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboId);
+		// attach a renderbuffer to stencil attachment point
+		// glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rboId);
 	}
 
 	public void setColorAttachment(int colorAttachmentIndex) {

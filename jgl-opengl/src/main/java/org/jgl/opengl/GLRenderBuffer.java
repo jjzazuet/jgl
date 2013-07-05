@@ -6,8 +6,19 @@ import java.nio.IntBuffer;
 
 public class GLRenderBuffer extends GLContextBoundResource {
 
+	private boolean storageReady = false;
 	private GLImageMetadata bufferFormat = new GLImageMetadata();
-	
+
+	public void initStorage() {
+		bind();
+		getGl().glRenderbufferStorage(GL_RENDERBUFFER, 
+				getBufferFormat().getInternalFormat(), 
+				getBufferFormat().getWidth(), 
+				getBufferFormat().getHeight());
+		checkError();
+		unbind();
+	}
+
 	@Override
 	protected void doInit() {
 		IntBuffer ib = IntBuffer.allocate(ONE);
@@ -31,4 +42,5 @@ public class GLRenderBuffer extends GLContextBoundResource {
 	}
 
 	public GLImageMetadata getBufferFormat() { return bufferFormat; }
+	public boolean isStorageReady() { return storageReady; }
 }
