@@ -56,7 +56,7 @@ public class T025RenderedTexture extends GL3EventListener {
 		torusProgram = new GLProgram().attachShader(vertexShader).attachShader(torusFragmentShader);
 
 		fbo.init(gl);
-		fbo.setBindMode(GL_DRAW_FRAMEBUFFER);
+		fbo.setBindTarget(GL_FRAMEBUFFER);
 		fbo.setColorAttachment(0);
 		fbo.getColorAttachmentFormat().setWidth(width);
 		fbo.getColorAttachmentFormat().setHeight(height);

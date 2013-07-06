@@ -41,7 +41,7 @@ public class GLTexture2D extends GLContextBoundResource {
 				getImage().getMetadata().getHeight(), ZERO, 
 				getImage().getMetadata().getPixelDataFormat(), 
 				getImage().getMetadata().getPixelDataType(), 
-				getImage().getImageData());
+				getImage().getImageData()); // TODO possible FBO bug when dealing with null image data
 		checkError();
 	}
 

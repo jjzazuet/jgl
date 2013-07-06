@@ -20,7 +20,6 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 	public void initAttachments() {
 
-		bind();
 		checkState(getDepthStencilBuffer().getBufferFormat().getWidth() ==
 				getColorAttachmentFormat().getWidth());
 		checkState(getDepthStencilBuffer().getBufferFormat().getHeight() ==
@@ -28,6 +27,7 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 		GLTexture2DImage attachmentImage = new GLTexture2DImage();
 		attachmentImage.getMetadata().setFrom(getColorAttachmentFormat());
+		bind();
 
 		for (Entry<Integer, GLTexture2D> attachmentEntry : getColorAttachments().entrySet()) {
 
@@ -129,8 +129,8 @@ public class GLFrameBuffer extends GLContextBoundResource {
 		return bindTarget; 
 	}
 
-	public void setBindMode(int bindMode) {
-		checkArgument(GL_FRAMEBUFFER_TARGET.contains(bindMode));
-		this.bindTarget = bindMode;
+	public void setBindTarget(int newTarget) {
+		checkArgument(GL_FRAMEBUFFER_TARGET.contains(newTarget));
+		this.bindTarget = newTarget;
 	}
 }
