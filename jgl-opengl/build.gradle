@@ -7,38 +7,48 @@ dependencies {
 
 	compile 'org.slf4j:slf4j-simple:1.7.2'
 
-	compile 'org.jogamp.gluegen:gluegen-rt:2-RC12'
+	compile 'org.jogamp.gluegen:gluegen-rt:2.0.2-rc12'
 
-	compile 'org.jogamp.jogl:jogl-core:2-RC12'
-	compile 'org.jogamp.jogl:jogl-gldesktop:2-RC12'
-	compile 'org.jogamp.jogl:jogl-swt:2-RC12'
+	compile 'org.jogamp.jogl:jogl-core:2.0.2-rc12'
+	compile 'org.jogamp.jogl:jogl-gldesktop:2.0.2-rc12'
+	compile 'org.jogamp.jogl:jogl-swt:2.0.2-rc12'
 
-	compile 'org.jogamp.nativewindow:nativewindow-core:2-RC12'
+	compile 'org.jogamp.nativewindow:nativewindow-core:2.0.2-rc12'
 
 	testCompile 'com.google.seeds:seeds-primitives:14.0'
 
 	if (isWindows) { 
 
-		compile 'org.jogamp.jogl:jogl-os-win:2-RC12'
-		compile 'org.jogamp.nativewindow:nativewindow-os-win:2-RC12'
+		compile 'org.jogamp.jogl:jogl-os-win:2.0.2-rc12'
+		compile 'org.jogamp.nativewindow:nativewindow-os-win:2.0.2-rc12'
 
 		if (is64bit) {
-			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-amd64:2-RC12'
-			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-amd64:2-RC12'
-			compile 'org.jogamp.jogl:jogl-natives-windows-amd64:2-RC12'
-		} // TODO setup 32 bit dependencies as well
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-amd64:2.0.2-rc12'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-amd64:2.0.2-rc12'
+			compile 'org.jogamp.jogl:jogl-natives-windows-amd64:2.0.2-rc12'
+		} else if (is32bit) {
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-windows-i586:2.0.2-rc12'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-windows-i586:2.0.2-rc12'
+			compile 'org.jogamp.jogl:jogl-natives-windows-i586:2.0.2-rc12'
+		}
+		else { throw new TaskExecutionException(unsupportedOs) }
 	} 
 
 	else if (isLinux) {
 
-		compile 'org.jogamp.jogl:jogl-os-x11:2-RC12'
-		compile 'org.jogamp.nativewindow:nativewindow-os-x11:2-RC12'
+		compile 'org.jogamp.jogl:jogl-os-x11:2.0.2-rc12'
+		compile 'org.jogamp.nativewindow:nativewindow-os-x11:2.0.2-rc12'
 		
 		if (is64bit) {
-			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-amd64:2-RC12'
-			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-amd64:2-RC12'
-			compile 'org.jogamp.jogl:jogl-natives-linux-amd64:2-RC12'
-		} // TODO setup 32 bit dependencies as well
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-amd64:2.0.2-rc12'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-amd64:2.0.2-rc12'
+			compile 'org.jogamp.jogl:jogl-natives-linux-amd64:2.0.2-rc12'
+		} else if (is32bit) {
+			compile 'org.jogamp.gluegen:gluegen-rt-natives-linux-i586:2.0.2-rc12'
+			compile 'org.jogamp.nativewindow:nativewindow-natives-linux-i586:2.0.2-rc12'
+			compile 'org.jogamp.jogl:jogl-natives-linux-i586:2.0.2-rc12'
+		}
+		else { throw new TaskExecutionException(unsupportedOs) }
 	} 
 
 	else { throw new TaskExecutionException(unsupportedOs) }
