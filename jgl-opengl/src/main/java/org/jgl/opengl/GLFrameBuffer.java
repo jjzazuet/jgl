@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLBufferUtils.*;
+
 import java.nio.IntBuffer;
 import java.util.*;
 import java.util.Map.Entry;
