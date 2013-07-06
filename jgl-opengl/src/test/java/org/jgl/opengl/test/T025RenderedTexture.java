@@ -56,7 +56,7 @@ public class T025RenderedTexture extends GL3EventListener {
 		torusProgram = new GLProgram().attachShader(vertexShader).attachShader(torusFragmentShader);
 
 		fbo.init(gl);
-		fbo.setBindTarget(GL_FRAMEBUFFER);
+		fbo.setBindTarget(GL_DRAW_FRAMEBUFFER);
 		fbo.setColorAttachment(0);
 		fbo.getColorAttachmentFormat().setWidth(width);
 		fbo.getColorAttachmentFormat().setHeight(height);
@@ -66,7 +66,7 @@ public class T025RenderedTexture extends GL3EventListener {
 		fbo.getDepthStencilBuffer().getBufferFormat().setWidth(texSide);
 		fbo.getDepthStencilBuffer().getBufferFormat().setHeight(texSide);
 		fbo.getDepthStencilBuffer().getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
-		fbo.getColorAttachmentParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		fbo.getColorAttachmentParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		fbo.getColorAttachmentParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
 		fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -86,9 +86,7 @@ public class T025RenderedTexture extends GL3EventListener {
 			cubeProgram.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-			fbo.getColorAttachment(0).bind();
 			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment(0));
-			fbo.getColorAttachment(0).unbind();
 		}
 		cubeProgram.unbind();
 

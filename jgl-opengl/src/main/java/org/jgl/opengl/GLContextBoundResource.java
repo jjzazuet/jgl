@@ -34,14 +34,14 @@ public abstract class GLContextBoundResource extends GLResource {
 	
 	public void bind() {
 		checkInitialized();
-		if (bound) { multipleBindWarn(); }
+		checkState(!isBound(), multipleBindError());
 		doBind();
 		checkError();
 		bound = true;
 	}
 	
 	public void unbind() {
-		if (!bound) { multipleBindWarn(); }
+		checkState(isBound(), multipleBindError());
 		doUnbind();
 		checkError();
 		bound = false;
@@ -81,8 +81,8 @@ public abstract class GLContextBoundResource extends GLResource {
 				getClass().getSimpleName(), getGlResourceHandle(), isBound(), initialized);
 	}
 
-	private void multipleBindWarn() {
-		log.warn(resourceMsg("Multiple bind/unbind request"));		
+	private String multipleBindError() {
+		return resourceMsg("Multiple bind/unbind request");
 	}
 
 	public String resourceMsg(String msg) {

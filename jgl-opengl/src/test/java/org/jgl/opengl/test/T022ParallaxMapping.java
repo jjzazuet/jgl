@@ -69,23 +69,20 @@ public class T022ParallaxMapping extends GL3EventListener {
 		uModelMatrix = p.getMat4("ModelMatrix");
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 
+		SphereBumpMap bumpMap = new SphereBumpMap(512, 512, 2, 2);
+
 		bumpTexture.init(gl);
-		bumpTexture.setTextureTarget(GL_TEXTURE_2D);
-		bumpTexture.bind(); {
+		bumpTexture.loadData(bumpMap);
+		bumpTexture.generateMipMap();
+		bumpTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		bumpTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		bumpTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+		bumpTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-			SphereBumpMap bumpMap = new SphereBumpMap(512, 512, 2, 2);
-
-			bumpTexture.loadData(bumpMap);
-			bumpTexture.generateMipMap();
-			bumpTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			bumpTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			bumpTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-			bumpTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-			p.getSampler2D("BumpTex").set(bumpTexture);
-			p.getInt("BumpTexWidth").set(bumpTexture.getImage().getMetadata().getWidth());
-			p.getInt("BumpTexHeight").set(bumpTexture.getImage().getMetadata().getHeight());
-		}
+		p.getSampler2D("BumpTex").set(bumpTexture);
+		p.getInt("BumpTexWidth").set(bumpTexture.getImage().getMetadata().getWidth());
+		p.getInt("BumpTexHeight").set(bumpTexture.getImage().getMetadata().getHeight());
+		bumpTexture.bind();
 
 		gl.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 		gl.glClearDepth(1.0f);

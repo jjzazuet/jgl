@@ -10,39 +10,42 @@ import java.util.Random;
 
 public class GLTexture2D extends GLContextBoundResource {
 
-	private int textureTarget = MINUS_ONE;
+	private final int textureTarget = GL_TEXTURE_2D;
 	private int textureUnit = MINUS_ONE;
 	private GLTexture2DImage image = null;
 
 	public void setParameter(int parameter, float value) {
-		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
+		bind();
 		getGl().glTexParameterf(getTextureTarget(), parameter, value);
 		checkError();
+		unbind();
 	}
-	
+
 	public void setParameter(int parameter, int value) {
-		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
+		bind();
 		getGl().glTexParameteri(getTextureTarget(), parameter, value);
 		checkError();
+		unbind();
 	}
 	
 	public void loadData(GLTexture2DImage image) {
 
 		checkInitialized();
-		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
 		this.image = image;
 
+		bind();
 		getGl().glTexImage2D(getTextureTarget(), ZERO, 
 				getImage().getMetadata().getInternalFormat(), 
 				getImage().getMetadata().getWidth(), 
 				getImage().getMetadata().getHeight(), ZERO, 
 				getImage().getMetadata().getPixelDataFormat(), 
 				getImage().getMetadata().getPixelDataType(), 
-				getImage().getImageData()); // TODO possible FBO bug when dealing with null image data
+				getImage().getImageData());
 		checkError();
+		unbind();
 	}
 
 	@Override
@@ -63,15 +66,11 @@ public class GLTexture2D extends GLContextBoundResource {
 
 	@Override
 	protected void doBind() {
-		checkState(getTextureTarget() != MINUS_ONE);
-		checkState(getTextureUnitEnum() != MINUS_ONE);
-		getGl().glActiveTexture(getTextureUnitEnum());
 		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
 	}
 
 	@Override
 	protected void doUnbind() {
-		getGl().glActiveTexture(getTextureUnitEnum());
 		getGl().glBindTexture(getTextureTarget(), ZERO);
 	}
 
@@ -81,19 +80,20 @@ public class GLTexture2D extends GLContextBoundResource {
 	}
 
 	public void generateMipMap() {
-		checkBound();
+		bind();
 		getGl().glGenerateMipmap(getTextureTarget());
 		checkError();
+		unbind();
 	}
 
 	public GLTexture2DImage getImage() { return image; }
+
 	public int getTextureTarget() { return textureTarget; }
-	public void setTextureTarget(int textureTarget) {
-		checkArgument(GL_TEXTURE_TARGET.contains(textureTarget));
-		this.textureTarget = textureTarget; 
+	public int getTextureUnitEnum() { 
+		checkState(textureUnit != MINUS_ONE);
+		return GL_TEXTURE0 + textureUnit; 
 	}
 
-	public int getTextureUnitEnum() { return GL_TEXTURE0 + textureUnit; }
 	public int getTextureUnit() { return textureUnit; }
 	protected void setTextureUnit(int textureUnit) { 
 		checkArgument(textureUnit > MINUS_ONE);

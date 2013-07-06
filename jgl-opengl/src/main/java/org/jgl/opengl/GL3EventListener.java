@@ -5,6 +5,7 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2ES2.GL_SHADING_LANGUAGE_VERSION;
 
 import javax.media.opengl.*;
+
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -17,11 +18,22 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	
 	@Override
 	protected void doInit(GLAutoDrawable gad) throws Exception {
+
 		GL3 gl = (GL3) gad.getGL();
+		log.info(format("OS Name, arch: [%s][%s]", System.getProperty("os.name"), System.getProperty("os.arch")));
 		log.info(format("OpenGL vendor: [%s]", gl.glGetString(GL_VENDOR)));
 		log.info(format("OpenGL renderer: [%s]", gl.glGetString(GL_RENDERER)));
 		log.info(format("OpenGL version: [%s]", gl.glGetString(GL_VERSION)));
 		log.info(format("OpenGL Shading language version: [%s]", gl.glGetString(GL_SHADING_LANGUAGE_VERSION)));
+
+		try {
+			Class.forName("javax.media.opengl.TraceGL3");
+			TraceGL3 tgl3 = new TraceGL3(gl, System.err);
+			gad.setGL(tgl3);
+			gl = tgl3;
+		} catch (Exception e) {
+			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
+		}
 		doInit(gl);
 	}
 

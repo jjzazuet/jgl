@@ -20,7 +20,7 @@ subprojects {
 		unsupportedOs = "Unsupported OS :("
 	}
 	
-	repositories { 
+	repositories {
 		mavenCentral()
 		maven { url "https://raw.github.com/jjzazuet/mvn-repo/master/repo" }
 	}

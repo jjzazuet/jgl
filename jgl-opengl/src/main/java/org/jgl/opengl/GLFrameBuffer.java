@@ -36,15 +36,16 @@ public class GLFrameBuffer extends GLContextBoundResource {
 			int glColorAttachment = GL_COLOR_ATTACHMENT0 + attachmentEntry.getKey();
 
 			colorAttachment.init(getGl());
-			colorAttachment.setTextureTarget(GL_TEXTURE_2D);
-			colorAttachment.bind();
 			colorAttachment.loadData(attachmentImage);
 
 			for (Entry<Integer, Integer> colorParam : getColorAttachmentParameters().entrySet()) {
 				colorAttachment.setParameter(colorParam.getKey(), colorParam.getValue());
 			}
 
-			getGl().glFramebufferTexture(getBindTarget(), glColorAttachment, colorAttachment.getGlResourceHandle(), ZERO);
+			colorAttachment.bind();
+			getGl().glFramebufferTexture2D(getBindTarget(), glColorAttachment,
+					colorAttachment.getTextureTarget(),
+					colorAttachment.getGlResourceHandle(), ZERO);
 			checkError();
 			colorAttachment.unbind();
 		}
