@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 public class GLFrameBuffer extends GLContextBoundResource {
 
 	private int bindTarget = MINUS_ONE;
-	private boolean attachmentsInitialized = false;	
 	private Map<Integer, GLTexture2D> colorAttachments = new HashMap<Integer, GLTexture2D>();
 	private Map<Integer, Integer> colorAttachmentParameters = new HashMap<Integer, Integer>();
 	private GLTextureMetadata colorAttachmentFormat = new GLTextureMetadata();
@@ -77,7 +76,6 @@ public class GLFrameBuffer extends GLContextBoundResource {
 		checkState(fbStatus == GL_FRAMEBUFFER_COMPLETE, 
 				resourceMsg("Unable to initialize Framebuffer [%s]"), 
 				Integer.toHexString(fbStatus));
-		attachmentsInitialized = true;
 
 		if (log.isDebugEnabled()) {
 			log.debug(resourceMsg("Framebuffer attachments initialized."));
@@ -123,7 +121,6 @@ public class GLFrameBuffer extends GLContextBoundResource {
 	public Map<Integer, Integer> getColorAttachmentParameters() { return colorAttachmentParameters; }
 	public GLTextureMetadata getColorAttachmentFormat() { return colorAttachmentFormat; }
 	public GLRenderBuffer getDepthStencilBuffer() { return depthStencilBuffer; }
-	public boolean isAttachmentsInitialized() { return attachmentsInitialized; }
 
 	public int getBindTarget() { 
 		checkState(bindTarget != MINUS_ONE);
