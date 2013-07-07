@@ -31,6 +31,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 			TraceGL3 tgl3 = new TraceGL3(gl, System.err);
 			gad.setGL(tgl3);
 			gl = tgl3;
+			log.info(format("Using TraceGL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
 		} catch (Exception e) {
 			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
 		}

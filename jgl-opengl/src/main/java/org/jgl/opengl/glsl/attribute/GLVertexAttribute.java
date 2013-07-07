@@ -35,6 +35,7 @@ public class GLVertexAttribute extends GLAttribute {
 
 		getProgram().getGl().glVertexAttribPointer(
 				glIndex, glSize, glPrimitiveType, normalize, glStride, glOffsetPointer);
+		getProgram().checkError();
 		paramData.unbind();
 		getVao().unbind();
 
@@ -44,12 +45,14 @@ public class GLVertexAttribute extends GLAttribute {
 	public void enable() {
 		getVao().bind();
 		getVao().getGl().glEnableVertexAttribArray(getLocation());
+		getVao().checkError();
 		getVao().unbind();
 	}
 
 	public void disable() {
 		getVao().bind();
 		getVao().getGl().glDisableVertexAttribArray(getLocation());
+		getVao().checkError();
 		getVao().unbind();
 	}
 

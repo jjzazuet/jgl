@@ -111,6 +111,7 @@ public class GLBufferFactory {
 		glBuffer.init(gl);
 		glBuffer.bind();
 		glBuffer.getGl().glBufferData(glBuffer.getGlBufferType(), glSizeIptr, targetBuffer, glUsageHint);
+		glBuffer.checkError();
 		glBuffer.unbind();
 		glBuffer.setRawBuffer(targetBuffer);
 

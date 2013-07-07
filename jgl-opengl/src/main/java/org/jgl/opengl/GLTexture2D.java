@@ -1,5 +1,6 @@
 package org.jgl.opengl;
 
+import static java.lang.String.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static com.google.common.base.Preconditions.*;
@@ -66,17 +67,27 @@ public class GLTexture2D extends GLContextBoundResource {
 
 	@Override
 	protected void doBind() {
+		logActiveTexture();
 		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
 	}
 
 	@Override
 	protected void doUnbind() {
+		logActiveTexture();
 		getGl().glBindTexture(getTextureTarget(), ZERO);
 	}
 
 	@Override
 	protected void doDestroy() {
 		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
+	}
+
+	protected void logActiveTexture() {
+		if (log.isDebugEnabled()) {
+			IntBuffer ib = IntBuffer.wrap(new int[1]);
+			getGl().glGetIntegerv(GL_TEXTURE_BINDING_2D, ib);
+			log.debug(format("%s [%s]", resourceMsg("Bound texture"), ib.get()));
+		}
 	}
 
 	public void generateMipMap() {

@@ -10,6 +10,8 @@ import java.nio.IntBuffer;
 import java.util.*;
 import java.util.Map.Entry;
 
+import com.jogamp.common.nio.Buffers;
+
 public class GLFrameBuffer extends GLContextBoundResource {
 
 	private int bindTarget = MINUS_ONE;
@@ -28,6 +30,9 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 		GLTexture2DImage attachmentImage = new GLTexture2DImage();
 		attachmentImage.getMetadata().setFrom(getColorAttachmentFormat());
+		byte [] bufferBytes = new byte [attachmentImage.getMetadata().getWidth() * attachmentImage.getMetadata().getHeight() * 4];
+		Arrays.fill(bufferBytes, (byte) 0);
+		attachmentImage.setImageData(Buffers.newDirectByteBuffer(bufferBytes));
 		bind();
 
 		for (Entry<Integer, GLTexture2D> attachmentEntry : getColorAttachments().entrySet()) {
