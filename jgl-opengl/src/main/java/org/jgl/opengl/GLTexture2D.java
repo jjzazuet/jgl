@@ -35,12 +35,12 @@ public class GLTexture2D extends GLContextBoundResource {
 		checkState(this.image == null, "Image data already loaded!");
 		this.image = image;
 
-		getGl().glTexImage2D(getTextureTarget(), ZERO, 
-				getImage().getMetadata().getInternalFormat(), 
-				getImage().getMetadata().getWidth(), 
-				getImage().getMetadata().getHeight(), ZERO, 
-				getImage().getMetadata().getPixelDataFormat(), 
-				getImage().getMetadata().getPixelDataType(), 
+		getGl().glTexImage2D(getTextureTarget(), ZERO,
+				getImage().getMetadata().getInternalFormat(),
+				getImage().getMetadata().getWidth(),
+				getImage().getMetadata().getHeight(), ZERO,
+				getImage().getMetadata().getPixelDataFormat(),
+				getImage().getMetadata().getPixelDataType(),
 				getImage().getImageData());
 		checkError();
 	}
