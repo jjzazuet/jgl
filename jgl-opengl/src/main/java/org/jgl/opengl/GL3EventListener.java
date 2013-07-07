@@ -4,6 +4,9 @@ import static java.lang.String.format;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2ES2.GL_SHADING_LANGUAGE_VERSION;
 
+import java.io.PrintStream;
+import java.lang.reflect.Constructor;
+
 import javax.media.opengl.*;
 
 import org.jgl.opengl.util.GLViewSize;
@@ -15,7 +18,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	protected abstract void doRender(GL3 gl, ExecutionState currentState) throws Exception;
 	protected abstract void doUpdate(GL3 gl, ExecutionState currentState) throws Exception;
 	protected abstract void onResize(GL3 gl, GLViewSize newViewport);
-	
+
 	@Override
 	protected void doInit(GLAutoDrawable gad) throws Exception {
 
@@ -27,10 +30,11 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 		log.info(format("OpenGL Shading language version: [%s]", gl.glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
 		try {
-			Class.forName("javax.media.opengl.TraceGL3");
-			TraceGL3 tgl3 = new TraceGL3(gl, System.err);
-			gad.setGL(tgl3);
-			gl = tgl3;
+			Class<?> traceGlClass = Class.forName("javax.media.opengl.TraceGL3");
+			Constructor<?> c = traceGlClass.getConstructor(GL3.class, PrintStream.class);
+			GL3 traceGl = (GL3) c.newInstance(gl, System.err);
+			gad.setGL(traceGl);
+			gl = traceGl;
 			log.info(format("Using TraceGL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
 		} catch (Exception e) {
 			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
