@@ -18,7 +18,7 @@ public class GLBuffer extends GLContextBoundResource {
 		this.glUsageHint = glUsageHint;
 		this.bufferMetadata = checkNotNull(componentMetadata);
 	}
-	
+
 	@Override
 	protected void doInit() { 
 		IntBuffer b = IntBuffer.allocate(ONE);
@@ -30,12 +30,12 @@ public class GLBuffer extends GLContextBoundResource {
 	protected void doBind() { 
 		getGl().glBindBuffer(getGlBufferType(), getGlResourceHandle()); 
 	}
-	
+
 	@Override
 	protected void doUnbind() { 
 		getGl().glBindBuffer(getGlBufferType(), ZERO);
 	}
-	
+
 	@Override
 	protected void doDestroy() { 
 		getGl().glDeleteBuffers(ONE, intBuffer(getGlResourceHandle()));

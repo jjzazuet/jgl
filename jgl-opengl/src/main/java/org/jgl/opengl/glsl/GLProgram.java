@@ -95,7 +95,7 @@ public class GLProgram extends GLContextBoundResource {
 
 	protected void checkNameAccess(String name) {
 		checkInitialized();
-		checkArgument(uniforms.get(name) != null);
+		checkNotNull(uniforms.get(name));
 	}
 
 	@Override

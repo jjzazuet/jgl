@@ -16,28 +16,25 @@ public class GLTexture2D extends GLContextBoundResource {
 	private GLTexture2DImage image = null;
 
 	public void setParameter(int parameter, float value) {
+		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		bind();
 		getGl().glTexParameterf(getTextureTarget(), parameter, value);
 		checkError();
-		unbind();
 	}
 
 	public void setParameter(int parameter, int value) {
+		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		bind();
 		getGl().glTexParameteri(getTextureTarget(), parameter, value);
 		checkError();
-		unbind();
 	}
 	
 	public void loadData(GLTexture2DImage image) {
 
-		checkInitialized();
+		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
 		this.image = image;
 
-		bind();
 		getGl().glTexImage2D(getTextureTarget(), ZERO, 
 				getImage().getMetadata().getInternalFormat(), 
 				getImage().getMetadata().getWidth(), 
@@ -46,7 +43,6 @@ public class GLTexture2D extends GLContextBoundResource {
 				getImage().getMetadata().getPixelDataType(), 
 				getImage().getImageData());
 		checkError();
-		unbind();
 	}
 
 	@Override
@@ -91,10 +87,9 @@ public class GLTexture2D extends GLContextBoundResource {
 	}
 
 	public void generateMipMap() {
-		bind();
+		checkBound();
 		getGl().glGenerateMipmap(getTextureTarget());
 		checkError();
-		unbind();
 	}
 
 	public GLTexture2DImage getImage() { return image; }

@@ -10,13 +10,13 @@ public class GLRenderBuffer extends GLContextBoundResource {
 	private GLImageMetadata bufferFormat = new GLImageMetadata();
 
 	public void initStorage() {
-		bind();
+		checkBound();
 		getGl().glRenderbufferStorage(GL_RENDERBUFFER, 
 				getBufferFormat().getInternalFormat(), 
 				getBufferFormat().getWidth(), 
 				getBufferFormat().getHeight());
 		checkError();
-		unbind();
+		storageReady = true;
 	}
 
 	@Override

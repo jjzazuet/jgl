@@ -91,17 +91,18 @@ public class T016NoiseTorus extends GL3EventListener {
 		noiseImage.getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
 
 		noiseTexture.init(gl);
-		noiseTexture.loadData(noiseImage);
-		noiseTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		noiseTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		noiseTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-		noiseTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-		noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_G, GL_RED);
-		noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_B, GL_RED);
+		noiseTexture.bind(); {
+			noiseTexture.loadData(noiseImage);
+			noiseTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			noiseTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			noiseTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+			noiseTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_G, GL_RED);
+			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_B, GL_RED);
+		} noiseTexture.unbind();
 
 		p.getSampler2D("TexUnit").set(noiseTexture);
 		p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-		noiseTexture.bind();
 
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);

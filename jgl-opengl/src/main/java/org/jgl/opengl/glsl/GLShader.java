@@ -50,7 +50,9 @@ public class GLShader extends GLContextBoundResource {
 		String [] lines = new String [] {getSource()};
 
 		getGl().glShaderSource(getGlResourceHandle(), lines.length, lines, b);
+		checkError();
 		getGl().glCompileShader(getGlResourceHandle());
+		checkError();
 		int compileStatus = getGlslParam(this, GL_COMPILE_STATUS);
 		
 		if (compileStatus == GL_FALSE) {
@@ -61,10 +63,10 @@ public class GLShader extends GLContextBoundResource {
 	@Override
 	protected void doInit() { 
 		try {
-			setGlResourceHandle(
-					getGl().glCreateShader(
-							getType().getGlType()));
-			compile();			
+			int rh = getGl().glCreateShader(getType().getGlType());
+			checkError();
+			setGlResourceHandle(rh);
+			compile();
 		} catch (Exception e) { propagate(e); }
 	}
 

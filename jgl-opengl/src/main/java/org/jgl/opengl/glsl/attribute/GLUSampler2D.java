@@ -12,15 +12,17 @@ public class GLUSampler2D extends GLUniformAttribute<GLTexture2D> {
 
 	@Override
 	public void doSet(int index, GLTexture2D value) {
+
 		checkElementIndex(index, getSize());
 		checkNotNull(value);
 		checkNotNull(value.getImage());
+		checkArgument(!value.isBound());
+
 		getProgram().checkBound();
 		getProgram().getGl().glActiveTexture(value.getTextureUnitEnum());
 		getProgram().checkError();
 		value.bind();
 		getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
 		getProgram().checkError();
-		value.unbind();
 	}
 }

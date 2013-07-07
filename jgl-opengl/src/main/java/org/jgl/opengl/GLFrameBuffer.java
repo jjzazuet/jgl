@@ -10,8 +10,6 @@ import java.nio.IntBuffer;
 import java.util.*;
 import java.util.Map.Entry;
 
-import com.jogamp.common.nio.Buffers;
-
 public class GLFrameBuffer extends GLContextBoundResource {
 
 	private int bindTarget = MINUS_ONE;
@@ -23,6 +21,7 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 	public void initAttachments() {
 
+		checkBound();
 		checkState(getDepthStencilBuffer().getBufferFormat().getWidth() ==
 				getColorAttachmentFormat().getWidth());
 		checkState(getDepthStencilBuffer().getBufferFormat().getHeight() ==
@@ -30,10 +29,6 @@ public class GLFrameBuffer extends GLContextBoundResource {
 
 		GLTexture2DImage attachmentImage = new GLTexture2DImage();
 		attachmentImage.getMetadata().setFrom(getColorAttachmentFormat());
-		byte [] bufferBytes = new byte [attachmentImage.getMetadata().getWidth() * attachmentImage.getMetadata().getHeight() * 4];
-		Arrays.fill(bufferBytes, (byte) 0);
-		attachmentImage.setImageData(Buffers.newDirectByteBuffer(bufferBytes));
-		bind();
 
 		for (Entry<Integer, GLTexture2D> attachmentEntry : getColorAttachments().entrySet()) {
 
@@ -41,13 +36,13 @@ public class GLFrameBuffer extends GLContextBoundResource {
 			int glColorAttachment = GL_COLOR_ATTACHMENT0 + attachmentEntry.getKey();
 
 			colorAttachment.init(getGl());
+			colorAttachment.bind();
 			colorAttachment.loadData(attachmentImage);
 
 			for (Entry<Integer, Integer> colorParam : getColorAttachmentParameters().entrySet()) {
 				colorAttachment.setParameter(colorParam.getKey(), colorParam.getValue());
 			}
 
-			colorAttachment.bind();
 			getGl().glFramebufferTexture2D(getBindTarget(), glColorAttachment,
 					colorAttachment.getTextureTarget(),
 					colorAttachment.getGlResourceHandle(), ZERO);
@@ -56,8 +51,8 @@ public class GLFrameBuffer extends GLContextBoundResource {
 		}
 
 		depthStencilBuffer.init(getGl());
-		depthStencilBuffer.initStorage();
 		depthStencilBuffer.bind();
+		depthStencilBuffer.initStorage();
 
 		int depthStencilInternalFormat = depthStencilBuffer.getBufferFormat().getInternalFormat();
 		checkState(depthStencilInternalFormat == GL_DEPTH_COMPONENT
@@ -83,7 +78,6 @@ public class GLFrameBuffer extends GLContextBoundResource {
 				resourceMsg("Unable to initialize Framebuffer [%s]"), 
 				Integer.toHexString(fbStatus));
 		attachmentsInitialized = true;
-		unbind();
 
 		if (log.isDebugEnabled()) {
 			log.debug(resourceMsg("Framebuffer attachments initialized."));
