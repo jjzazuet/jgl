@@ -24,6 +24,7 @@ public class GLVertexAttribute extends GLAttribute {
 		checkElementIndex(bufferComponentIndex, md.getComponentCount());
 
 		// TODO add some kind of raw type checking e.g. float(3) = vec3
+		getProgram().checkBound();
 		getVao().bind();
 		paramData.bind();
 
@@ -43,6 +44,7 @@ public class GLVertexAttribute extends GLAttribute {
 	}
 
 	public void enable() {
+		getProgram().checkBound();
 		getVao().bind();
 		getVao().getGl().glEnableVertexAttribArray(getLocation());
 		getVao().checkError();
@@ -50,6 +52,7 @@ public class GLVertexAttribute extends GLAttribute {
 	}
 
 	public void disable() {
+		getProgram().checkBound();
 		getVao().bind();
 		getVao().getGl().glDisableVertexAttribArray(getLocation());
 		getVao().checkError();
