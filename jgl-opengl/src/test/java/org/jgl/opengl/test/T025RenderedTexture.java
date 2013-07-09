@@ -89,8 +89,8 @@ public class T025RenderedTexture extends GL3EventListener {
 			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
 			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment(0));
-		}
-		cubeProgram.unbind();
+			fbo.getColorAttachment(0).bind();
+		} cubeProgram.unbind();
 
 		torusProgram.bind(); {
 			GLBuffer torusVertices = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);

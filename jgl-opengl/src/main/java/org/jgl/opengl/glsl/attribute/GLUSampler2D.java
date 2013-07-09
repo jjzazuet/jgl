@@ -24,5 +24,6 @@ public class GLUSampler2D extends GLUniformAttribute<GLTexture2D> {
 		value.bind();
 		getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
 		getProgram().checkError();
+		value.unbind();
 	}
 }

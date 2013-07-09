@@ -63,13 +63,13 @@ public class GLTexture2D extends GLContextBoundResource {
 
 	@Override
 	protected void doBind() {
-		logActiveTexture();
+		//logActiveTexture();
 		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
 	}
 
 	@Override
 	protected void doUnbind() {
-		logActiveTexture();
+		//logActiveTexture();
 		getGl().glBindTexture(getTextureTarget(), ZERO);
 	}
 

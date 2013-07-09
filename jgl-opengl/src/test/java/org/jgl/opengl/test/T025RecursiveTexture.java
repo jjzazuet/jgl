@@ -113,6 +113,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 		currentFbo = back;
 
 		uTexUnit.set(fbos[front].getColorAttachment(0));
+
 		orbit(cameraMatrix, camTarget, 3.0, 
 				azimuth.setDegrees(time * 35), 
 				elevation.setDegrees(sineWave(time / 20.0) * 60));
@@ -124,31 +125,34 @@ public class T025RecursiveTexture extends GL3EventListener {
 		perspectiveX(projMatrix, fov.setDegrees(40), 1.0, 1, 40);
 		uProjectionMatrix.set(projMatrix);
 
-		fbos[back].bind(); {
-			glViewPort(gl, texSide, texSide);
+		fbos[front].getColorAttachment(0).bind(); {
+
+			fbos[back].bind(); {
+				glViewPort(gl, texSide, texSide);
+				gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				cubeVao.bind();
+				glFrontFace(gl, cube.getFaceWinding());
+				gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+				cubeVao.unbind();
+			} fbos[back].unbind();
+
+			glViewPort(gl, width, height);
 			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			time += 0.3;
+
+			orbit(cameraMatrix, camTarget, 3.0, 
+					azimuth.setDegrees(time * 35), 
+					elevation.setDegrees(sineWave(time / 20.0) * 60));
+			uCameraMatrix.set(cameraMatrix);
+
+			perspectiveX(projMatrix, fov.setDegrees(75), (double) width / height, 1, 40);
+			uProjectionMatrix.set(projMatrix);
+
 			cubeVao.bind();
 			glFrontFace(gl, cube.getFaceWinding());
 			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 			cubeVao.unbind();
-		} fbos[back].unbind();
-
-		glViewPort(gl, width, height);
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		time += 0.3;
-
-		orbit(cameraMatrix, camTarget, 3.0, 
-				azimuth.setDegrees(time * 35), 
-				elevation.setDegrees(sineWave(time / 20.0) * 60));
-		uCameraMatrix.set(cameraMatrix);
-
-		perspectiveX(projMatrix, fov.setDegrees(75), (double) width / height, 1, 40);
-		uProjectionMatrix.set(projMatrix);
-
-		cubeVao.bind();
-		glFrontFace(gl, cube.getFaceWinding());
-		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
-		cubeVao.unbind();
+		} fbos[front].getColorAttachment(0).unbind();
 	}
 
 	@Override

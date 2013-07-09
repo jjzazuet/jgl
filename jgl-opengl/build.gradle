@@ -11,7 +11,8 @@ dependencies {
 
 	compile 'org.jogamp.jogl:jogl-core:2.0.2-rc12'
 	compile 'org.jogamp.jogl:jogl-gldesktop:2.0.2-rc12'
-	compile 'org.jogamp.jogl:jogl-gldesktop-dbg:2.0.2-rc12' // TODO remove when releasing packages
+	// TODO remove when releasing packages
+	// compile 'org.jogamp.jogl:jogl-gldesktop-dbg:2.0.2-rc12'
 	compile 'org.jogamp.jogl:jogl-swt:2.0.2-rc12'
 
 	compile 'org.jogamp.nativewindow:nativewindow-core:2.0.2-rc12'
