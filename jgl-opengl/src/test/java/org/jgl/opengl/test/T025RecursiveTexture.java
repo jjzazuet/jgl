@@ -1,7 +1,6 @@
 package org.jgl.opengl.test;
 
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
 import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
 import static javax.media.opengl.GL2GL3.GL_DRAW_FRAMEBUFFER;
 import static org.jgl.opengl.util.GLSLUtils.*;
@@ -24,6 +23,7 @@ import org.jgl.opengl.GLFrameBuffer;
 import org.jgl.opengl.GLVertexArray;
 import org.jgl.opengl.glsl.GLProgram;
 import org.jgl.opengl.glsl.attribute.GLUFloatMat4;
+import org.jgl.opengl.glsl.attribute.GLUSampler2D;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
@@ -34,11 +34,12 @@ public class T025RecursiveTexture extends GL3EventListener {
 	int width = texSide, height = texSide;
 
 	private Cube cube = new Cube();
-
+	private GLBuffer cubeVertices;
 	private GLProgram p;
 	private GLFrameBuffer [] fbos = new GLFrameBuffer[2];
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
+	private GLUSampler2D uTexUnit;
 
 	private Angle fov = new Angle();
 	private Angle elevation = new Angle();
@@ -53,8 +54,6 @@ public class T025RecursiveTexture extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025recursiveTexture/recursiveTexture.vs",
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025recursiveTexture/recursiveTexture.fs", gl);
-
-		cubeVao.init(gl);
 
 		for (int k = 0; k < fbos.length; k++) {
 
@@ -80,15 +79,22 @@ public class T025RecursiveTexture extends GL3EventListener {
 			fbos[k] = fb;
 		}
 
-		p.bind();
-		GLBuffer cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		cubeVao.init(gl);
+		p.bind(); {
+			cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0);
-		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0);
-		p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
+			p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+			p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+			p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
+
+			uProjectionMatrix = p.getMat4("ProjectionMatrix");
+			uCameraMatrix = p.getMat4("CameraMatrix");
+			uModelMatrix = p.getMat4("ModelMatrix");
+			uTexUnit = p.getSampler2D("TexUnit");
+		}
 
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
@@ -106,6 +112,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 		int back = (currentFbo + 1) % 2;
 		currentFbo = back;
 
+		uTexUnit.set(fbos[front].getColorAttachment(0));
 		orbit(cameraMatrix, camTarget, 3.0, 
 				azimuth.setDegrees(time * 35), 
 				elevation.setDegrees(sineWave(time / 20.0) * 60));
@@ -116,38 +123,32 @@ public class T025RecursiveTexture extends GL3EventListener {
 
 		perspectiveX(projMatrix, fov.setDegrees(40), 1.0, 1, 40);
 		uProjectionMatrix.set(projMatrix);
-		
-		/*
-		fbos[back].Bind(Framebuffer::Target::Draw);
-		gl.Viewport(tex_side, tex_side);
-		gl.Clear().ColorBuffer().DepthBuffer();
 
-		cube_instr.Draw(cube_indices);
+		fbos[back].bind(); {
+			glViewPort(gl, texSide, texSide);
+			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			cubeVao.bind();
+			glFrontFace(gl, cube.getFaceWinding());
+			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+			cubeVao.unbind();
+		} fbos[back].unbind();
 
-		// render the textured cube
-		Framebuffer::BindDefault(Framebuffer::Target::Draw);
-		gl.Viewport(width, height);
-		gl.Clear().ColorBuffer().DepthBuffer();
-
+		glViewPort(gl, width, height);
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		time += 0.3;
-		camera_matrix.Set(
-			CamMatrixf::Orbiting(
-				Vec3f(),
-				3.0,
-				Degrees(time * 35),
-				Degrees(SineWave(time / 20.0) * 60)
-			)
-		);
 
-		projection_matrix.Set(
-			CamMatrixf::PerspectiveX(
-				Degrees(75),
-				double(width)/height,
-				1, 40
-			)
-		);
+		orbit(cameraMatrix, camTarget, 3.0, 
+				azimuth.setDegrees(time * 35), 
+				elevation.setDegrees(sineWave(time / 20.0) * 60));
+		uCameraMatrix.set(cameraMatrix);
 
-		cube_instr.Draw(cube_indices);*/
+		perspectiveX(projMatrix, fov.setDegrees(75), (double) width / height, 1, 40);
+		uProjectionMatrix.set(projMatrix);
+
+		cubeVao.bind();
+		glFrontFace(gl, cube.getFaceWinding());
+		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+		cubeVao.unbind();
 	}
 
 	@Override
