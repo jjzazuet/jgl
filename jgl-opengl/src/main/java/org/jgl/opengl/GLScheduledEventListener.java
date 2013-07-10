@@ -34,7 +34,7 @@ public abstract class GLScheduledEventListener implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable arg0) {
 		try {
-			switch (executionState.method) {
+			switch (executionState.getMethod()) {
 				case RENDER: doRender(arg0, executionState); break;
 				case UPDATE: doUpdate(arg0, executionState); break;
 			}

@@ -65,20 +65,20 @@ public class GLComposite extends Composite implements Listener, Runnable, Render
 	@Override
 	public void updateTick(double elapsedTimeUs, double frameTimeUs) throws Exception {
 		ExecutionState es = target.getExecutionState();
-		es.logicTimer.update();
-		es.method = UPDATE;
-		es.elapsedTimeUs = elapsedTimeUs;
-		es.frameTimeUs = frameTimeUs;
+		es.getLogicTimer().update();
+		es.setMethod(UPDATE);
+		es.setElapsedTimeUs(elapsedTimeUs);
+		es.setFrameTimeUs(frameTimeUs);
 		canvas.display();
 	}
 	
 	@Override
 	public void renderTick(double tickTimeUs, double tickDelta) throws Exception {
 		ExecutionState es = target.getExecutionState();
-		es.renderTimer.update();
-		es.method = RENDER;
-		es.tickTimeUs = tickTimeUs;
-		es.tickDelta = tickDelta;
+		es.getRenderTimer().update();
+		es.setMethod(RENDER);
+		es.setTickTimeUs(tickTimeUs);
+		es.setTickDelta(tickDelta);
 		canvas.display();
 	}
 	
