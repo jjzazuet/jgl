@@ -3,7 +3,6 @@ package org.jgl.opengl.test;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
@@ -41,14 +40,14 @@ public class T015ShadedCube extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t015ShadedCube/shadedCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t015ShadedCube/shadedCube.fs", gl);
 
-		p.bind();
 		cubeVao.init(gl);
-		
+		p.bind();
+
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		
+
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 
@@ -60,7 +59,7 @@ public class T015ShadedCube extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
@@ -76,7 +75,7 @@ public class T015ShadedCube extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		glViewPort(gl, newViewport);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 20);
 		uProjectionMatrix.set(projMatrix);
 	}

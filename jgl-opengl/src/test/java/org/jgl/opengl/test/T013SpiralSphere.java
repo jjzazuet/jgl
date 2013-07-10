@@ -1,6 +1,5 @@
 package org.jgl.opengl.test;
 
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
@@ -63,9 +62,9 @@ public class T013SpiralSphere extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		sphereVao.bind();
-		glIndexedDraw(GL_TRIANGLE_STRIP, sphereIndices);
+		getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, sphereIndices);
 		sphereVao.unbind();
 	}
 
@@ -83,8 +82,7 @@ public class T013SpiralSphere extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 70);
 		uProjectionMatrix.set(projMat);
 	}

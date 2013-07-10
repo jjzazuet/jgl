@@ -4,7 +4,6 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
@@ -109,7 +108,7 @@ public class T016NoiseTorus extends GL3EventListener {
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
-		glFrontFace(gl, torus.getFaceWinding());
+		getDrawHelper().glFrontFace(torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 	}
 
@@ -117,20 +116,19 @@ public class T016NoiseTorus extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState)
 			throws Exception {
 		torusVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		gl.glCullFace(GL_FRONT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+		getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 
 		gl.glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		gl.glCullFace(GL_BACK);
-		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+		getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 
 	@Override
-	protected void doUpdate(GL3 gl, ExecutionState currentState)
-			throws Exception {
+	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
 		double time = currentState.getElapsedTimeSeconds();
 		orbit(cameraMatrix, camTarget, 4.5,
@@ -143,7 +141,7 @@ public class T016NoiseTorus extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		glViewPort(gl, newViewport);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.aspectRatio, 1, 20);
 		uProjectionMatrix.set(projMatrix);
 	}

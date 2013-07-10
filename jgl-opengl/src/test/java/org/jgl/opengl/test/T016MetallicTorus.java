@@ -4,7 +4,6 @@ import static org.jgl.math.angle.AngleOps.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static javax.media.opengl.GL.*;
 
@@ -45,7 +44,7 @@ public class T016MetallicTorus extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t016MetallicTorus/metallicTorus.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t016MetallicTorus/metallicTorus.fs", gl);
-		
+
 		torusVao.init(gl);
 		p.bind();
 
@@ -76,15 +75,15 @@ public class T016MetallicTorus extends GL3EventListener {
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
-		glFrontFace(gl, torus.getFaceWinding());
+		getDrawHelper().glFrontFace(torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		torusVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+		getDrawHelper().glClearColor().glClearDepth();
+		getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 
@@ -102,7 +101,7 @@ public class T016MetallicTorus extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		glViewPort(gl, newViewport);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMat, fov.setDegrees(80), newViewport.width/newViewport.height, 1, 20);
 		uProjectionMatrix.set(projMat);
 	}

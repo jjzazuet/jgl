@@ -3,7 +3,6 @@ package org.jgl.opengl.test;
 import static org.jgl.math.angle.AngleOps.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.GLBufferFactory.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
@@ -22,12 +21,12 @@ import org.jgl.time.util.ExecutionState;
 public class T017PhongTorus extends GL3EventListener {
 
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);
-	
+
 	private GLProgram p;
 	private GLUFloatMat4 uCameraMatrix, uProjectionMatrix;
 	private GLVertexArray torusVao = new GLVertexArray();
 	private GLBuffer torusIndices;
-	
+
 	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private Vector3 camTarget = new Vector3();
@@ -64,15 +63,15 @@ public class T017PhongTorus extends GL3EventListener {
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
-		glFrontFace(gl, torus.getFaceWinding());
+		getDrawHelper().glFrontFace(torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		torusVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+		getDrawHelper().glClearColor().glClearDepth();
+		getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 		torusVao.unbind();
 	}
 
@@ -86,7 +85,7 @@ public class T017PhongTorus extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		glViewPort(gl, newViewport);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMatrix, fov, newViewport.aspectRatio, 1, 30);
 		uProjectionMatrix.set(projMatrix);
 	}

@@ -9,11 +9,13 @@ import java.lang.reflect.Constructor;
 
 import javax.media.opengl.*;
 
+import org.jgl.opengl.util.GLDrawHelper;
 import org.jgl.opengl.util.GLViewSize;
 import org.jgl.time.util.ExecutionState;
 
 public abstract class GL3EventListener extends GLScheduledEventListener {
 
+	private GLDrawHelper drawHelper = new GLDrawHelper();
 	protected abstract void doInit(GL3 gl) throws Exception;
 	protected abstract void doRender(GL3 gl, ExecutionState currentState) throws Exception;
 	protected abstract void doUpdate(GL3 gl, ExecutionState currentState) throws Exception;
@@ -39,6 +41,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 		} catch (Exception e) {
 			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
 		}
+		getDrawHelper().init(gl);
 		doInit(gl);
 	}
 
@@ -57,4 +60,6 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	protected void onResize(GLAutoDrawable gad, GLViewSize newViewport) {
 		onResize((GL3) gad.getGL(), newViewport);
 	}
+
+	public GLDrawHelper getDrawHelper() { return drawHelper; }
 }

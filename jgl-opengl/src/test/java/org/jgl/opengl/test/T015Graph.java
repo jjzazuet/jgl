@@ -1,6 +1,5 @@
 package org.jgl.opengl.test;
 
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static com.google.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL3.*;
@@ -27,7 +26,7 @@ import org.jgl.time.util.ExecutionState;
 public class T015Graph extends GL3EventListener {
 
 	public static final int NODE_COUNT = 512;
-	
+
 	private BezierCubicLoop cameraPath = new BezierCubicLoop(
 			new Vector3(-40.0f, -50.0f, -50.0f),
 			new Vector3( 40.0f,   0.0f, -60.0f),
@@ -36,7 +35,7 @@ public class T015Graph extends GL3EventListener {
 			new Vector3(-30.0f,  30.0f,   0.0f),
 			new Vector3(-60.0f,   4.0f, -30.0f)
 	);
-	
+
 	private BezierCubicLoop cameraTargetPath = new BezierCubicLoop(
 			new Vector3(-10.0f,   0.0f, -10.0f),
 			new Vector3( 10.0f,  10.0f, -10.0f),
@@ -45,21 +44,21 @@ public class T015Graph extends GL3EventListener {
 			new Vector3(-10.0f, - 3.0f,   0.0f),
 			new Vector3(-10.0f,   0.0f, -10.0f)
 	);
-	
+
 	private Angle fov = new Angle();
-	
+
 	private GLProgram p;
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
 	private GLVertexArray graphVao = new GLVertexArray();
 	private GLBuffer positionsBuffer, edgeIndices;
-	
+
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
 
 	private double nrand() {
 		return 2 * (Math.random() - 0.5);
 	}
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -73,7 +72,7 @@ public class T015Graph extends GL3EventListener {
 
 		float [] positions = new float[NODE_COUNT * 3];
 		LinkedList<Integer> edges = new LinkedList<Integer>();
-		
+
 		for (int k = 0; k < positions.length; k++) {
 			positions[k++] = (float) (nrand() * 120);
 			positions[k++] = (float) (nrand() * 5);
@@ -84,15 +83,15 @@ public class T015Graph extends GL3EventListener {
 		p.getStageAttribute("Position").set(graphVao, positionsBuffer, false, 0).enable();
 
 		for (int i = 0; i < NODE_COUNT; ++i) {
-			
+
 			Vector3 pi = new Vector3(
 					positions[i*3+0], 
 					positions[i*3+1], 
 					positions[i*3+2]);
-			
+
 			double min_dist = 1000.0f;
 			int m = i;
-			
+
 			for (int j = i+1; j != NODE_COUNT; ++j) {
 				
 				Vector3 pj = new Vector3(
@@ -110,7 +109,7 @@ public class T015Graph extends GL3EventListener {
 
 			min_dist *= 2.0;
 			int done = 0;
-			
+
 			for (int j = i+1; j != NODE_COUNT; ++j) {
 				
 				Vector3 pj = new Vector3(
@@ -145,7 +144,7 @@ public class T015Graph extends GL3EventListener {
 
 		int [] edgesArray = toIntArray(edges);
 		edgeIndices = buffer(edgesArray, gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		
+
 		gl.glClearColor(0.9f, 0.9f, 0.8f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -158,9 +157,9 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		graphVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_POINTS, 0, NODE_COUNT * 3);
-		glIndexedDraw(GL_LINES, edgeIndices);
+		getDrawHelper().glIndexedDraw(GL_LINES, edgeIndices);
 		graphVao.unbind();
 	}
 
@@ -173,8 +172,7 @@ public class T015Graph extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 200);
 		uProjectionMatrix.set(projMat);
 	}

@@ -36,18 +36,17 @@ public class T010RgbCube extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t010RgbCube/rgbCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t010RgbCube/rgbCube.fs", gl);
-		
-		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
-		
+
 		cubeVao.init(gl);
-		
-		p.bind();
-		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
-		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-		lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
-		p.getMat4("CameraMatrix").set(cameraMatrix);
+		p.bind(); {
+			cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+			projectionMatrixAttr = p.getMat4("ProjectionMatrix");
+			p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
+			p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
+			p.getMat4("CameraMatrix").set(cameraMatrix);
+		}
 
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 		gl.glClearDepth(1.0f);
@@ -57,7 +56,7 @@ public class T010RgbCube extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
@@ -67,10 +66,7 @@ public class T010RgbCube extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
-		
+		getDrawHelper().glViewPort(newViewport);
 		xFov.setDegrees(48);
 		perspectiveX(projMatrix, xFov, newViewport.aspectRatio, 1, 100);
 		projectionMatrixAttr.set(projMatrix);

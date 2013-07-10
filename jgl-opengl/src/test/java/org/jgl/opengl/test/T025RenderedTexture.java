@@ -4,7 +4,6 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
@@ -48,9 +47,9 @@ public class T025RenderedTexture extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		GLShader vertexShader = loadVertexShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025renderedTexture/renderedTexture.vs");
-		GLShader cubeFragmentShader = loadFragmentShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025renderedTexture/cube.fs");
-		GLShader torusFragmentShader = loadFragmentShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025renderedTexture/torus.fs");
+		GLShader vertexShader = loadVertexShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025RenderedTexture/renderedTexture.vs");
+		GLShader cubeFragmentShader = loadFragmentShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025RenderedTexture/cube.fs");
+		GLShader torusFragmentShader = loadFragmentShader("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025RenderedTexture/torus.fs");
 
 		cubeProgram = new GLProgram().attachShader(vertexShader).attachShader(cubeFragmentShader);
 		torusProgram = new GLProgram().attachShader(vertexShader).attachShader(torusFragmentShader);
@@ -117,24 +116,24 @@ public class T025RenderedTexture extends GL3EventListener {
 
 		fbo.bind();
 		torusProgram.bind(); {
-			glViewPort(gl, texSide, texSide);
+			getDrawHelper().glViewPort(texSide, texSide);
 			gl.glClearDepth(1.0f);
 			gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
-			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			getDrawHelper().glClearColor().glClearDepth();
 			torusVao.bind();
-			glFrontFace(gl, torus.getFaceWinding());
-			glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+			getDrawHelper().glFrontFace(torus.getFaceWinding());
+			getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 			torusVao.unbind();
 		} torusProgram.unbind();
 		fbo.unbind();
 
 		cubeProgram.bind(); {
-			glViewPort(gl, width, height);
+			getDrawHelper().glViewPort(width, height);
 			gl.glClearDepth(1.0f);
 			gl.glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
-			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			getDrawHelper().glClearColor().glClearDepth();
 			cubeVao.bind();
-			glFrontFace(gl, cube.getFaceWinding());
+			getDrawHelper().glFrontFace(cube.getFaceWinding());
 			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 			cubeVao.unbind();
 		} cubeProgram.unbind();

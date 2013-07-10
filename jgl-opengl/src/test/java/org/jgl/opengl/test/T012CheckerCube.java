@@ -40,7 +40,7 @@ public class T012CheckerCube extends GL3EventListener {
 
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t012CheckerCube/checkerCube.fs", gl);
-		
+
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cameraMatrixAttr = p.getMat4("CameraMatrix");
@@ -58,7 +58,7 @@ public class T012CheckerCube extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
@@ -76,8 +76,7 @@ public class T012CheckerCube extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 20);
 		projectionMatrixAttr.set(projMatrix);
 	}

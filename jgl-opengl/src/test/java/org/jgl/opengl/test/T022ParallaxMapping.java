@@ -3,7 +3,6 @@ package org.jgl.opengl.test;
 import static javax.media.opengl.GL.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
@@ -30,11 +29,12 @@ public class T022ParallaxMapping extends GL3EventListener {
 	private GLProgram p;
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVertices;
-	
+	private GLTexture2D bumpTexture = new GLTexture2D();
+
 	private Angle fov = new Angle();
 	private Angle elevation = new Angle();
 	private Angle azimuth = new Angle();
-	private Angle lightazimuth = new Angle();
+	private Angle lightAzimuth = new Angle();
 	
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	private GLUFloatVec3 uLightPos;
@@ -57,7 +57,6 @@ public class T022ParallaxMapping extends GL3EventListener {
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTangents = buffer(cube.getTangents(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		GLTexture2D bumpTexture = new GLTexture2D();
 
 		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
@@ -89,33 +88,35 @@ public class T022ParallaxMapping extends GL3EventListener {
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
-		glFrontFace(gl, cube.getFaceWinding());
+		getDrawHelper().glFrontFace(cube.getFaceWinding());
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
+		getDrawHelper().glClearColor().glClearDepth();
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		bumpTexture.bind();
 		gl.glCullFace(GL_BACK);
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+		bumpTexture.unbind();
 		cubeVao.unbind();
 	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
-		
+
 		double time = currentState.getElapsedTimeSeconds();
-		
-		lightazimuth.setFullCircles(time * -0.5);
-		lightPos.set(-lightazimuth.cos(), 1, -lightazimuth.sin());
+
+		lightAzimuth.setFullCircles(time * -0.5);
+		lightPos.set(-lightAzimuth.cos(), 1, -lightAzimuth.sin());
 		scale(lightPos, 2.0);
 		uLightPos.set(lightPos);
-		
+
 		orbit(cameraMatrix, camTarget, 3.0, 
 				azimuth.setDegrees(-45), 
 				elevation.setDegrees(sineWave(time / 30.0) * 70));
 		uCameraMatrix.set(cameraMatrix);
-		
+
 		double circle = -time * 0.025;
 		modelTransform.getRotationX().setFullCircles(circle);
 		modelTransform.getRotationY().setFullCircles(circle);
@@ -125,7 +126,7 @@ public class T022ParallaxMapping extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		glViewPort(gl, newViewport);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMatrix, fov.setDegrees(54), newViewport.aspectRatio, 1, 10);
 		uProjectionMatrix.set(projMatrix);
 	}

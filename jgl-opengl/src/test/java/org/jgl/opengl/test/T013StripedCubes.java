@@ -27,27 +27,27 @@ public class T013StripedCubes extends GL3EventListener {
 	private GLBuffer cubeVerts;
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
-	
+
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
 	private Vector3 origin = new Vector3();
-	
+
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
-	
+
 	private ModelTransform cube1Trans = new ModelTransform();
 	private ModelTransform cube2Trans = new ModelTransform();
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
-		
+
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t013StripedCubes/stripedCubes.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t013StripedCubes/stripedCubes.fs", gl);
-		
+
 		cubeVao.init(gl);
 		p.bind();
 		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
@@ -55,7 +55,7 @@ public class T013StripedCubes extends GL3EventListener {
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");
 		uModelMatrix = p.getMat4("ModelMatrix");
-		
+
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -64,7 +64,7 @@ public class T013StripedCubes extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 	
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 
 		cubeVao.bind();
 		uModelMatrix.set(cube1Trans.getModelMatrix());
@@ -92,8 +92,7 @@ public class T013StripedCubes extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMat, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 30);
 		uProjectionMatrix.set(projMat);
 	}

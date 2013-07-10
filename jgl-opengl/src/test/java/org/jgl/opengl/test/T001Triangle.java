@@ -23,10 +23,12 @@ public class T001Triangle extends GL3EventListener {
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t001Triangle/triangle.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t001Triangle/triangle.fs", gl);
 
-		GLBuffer triangleBuffer = buffer(triangleVertices, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		
 		triangleVao.init(gl);
-		p.getStageAttribute("Position").set(triangleVao, triangleBuffer, false, 0).enable();
+		p.bind(); {
+			GLBuffer triangleBuffer = buffer(triangleVertices, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+			p.getStageAttribute("Position").set(triangleVao, triangleBuffer, false, 0).enable();
+		} p.unbind();
+
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClearDepth(1);
 	}
@@ -35,7 +37,7 @@ public class T001Triangle extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		p.bind();
 		triangleVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLES, 0, 3);
 		triangleVao.unbind();
 		p.unbind();	

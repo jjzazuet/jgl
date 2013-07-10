@@ -1,11 +1,9 @@
 package org.jgl.opengl.test;
 
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2ES2.GL_DEPTH_COMPONENT;
-import static javax.media.opengl.GL2GL3.GL_DRAW_FRAMEBUFFER;
+import static javax.media.opengl.GL2.*;
 import static org.jgl.opengl.util.GLSLUtils.*;
 import static org.jgl.opengl.GLBufferFactory.*;
-import static org.jgl.opengl.util.GLDrawUtils.*;
 import static org.jgl.math.matrix.Matrix4OpsCam.*;
 import static org.jgl.math.matrix.Matrix4OpsPersp.*;
 import static org.jgl.math.angle.AngleOps.*;
@@ -52,8 +50,8 @@ public class T025RecursiveTexture extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025recursiveTexture/recursiveTexture.vs",
-				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025recursiveTexture/recursiveTexture.fs", gl);
+		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025RecursiveTexture/recursiveTexture.vs",
+				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t025RecursiveTexture/recursiveTexture.fs", gl);
 
 		for (int k = 0; k < fbos.length; k++) {
 
@@ -99,7 +97,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 		gl.glEnable(GL_DEPTH_TEST);
 		gl.glEnable(GL_CULL_FACE);
 		gl.glCullFace(GL_BACK);
-		glFrontFace(gl, cube.getFaceWinding());
+		getDrawHelper().glFrontFace(cube.getFaceWinding());
 		gl.glClearDepth(1.0f);
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 	}
@@ -128,16 +126,16 @@ public class T025RecursiveTexture extends GL3EventListener {
 		fbos[front].getColorAttachment(0).bind(); {
 
 			fbos[back].bind(); {
-				glViewPort(gl, texSide, texSide);
-				gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+				getDrawHelper().glViewPort(texSide, texSide);
+				getDrawHelper().glClearColor().glClearDepth();
 				cubeVao.bind();
-				glFrontFace(gl, cube.getFaceWinding());
+				getDrawHelper().glFrontFace(cube.getFaceWinding());
 				gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 				cubeVao.unbind();
 			} fbos[back].unbind();
 
-			glViewPort(gl, width, height);
-			gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			getDrawHelper().glViewPort(width, height);
+			getDrawHelper().glClearColor().glClearDepth();
 			time += 0.3;
 
 			orbit(cameraMatrix, camTarget, 3.0, 
@@ -149,7 +147,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 			uProjectionMatrix.set(projMatrix);
 
 			cubeVao.bind();
-			glFrontFace(gl, cube.getFaceWinding());
+			getDrawHelper().glFrontFace(cube.getFaceWinding());
 			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 			cubeVao.unbind();
 		} fbos[front].getColorAttachment(0).unbind();

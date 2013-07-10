@@ -21,13 +21,15 @@ public class T002Rect extends GL3EventListener {
 		
 		p = loadProgram("../jgl-opengl/src/test/resources/org/jgl/glsl/test/t002Rect/rect.vs", 
 				"../jgl-opengl/src/test/resources/org/jgl/glsl/test/t002Rect/rect.fs", gl);
-		
-		GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
-		GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
 
 		rectVao.init(gl);
-		p.getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
-		p.getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
+		p.bind(); {
+			GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
+			GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+			p.getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
+			p.getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
+		} p.unbind();
+
 		gl.glClearColor(0, 0, 0, 1);
 		gl.glClearDepth(1);
 	}
@@ -36,7 +38,7 @@ public class T002Rect extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		p.bind();
 		rectVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		rectVao.unbind();
 		p.unbind();	

@@ -57,7 +57,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
-		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
@@ -75,8 +75,7 @@ public class T014MultiCubeGs extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		gl.glViewport(newViewport.x, newViewport.y, 
-				(int) newViewport.width, (int) newViewport.height);
+		getDrawHelper().glViewPort(newViewport);
 		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 50);
 		uProjectionMatrix.set(projMat);
 	}
