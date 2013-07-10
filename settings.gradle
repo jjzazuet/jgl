@@ -5,4 +5,5 @@ include 'jgl-math',
 	'jgl-time',
 	'jgl-os',
 	'jgl-opengl',
-	'jgl-swt'
+	'jgl-swt',
+	'jgl-core'
