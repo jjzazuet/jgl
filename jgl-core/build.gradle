@@ -1,4 +1,0 @@
-dependencies {
-	compile project(':jgl-swt')
-	testCompile 'com.google.seeds:seeds-primitives:14.0'
-}

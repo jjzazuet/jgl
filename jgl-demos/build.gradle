@@ -1,0 +1,4 @@
+dependencies {
+	compile project(':jgl-swt')
+	testCompile 'net.tribe7.seeds:seeds-primitives:14.0.1'
+}

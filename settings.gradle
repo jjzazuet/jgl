@@ -3,7 +3,6 @@ rootProject.name = 'jgl'
 include 'jgl-math', 
 	'jgl-geom',
 	'jgl-time',
-	'jgl-os',
 	'jgl-opengl',
 	'jgl-swt',
-	'jgl-core'
+	'jgl-demos'

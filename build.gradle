@@ -4,7 +4,7 @@ subprojects {
 	apply plugin: 'eclipse'
 	apply plugin: 'maven'
 
-	group = 'org.jgl'
+	group = 'net.tribe7.jgl'
 	version = '0.02'
 	sourceCompatibility = 1.6
 		
@@ -27,17 +27,17 @@ subprojects {
 	
 	configurations { provided }
 	
-	jar { manifest.attributes provider: 'unsungstories.net' }
+	jar { manifest.attributes provider: 'tribe7.net' }
 
 	sourceSets {
 		main.compileClasspath += configurations.provided
 		test.compileClasspath += configurations.provided
 		test.runtimeClasspath += configurations.provided
 	}
-	
+
 	dependencies {	
 		testCompile 'junit:junit:4.8.2'
-		compile 'com.google.seeds:seeds-base:14.0'
+		compile 'net.tribe7.seeds:seeds-base:14.0.1'
 	}
 
 	eclipse {
