@@ -81,7 +81,7 @@ public class GLBootstrap implements LoaderAction {
 					JarFile jf = new JarFile(nativeEntry.getValue());
 					JarEntry je = jf.getJarEntry(nativeEntry.getKey());
 					File tempDir = new File(System.getProperty(JAVA_TMP_DIR));
-					File temp = new File(tempDir, format("%s.jogl", libname));
+					File temp = new File(tempDir, format("%s.jni", libname));
 
 					try {
 						if (log.isDebugEnabled()) {
