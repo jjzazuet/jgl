@@ -1,7 +1,5 @@
 package net.tribe7.swt.test;
 
-import static net.tribe7.opengl.util.GLBootstrap.*;
-
 import javax.media.opengl.*;
 
 import org.eclipse.swt.SWT;
@@ -13,6 +11,8 @@ import net.tribe7.opengl.util.GLBootstrap;
 import net.tribe7.swt.GLComposite;
 
 import org.junit.Test;
+
+import com.jogamp.common.jvm.JNILibLoaderBase;
 
 public class GLTestShell {
 
@@ -30,8 +30,8 @@ public class GLTestShell {
 
 		s.setLayout(new FillLayout());
 		setSize(s, 800, 600);
-		new GLBootstrap().joglBootstrap();
 
+		JNILibLoaderBase.setLoadingAction(new GLBootstrap());
 		GLProfile profile = GLProfile.get(GLProfile.GL3);
 		GLCapabilities caps = new GLCapabilities(profile);
 

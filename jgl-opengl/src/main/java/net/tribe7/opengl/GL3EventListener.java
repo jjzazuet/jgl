@@ -31,14 +31,14 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 		log.info(format("OpenGL version: [%s]", gl.glGetString(GL_VERSION)));
 		log.info(format("OpenGL Shading language version: [%s]", gl.glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
-		try {
+		if (log.isDebugEnabled()) {
 			Class<?> traceGlClass = Class.forName("javax.media.opengl.TraceGL3");
 			Constructor<?> c = traceGlClass.getConstructor(GL3.class, PrintStream.class);
 			GL3 traceGl = (GL3) c.newInstance(gl, System.err);
 			gad.setGL(traceGl);
 			gl = traceGl;
 			log.info(format("Using TraceGL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
-		} catch (Exception e) {
+		} else {
 			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
 		}
 		getDrawHelper().init(gl);
