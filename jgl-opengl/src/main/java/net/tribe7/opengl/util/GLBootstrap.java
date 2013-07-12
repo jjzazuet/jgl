@@ -21,7 +21,7 @@ public class GLBootstrap implements LoaderAction {
 	public static final String JAVA_SEPARATOR = "path.separator";
 	public static final String JAVA_META_INF = "META-INF";
 	public static final String NATIVES = "natives";
-
+	public static final String JAWT = "jawt";
 	private static final Logger log = LoggerFactory.getLogger(GLBootstrap.class);
 
 	public GLBootstrap() throws Exception {
@@ -107,6 +107,12 @@ public class GLBootstrap implements LoaderAction {
 
 	@Override
 	public void loadLibrary(String libname, String[] preload, boolean preloadIgnoreError, ClassLoader cl) {
+
+		if (JAWT.compareTo(libname) == 0) {
+			Runtime.getRuntime().loadLibrary("jawt");
+			return;
+		}
+
 		if (null != preload) {
 			for (int i = 0; i < preload.length; i++) {
 				loadLibrary(preload[i], preloadIgnoreError, cl);
