@@ -1,7 +1,7 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
-import static net.tribe7.opengl.test.TGeometry.rectangle_verts;
+import static net.tribe7.mchochlik.test.TGeometry.rectangle_verts;
 import static net.tribe7.opengl.GLBufferFactory.buffer;
 import static net.tribe7.opengl.util.GLSLUtils.loadProgram;
 
@@ -25,8 +25,8 @@ public class T006CartoonSun extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 		
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t006CartoonSun/cartoonSun.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t006CartoonSun/cartoonSun.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t006CartoonSun/cartoonSun.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t006CartoonSun/cartoonSun.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

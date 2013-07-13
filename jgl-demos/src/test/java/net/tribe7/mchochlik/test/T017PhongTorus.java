@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static net.tribe7.math.angle.AngleOps.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
@@ -38,8 +38,8 @@ public class T017PhongTorus extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t017PhongTorus/phongTorus.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t017PhongTorus/phongTorus.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t017PhongTorus/phongTorus.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t017PhongTorus/phongTorus.fs", gl);
 
 		p.bind();
 		torusVao.init(gl);

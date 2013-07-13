@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
@@ -43,8 +43,8 @@ public class T013SpiralSphere extends GL3EventListener {
 		GLBuffer sphereTexCoords = buffer(sphere.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		sphereIndices = buffer(sphere.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t013SpiralSphere/spiralSphere.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t013SpiralSphere/spiralSphere.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t013SpiralSphere/spiralSphere.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t013SpiralSphere/spiralSphere.fs", gl);
 		
 		sphereVao.init(gl);
 		p.bind();

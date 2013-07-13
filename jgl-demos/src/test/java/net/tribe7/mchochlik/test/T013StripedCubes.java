@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.math.matrix.Matrix4OpsPersp.perspectiveX;
@@ -45,8 +45,8 @@ public class T013StripedCubes extends GL3EventListener {
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t013StripedCubes/stripedCubes.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t013StripedCubes/stripedCubes.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t013StripedCubes/stripedCubes.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t013StripedCubes/stripedCubes.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();

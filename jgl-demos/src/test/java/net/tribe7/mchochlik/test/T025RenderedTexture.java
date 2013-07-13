@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
@@ -47,9 +47,9 @@ public class T025RenderedTexture extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		GLShader vertexShader = loadVertexShader("./src/test/resources/net/tribe7/glsl/test/t025RenderedTexture/renderedTexture.vs");
-		GLShader cubeFragmentShader = loadFragmentShader("./src/test/resources/net/tribe7/glsl/test/t025RenderedTexture/cube.fs");
-		GLShader torusFragmentShader = loadFragmentShader("./src/test/resources/net/tribe7/glsl/test/t025RenderedTexture/torus.fs");
+		GLShader vertexShader = loadVertexShader("./src/test/resources/net/tribe7/mchochlik/test/t025RenderedTexture/renderedTexture.vs");
+		GLShader cubeFragmentShader = loadFragmentShader("./src/test/resources/net/tribe7/mchochlik/test/t025RenderedTexture/cube.fs");
+		GLShader torusFragmentShader = loadFragmentShader("./src/test/resources/net/tribe7/mchochlik/test/t025RenderedTexture/torus.fs");
 
 		cubeProgram = new GLProgram().attachShader(vertexShader).attachShader(cubeFragmentShader);
 		torusProgram = new GLProgram().attachShader(vertexShader).attachShader(torusFragmentShader);

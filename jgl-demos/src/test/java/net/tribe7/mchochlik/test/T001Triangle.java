@@ -1,7 +1,7 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
-import static net.tribe7.opengl.test.TGeometry.*;
+import static net.tribe7.mchochlik.test.TGeometry.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 
@@ -20,8 +20,8 @@ public class T001Triangle extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t001Triangle/triangle.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t001Triangle/triangle.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t001Triangle/triangle.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t001Triangle/triangle.fs", gl);
 
 		triangleVao.init(gl);
 		p.bind(); {

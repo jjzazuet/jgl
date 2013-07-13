@@ -1,13 +1,12 @@
-package net.tribe7.swt.test;
+package net.tribe7.shell.test;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.*;
-import net.tribe7.newt.shell.test.GLTestShell;
 import net.tribe7.swt.GLComposite;
 import org.junit.Test;
 
-public class SWTTestShell extends GLTestShell {
+public class SWTShell extends GLTestShell {
 
 	public static final int SHELL_PADDING_WIDTH = 16;
 	public static final int SHELL_PADDING_HEIGHT = 40;	
@@ -27,9 +26,7 @@ public class SWTTestShell extends GLTestShell {
 		// TODO implement test carousel or something... :P
 		GLComposite comp = new GLComposite(s, SWT.None, getCapabilities(), getTarget());
 
-		getTarget().getScheduler().setFrameTicksPerSecond(60);
 		comp.init();
-
 		s.setText(getShellTitleText());
 		s.open();
 
@@ -38,7 +35,6 @@ public class SWTTestShell extends GLTestShell {
 				d.sleep();
 			}
 		}
-
 		d.dispose();
 	}
 

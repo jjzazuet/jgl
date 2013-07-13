@@ -1,9 +1,9 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
-import static net.tribe7.opengl.test.TGeometry.*;
 import static net.tribe7.math.vector.Vector2Ops.*;
 import static net.tribe7.math.vector.VectorOps.*;
+import static net.tribe7.mchochlik.test.TGeometry.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 
@@ -31,8 +31,8 @@ public class T006NewtonZoom extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t006NewtonZoom/newtonZoom.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t006NewtonZoom/newtonZoom.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t006NewtonZoom/newtonZoom.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t006NewtonZoom/newtonZoom.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

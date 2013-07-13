@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static net.tribe7.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
@@ -63,8 +63,8 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t015Graph/graph.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t015Graph/graph.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t015Graph/graph.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t015Graph/graph.fs", gl);
 
 		graphVao.init(gl);
 		p.bind();

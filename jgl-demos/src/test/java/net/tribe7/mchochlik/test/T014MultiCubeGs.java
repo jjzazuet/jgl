@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static net.tribe7.math.angle.AngleOps.sineWave;
 import static net.tribe7.math.matrix.Matrix4OpsCam.orbit;
@@ -38,9 +38,9 @@ public class T014MultiCubeGs extends GL3EventListener {
 
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t014MultiCubeGs/multiCube.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t014MultiCubeGs/multiCube.gs",
-				"./src/test/resources/net/tribe7/glsl/test/t014MultiCubeGs/multiCube.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t014MultiCubeGs/multiCube.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t014MultiCubeGs/multiCube.gs",
+				"./src/test/resources/net/tribe7/mchochlik/test/t014MultiCubeGs/multiCube.fs", gl);
 
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");

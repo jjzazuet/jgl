@@ -1,11 +1,11 @@
-package net.tribe7.newt.shell.test;
+package net.tribe7.shell.test;
 
 import static net.tribe7.common.base.Preconditions.*;
 import static net.tribe7.common.base.Throwables.*;
 import javax.media.opengl.*;
 
+import net.tribe7.mchochlik.test.*;
 import net.tribe7.opengl.GLScheduledEventListener;
-import net.tribe7.opengl.test.T025RecursiveTexture;
 import net.tribe7.opengl.util.GLBootstrap;
 import com.jogamp.common.jvm.JNILibLoaderBase;
 
@@ -18,6 +18,7 @@ public class GLTestShell {
 	private GLScheduledEventListener target;
 
 	public GLTestShell() {
+
 		try { JNILibLoaderBase.setLoadingAction(new GLBootstrap()); }
 		catch (Exception e) { propagate(e); }
 		profile = GLProfile.get(GLProfile.GL3);
@@ -26,7 +27,10 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setNumSamples(8);
 		getCapabilities().setSampleBuffers(false);
-		setTarget(new T025RecursiveTexture());
+
+		GLScheduledEventListener target = new T025RenderedTexture();
+		target.getScheduler().setFrameTicksPerSecond(60);
+		setTarget(target);
 	}
 
 	public GLProfile getProfile() { return profile; }

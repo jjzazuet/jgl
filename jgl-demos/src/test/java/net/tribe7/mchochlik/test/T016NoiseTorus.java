@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
@@ -51,8 +51,8 @@ public class T016NoiseTorus extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t016NoiseTorus/noiseTorus.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t016NoiseTorus/noiseTorus.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t016NoiseTorus/noiseTorus.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t016NoiseTorus/noiseTorus.fs", gl);
 
 		p.bind();
 		torusVao.init(gl);

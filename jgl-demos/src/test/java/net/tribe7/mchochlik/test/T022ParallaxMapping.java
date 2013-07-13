@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
@@ -47,8 +47,8 @@ public class T022ParallaxMapping extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t022ParallaxMapping/parallaxMapping.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t022ParallaxMapping/parallaxMapping.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t022ParallaxMapping/parallaxMapping.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t022ParallaxMapping/parallaxMapping.fs", gl);
 
 		p.bind();
 		cubeVao.init(gl);

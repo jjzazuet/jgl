@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
@@ -42,8 +42,8 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 		
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t019SubsurfaceScattering/subsurfaceScattering.vs", 
-				"./src/test/resources/net/tribe7/glsl/test/t019SubsurfaceScattering/subsurfaceScattering.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t019SubsurfaceScattering/subsurfaceScattering.vs", 
+				"./src/test/resources/net/tribe7/mchochlik/test/t019SubsurfaceScattering/subsurfaceScattering.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();

@@ -1,4 +1,4 @@
-package net.tribe7.opengl.test;
+package net.tribe7.mchochlik.test;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
@@ -50,8 +50,8 @@ public class T025RecursiveTexture extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/test/resources/net/tribe7/glsl/test/t025RecursiveTexture/recursiveTexture.vs",
-				"./src/test/resources/net/tribe7/glsl/test/t025RecursiveTexture/recursiveTexture.fs", gl);
+		p = loadProgram("./src/test/resources/net/tribe7/mchochlik/test/t025RecursiveTexture/recursiveTexture.vs",
+				"./src/test/resources/net/tribe7/mchochlik/test/t025RecursiveTexture/recursiveTexture.fs", gl);
 
 		for (int k = 0; k < fbos.length; k++) {
 

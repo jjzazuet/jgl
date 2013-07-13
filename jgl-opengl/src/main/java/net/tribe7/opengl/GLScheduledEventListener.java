@@ -21,7 +21,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	protected final GLCheckError checkError = new GLCheckError();
 
 	private GLViewSize glViewSize = new GLViewSize(0, 0, 0, 0);
-	private ExecutionState executionState = new ExecutionState();
+	private GLExecutionState executionState = new GLExecutionState();
 	private final Scheduler scheduler = new FixedTimeStepScheduler();
 
 	protected abstract void doInit(GLAutoDrawable gad) throws Exception;
@@ -43,11 +43,8 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	@Override
 	public void display(GLAutoDrawable arg0) {
 		try {
+			executionState.setContext(arg0);
 			scheduler.stateTick();
-			switch (executionState.getMethod()) {
-				case RENDER: doRender(arg0, executionState); break;
-				case UPDATE: doUpdate(arg0, executionState); break;
-			}
 			checkError(arg0.getGL());
 		} catch (Exception e) { propagate(e); }
 	}
@@ -58,6 +55,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 		executionState.setMethod(UPDATE);
 		executionState.setElapsedTimeUs(elapsedTimeUs);
 		executionState.setFrameTimeUs(frameTimeUs);
+		doUpdate(executionState.getContext(), executionState);
 	}
 
 	@Override
@@ -66,6 +64,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 		executionState.setMethod(RENDER);
 		executionState.setTickTimeUs(tickTimeUs);
 		executionState.setTickDelta(tickDelta);
+		doRender(executionState.getContext(), executionState);
 	}
 
 	@Override
@@ -88,5 +87,5 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 
 	public GLViewSize getGlViewSize() { return glViewSize; }
 	public Scheduler getScheduler() { return scheduler; }
-	public ExecutionState getExecutionState() { return executionState; }
+	public GLExecutionState getExecutionState() { return executionState; }
 }
