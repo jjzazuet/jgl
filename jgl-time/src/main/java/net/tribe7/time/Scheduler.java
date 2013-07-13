@@ -14,15 +14,19 @@ import net.tribe7.time.RenderStateListener;
 public abstract class Scheduler {
 
 	public static final long TIMER_RESOLUTION = 1000000l;
-	
+
+	protected double interpolatedTickDelta;
 	protected double frameTicksPerSecond = 0.0;
 	protected long currentTimeUs;
 	protected long frameDeltaUs;
-	
-	protected double interpolatedTickDelta;	
+
 	private boolean ready = false;
-	
+
 	protected RenderStateListener stateListener;
+
+	protected abstract void doStateTick() throws Exception;
+	protected abstract void doInit();
+	protected abstract void doValidate();
 
 	/**
 	 * Defines how frequently will the {@link RenderStateListener} perform simulation
@@ -38,21 +42,15 @@ public abstract class Scheduler {
 	
 	public final void init() {
 		doInit();
-		checkFps();
-		checkListener();
-		checkFrameDelta();
+		validate();
 		ready = true;
 	}
 
-	public abstract void doStateTick() throws Exception;
-	protected abstract void doInit();
-	
-	public void setStateListener(RenderStateListener stateListener) {
-		this.stateListener = stateListener;
-	}
-	
-	public double getFrameTicksPerSecond() {
-		return frameTicksPerSecond;
+	protected final void validate() {
+		checkState(frameTicksPerSecond > 0.0, "Target framerate not set.");
+		checkState(frameDeltaUs > 0, "Target framerate delta not set.");
+		checkNotNull(stateListener, "Render state listener not set.");
+		doValidate();
 	}
 
 	public final void setFrameTicksPerSecond(double frameTicksPerSecond) {
@@ -63,16 +61,12 @@ public abstract class Scheduler {
 	public long getCurrentTimeUs() {
 		return MICROSECONDS.convert(System.nanoTime(), NANOSECONDS);
 	}
-	
-	protected final void checkFps() {
-		checkState(frameTicksPerSecond > 0.0, "Target framerate not set.");
+
+	public void setStateListener(RenderStateListener stateListener) {
+		this.stateListener = stateListener;
 	}
-	
-	protected final void checkFrameDelta() {
-		checkState(frameDeltaUs > 0, "Target framerate delta not set.");
-	}
-	
-	protected final void checkListener() {
-		checkNotNull(stateListener, "Render state listener not set.");
+
+	public double getFrameTicksPerSecond() {
+		return frameTicksPerSecond;
 	}
 }
