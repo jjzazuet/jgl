@@ -43,8 +43,8 @@ public class T013SpiralSphere extends GL3EventListener {
 		GLBuffer sphereTexCoords = buffer(sphere.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		sphereIndices = buffer(sphere.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t013SpiralSphere/spiralSphere.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t013SpiralSphere/spiralSphere.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t013SpiralSphere/spiralSphere.vs", 
+				"/net/tribe7/demos/mchochlik/t013SpiralSphere/spiralSphere.fs", gl);
 		
 		sphereVao.init(gl);
 		p.bind();

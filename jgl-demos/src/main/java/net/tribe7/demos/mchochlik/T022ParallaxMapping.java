@@ -47,8 +47,8 @@ public class T022ParallaxMapping extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t022ParallaxMapping/parallaxMapping.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t022ParallaxMapping/parallaxMapping.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t022ParallaxMapping/parallaxMapping.vs", 
+				"/net/tribe7/demos/mchochlik/t022ParallaxMapping/parallaxMapping.fs", gl);
 
 		p.bind();
 		cubeVao.init(gl);

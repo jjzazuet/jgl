@@ -21,8 +21,8 @@ public class T004Newton extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t004Newton/newton.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t004Newton/newton.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t004Newton/newton.vs", 
+				"/net/tribe7/demos/mchochlik/t004Newton/newton.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

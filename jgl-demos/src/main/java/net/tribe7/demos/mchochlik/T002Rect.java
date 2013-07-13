@@ -20,8 +20,8 @@ public class T002Rect extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 		
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t002Rect/rect.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t002Rect/rect.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t002Rect/rect.vs", 
+				"/net/tribe7/demos/mchochlik/t002Rect/rect.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

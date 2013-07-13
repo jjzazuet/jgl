@@ -42,8 +42,8 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 		
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.vs", 
+				"/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();

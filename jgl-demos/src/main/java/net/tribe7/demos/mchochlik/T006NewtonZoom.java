@@ -31,8 +31,8 @@ public class T006NewtonZoom extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t006NewtonZoom/newtonZoom.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t006NewtonZoom/newtonZoom.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t006NewtonZoom/newtonZoom.vs", 
+				"/net/tribe7/demos/mchochlik/t006NewtonZoom/newtonZoom.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

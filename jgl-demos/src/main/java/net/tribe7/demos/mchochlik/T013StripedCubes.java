@@ -45,8 +45,8 @@ public class T013StripedCubes extends GL3EventListener {
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t013StripedCubes/stripedCubes.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t013StripedCubes/stripedCubes.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t013StripedCubes/stripedCubes.vs", 
+				"/net/tribe7/demos/mchochlik/t013StripedCubes/stripedCubes.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();

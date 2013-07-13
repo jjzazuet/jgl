@@ -33,8 +33,8 @@ public class T010RgbCube extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t010RgbCube/rgbCube.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t010RgbCube/rgbCube.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t010RgbCube/rgbCube.vs", 
+				"/net/tribe7/demos/mchochlik/t010RgbCube/rgbCube.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind(); {

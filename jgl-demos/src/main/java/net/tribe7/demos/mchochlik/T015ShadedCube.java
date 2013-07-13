@@ -37,8 +37,8 @@ public class T015ShadedCube extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.vs", 
+				"/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();

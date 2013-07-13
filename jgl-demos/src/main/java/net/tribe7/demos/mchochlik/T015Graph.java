@@ -63,8 +63,8 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t015Graph/graph.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t015Graph/graph.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t015Graph/graph.vs", 
+				"/net/tribe7/demos/mchochlik/t015Graph/graph.fs", gl);
 
 		graphVao.init(gl);
 		p.bind();

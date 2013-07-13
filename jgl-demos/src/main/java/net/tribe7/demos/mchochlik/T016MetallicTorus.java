@@ -42,8 +42,8 @@ public class T016MetallicTorus extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t016MetallicTorus/metallicTorus.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t016MetallicTorus/metallicTorus.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t016MetallicTorus/metallicTorus.vs", 
+				"/net/tribe7/demos/mchochlik/t016MetallicTorus/metallicTorus.fs", gl);
 
 		torusVao.init(gl);
 		p.bind();

@@ -38,9 +38,9 @@ public class T014MultiCubeGs extends GL3EventListener {
 
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.gs",
-				"./src/main/resources/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.vs", 
+				"/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.gs",
+				"/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.fs", gl);
 
 		uProjectionMatrix = p.getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getMat4("CameraMatrix");

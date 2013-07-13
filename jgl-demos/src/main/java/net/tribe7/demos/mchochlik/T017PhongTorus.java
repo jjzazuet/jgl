@@ -38,8 +38,8 @@ public class T017PhongTorus extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t017PhongTorus/phongTorus.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t017PhongTorus/phongTorus.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t017PhongTorus/phongTorus.vs", 
+				"/net/tribe7/demos/mchochlik/t017PhongTorus/phongTorus.fs", gl);
 
 		p.bind();
 		torusVao.init(gl);

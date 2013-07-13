@@ -5,6 +5,7 @@ import static javax.media.opengl.GL2.*;
 import static net.tribe7.opengl.glsl.GLShaderType.*;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.*;
 
 import javax.media.opengl.GL3;
@@ -25,7 +26,7 @@ public class GLSLUtils {
 		checkNotNull(vsPath);
 		checkNotNull(fsPath);
 		checkNotNull(gl);
-				
+
 		GLShader vs = loadVertexShader(vsPath);
 		GLShader fs = loadFragmentShader(fsPath);
 		GLProgram p = new GLProgram();
@@ -54,9 +55,16 @@ public class GLSLUtils {
 
 		checkNotNull(path);
 		File shaderSrcFile = new File(path);
-		checkArgument(shaderSrcFile.exists());
-		GLShader s = new GLShader(t, shaderSrcFile);
+		GLShader s = null;
 
+		if (shaderSrcFile.exists()) {
+			s = new GLShader(t, shaderSrcFile);
+		} else {
+			URL shaderClassPathResource = GLSLUtils.class.getResource(path);
+			s = new GLShader(t, shaderClassPathResource);
+		}
+
+		checkNotNull(s);
 		return s;
 	}
 

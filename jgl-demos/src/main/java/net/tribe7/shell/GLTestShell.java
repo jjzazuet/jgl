@@ -28,7 +28,7 @@ public class GLTestShell {
 		getCapabilities().setNumSamples(8);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T006CartoonSun();
+		GLScheduledEventListener target = new T006NewtonZoom();
 		target.getScheduler().setFrameTicksPerSecond(60);
 		setTarget(target);
 	}

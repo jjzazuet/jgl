@@ -21,8 +21,8 @@ public class T005Manderblot extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.vs", 
+				"/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {

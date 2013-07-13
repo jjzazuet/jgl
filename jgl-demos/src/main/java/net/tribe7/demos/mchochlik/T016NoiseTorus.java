@@ -51,8 +51,8 @@ public class T016NoiseTorus extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t016NoiseTorus/noiseTorus.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t016NoiseTorus/noiseTorus.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t016NoiseTorus/noiseTorus.vs", 
+				"/net/tribe7/demos/mchochlik/t016NoiseTorus/noiseTorus.fs", gl);
 
 		p.bind();
 		torusVao.init(gl);

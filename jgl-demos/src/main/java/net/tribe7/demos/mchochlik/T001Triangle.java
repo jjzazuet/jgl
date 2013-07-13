@@ -20,8 +20,8 @@ public class T001Triangle extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t001Triangle/triangle.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t001Triangle/triangle.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t001Triangle/triangle.vs", 
+				"/net/tribe7/demos/mchochlik/t001Triangle/triangle.fs", gl);
 
 		triangleVao.init(gl);
 		p.bind(); {

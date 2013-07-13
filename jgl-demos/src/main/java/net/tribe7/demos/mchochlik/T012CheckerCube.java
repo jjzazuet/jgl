@@ -38,8 +38,8 @@ public class T012CheckerCube extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.vs", 
-				"./src/main/resources/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.vs", 
+				"/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.fs", gl);
 
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);

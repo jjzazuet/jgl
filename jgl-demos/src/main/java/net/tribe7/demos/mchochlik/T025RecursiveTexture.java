@@ -50,8 +50,8 @@ public class T025RecursiveTexture extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("./src/main/resources/net/tribe7/demos/mchochlik/t025RecursiveTexture/recursiveTexture.vs",
-				"./src/main/resources/net/tribe7/demos/mchochlik/t025RecursiveTexture/recursiveTexture.fs", gl);
+		p = loadProgram("/net/tribe7/demos/mchochlik/t025RecursiveTexture/recursiveTexture.vs",
+				"/net/tribe7/demos/mchochlik/t025RecursiveTexture/recursiveTexture.fs", gl);
 
 		for (int k = 0; k < fbos.length; k++) {
 
