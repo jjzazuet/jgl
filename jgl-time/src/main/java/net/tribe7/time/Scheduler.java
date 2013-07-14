@@ -1,5 +1,6 @@
 package net.tribe7.time;
 
+import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.*;
 import static net.tribe7.common.base.Preconditions.*;
 
@@ -13,12 +14,13 @@ import net.tribe7.time.RenderStateListener;
  */
 public abstract class Scheduler {
 
+	public static final double ZERO = 0.0;
+	public static final double MINUS_ONE = -1.0;
 	public static final long TIMER_RESOLUTION = 1000000l;
 
-	protected double interpolatedTickDelta;
-	protected double frameTicksPerSecond = 0.0;
-	protected long currentTimeUs;
-	protected long frameDeltaUs;
+	private double frameTicksPerSecond = MINUS_ONE;
+	private long currentTimeUs;
+	private long frameDeltaUs;
 
 	private boolean ready = false;
 
@@ -36,29 +38,30 @@ public abstract class Scheduler {
 	 * @see RenderStateListener#updateTick(double, double)
 	 */
 	public final void stateTick() throws Exception {
-		if (!ready) { throw new IllegalStateException("Scheduler not initialized."); }
+		if (!isReady()) { init(); }
 		doStateTick();
 	}
-	
-	public final void init() {
+
+	protected final void init() {
 		doInit();
 		validate();
 		ready = true;
 	}
 
 	protected final void validate() {
-		checkState(frameTicksPerSecond > 0.0, "Target framerate not set.");
-		checkState(frameDeltaUs > 0, "Target framerate delta not set.");
-		checkNotNull(stateListener, "Render state listener not set.");
+		checkState(getFrameTicksPerSecond() > ZERO, format("Invalid target framerate: [%s]", getFrameTicksPerSecond()));
+		checkState(getFrameDeltaUs() > ZERO, "Target framerate delta not set.");
+		checkNotNull(getStateListener(), "Render state listener not set.");
 		doValidate();
 	}
 
 	public final void setFrameTicksPerSecond(double frameTicksPerSecond) {
 		this.frameTicksPerSecond = frameTicksPerSecond;
-		frameDeltaUs = Math.round(TIMER_RESOLUTION / frameTicksPerSecond); 
+		frameDeltaUs = Math.round(TIMER_RESOLUTION / frameTicksPerSecond);
+		setReady(false);
 	}
 	
-	public long getCurrentTimeUs() {
+	public long queryCurrentTimeUs() {
 		return MICROSECONDS.convert(System.nanoTime(), NANOSECONDS);
 	}
 
@@ -66,7 +69,14 @@ public abstract class Scheduler {
 		this.stateListener = stateListener;
 	}
 
-	public double getFrameTicksPerSecond() {
-		return frameTicksPerSecond;
-	}
+	public boolean isReady() { return ready; }
+	public double getFrameTicksPerSecond() { return frameTicksPerSecond; }
+	public long getFrameDeltaUs() { return frameDeltaUs; }
+	public long getCurrentTimeUs() { return currentTimeUs; }
+
+	public void setReady(boolean ready) { this.ready = ready; }
+	public void setCurrentTimeUs(long currentTimeUs) { this.currentTimeUs = currentTimeUs; }
+	public void setFrameDeltaUs(long frameDeltaUs) { this.frameDeltaUs = frameDeltaUs; }
+
+	public RenderStateListener getStateListener() { return stateListener; }
 }

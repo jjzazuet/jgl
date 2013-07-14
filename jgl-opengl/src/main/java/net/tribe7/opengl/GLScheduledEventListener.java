@@ -1,21 +1,22 @@
 package net.tribe7.opengl;
 
+import static net.tribe7.time.Scheduler.*;
 import static net.tribe7.common.base.Throwables.*;
-import static net.tribe7.time.util.StateMethod.RENDER;
-import static net.tribe7.time.util.StateMethod.UPDATE;
+import static net.tribe7.time.util.StateMethod.*;
+import static java.lang.String.format;
 
 import javax.media.opengl.*;
 
 import net.tribe7.opengl.util.GLCheckError;
 import net.tribe7.opengl.util.GLViewSize;
-import net.tribe7.time.FixedTimeStepScheduler;
-import net.tribe7.time.RenderStateListener;
-import net.tribe7.time.Scheduler;
+import net.tribe7.time.*;
 import net.tribe7.time.util.ExecutionState;
 
 import org.slf4j.*;
 
 public abstract class GLScheduledEventListener implements GLEventListener, RenderStateListener {
+
+	public static final double DEFAULT_FRAME_TICKS_PER_SECOND = 60.0;
 
 	protected static final Logger log = LoggerFactory.getLogger(GLScheduledEventListener.class);
 	protected final GLCheckError checkError = new GLCheckError();
@@ -31,9 +32,16 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	
 	@Override
 	public void init(GLAutoDrawable arg0) {
+
 		arg0.setAutoSwapBufferMode(false);
+
+		if (scheduler.getFrameTicksPerSecond() == MINUS_ONE) {
+			scheduler.setFrameTicksPerSecond(DEFAULT_FRAME_TICKS_PER_SECOND);
+			log.info(format("Target framerate not set. Using default: [%s]", 
+					scheduler.getFrameTicksPerSecond()));
+		}
 		scheduler.setStateListener(this);
-		scheduler.init();
+
 		try { 
 			doInit(arg0);
 			checkError(arg0.getGL());

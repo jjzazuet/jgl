@@ -17,28 +17,30 @@ public class FixedTimeStepScheduler extends Scheduler {
 	@Override
 	public void doStateTick() throws Exception {
 
-		long newTimeMillis = getCurrentTimeUs();
-		long frameTimeMillis = newTimeMillis - currentTimeUs;
-		
+		long newTimeMillis = queryCurrentTimeUs();
+		long frameTimeMillis = newTimeMillis - getCurrentTimeUs();
+
 		if (frameTimeMillis > maxFrameDeltaUs) {
 			frameTimeMillis = maxFrameDeltaUs;
 		}
 
-		currentTimeUs = newTimeMillis;
+		setCurrentTimeUs(newTimeMillis);
 		accumulator = accumulator + frameTimeMillis;
+		long fd = getFrameDeltaUs();
 
-		while (accumulator >= frameDeltaUs) {
-			stateListener.updateTick(t, frameDeltaUs);
-			t = t + frameDeltaUs;
-			accumulator = accumulator - frameDeltaUs;
+		while (accumulator >= fd) {
+			stateListener.updateTick(t, fd);
+			t = t + fd;
+			accumulator = accumulator - fd;
 		}
-		stateListener.renderTick(currentTimeUs, ((double)accumulator)/((double)frameDeltaUs));
+		stateListener.renderTick(getCurrentTimeUs(),
+				((double) accumulator)/((double) fd));
 	}
 
 	@Override
 	public void doInit() {
-		currentTimeUs = getCurrentTimeUs();
-		maxFrameDeltaUs = MAX_FRAME_DELTA_SCALE_FACTOR * frameDeltaUs;
+		setCurrentTimeUs(queryCurrentTimeUs());
+		maxFrameDeltaUs = MAX_FRAME_DELTA_SCALE_FACTOR * getFrameDeltaUs();
 	}
 
 	@Override

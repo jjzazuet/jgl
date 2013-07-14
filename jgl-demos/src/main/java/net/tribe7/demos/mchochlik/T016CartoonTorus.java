@@ -67,7 +67,7 @@ public class T016CartoonTorus extends GL3EventListener {
 		gl.glCullFace(GL_BACK);
 		gl.glEnable(GL_LINE_SMOOTH);
 		// TODO bug: this command fails with Intel HD4000 cards...
-		//gl.glLineWidth(4);
+		gl.glLineWidth(4);
 	}
 
 	@Override

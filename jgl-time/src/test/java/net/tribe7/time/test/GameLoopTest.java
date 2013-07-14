@@ -14,17 +14,16 @@ public class GameLoopTest implements RenderStateListener {
 	private Scheduler rs = new FixedTimeStepScheduler();	
 	private Timer renderTimer = new Timer();
 	private Timer updateTimer = new Timer();
-	
+
 	@Test
 	public void start() throws Exception {
-		
+
 		rs.setFrameTicksPerSecond(4);
 		rs.setStateListener(this);
-		rs.init();
-		
+
 		int iterations = 360;
 		int current = 0;
-		
+
 		while(current < iterations) {
 			rs.stateTick();
 			current++;

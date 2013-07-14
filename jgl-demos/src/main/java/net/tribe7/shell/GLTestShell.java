@@ -2,11 +2,13 @@ package net.tribe7.shell;
 
 import static net.tribe7.common.base.Preconditions.*;
 import static net.tribe7.common.base.Throwables.*;
+
 import javax.media.opengl.*;
 
 import net.tribe7.demos.mchochlik.*;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;
+
 import com.jogamp.common.jvm.JNILibLoaderBase;
 
 public class GLTestShell {
@@ -25,11 +27,9 @@ public class GLTestShell {
 		capabilities = new GLCapabilities(profile);
 
 		getCapabilities().setDoubleBuffered(true);
-		getCapabilities().setNumSamples(8);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T006NewtonZoom();
-		target.getScheduler().setFrameTicksPerSecond(60);
+		GLScheduledEventListener target = new T016MetallicTorus();
 		setTarget(target);
 	}
 
