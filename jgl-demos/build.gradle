@@ -1,4 +1,33 @@
 dependencies {
 	compile project(':jgl-swt')
-	testCompile 'net.tribe7.seeds:seeds-primitives:14.0.1'
+	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
+}
+
+task copyFiles(type: Copy, dependsOn: [jar]) {	
+	from configurations.runtime
+	from("build/libs")
+	into("build/webstart/lib")
+	include('*.jar')
+}
+
+task jarSign(dependsOn: [copyFiles]) {
+	ext.srcDir = file('build/webstart/lib')
+	ext.destDir = file('build/webstart/signed')
+	inputs.dir srcDir
+	outputs.dir destDir
+	doLast {
+		destDir.mkdirs()
+		def libFiles = files { srcDir.listFiles() }
+		libFiles.each {
+			println "Signing: " + it
+			ant.signjar(
+				destDir: 'build/webstart/signed',
+				alias: project.getProperty('jarsign.keystore.alias'),
+				jar: it,
+				keystore: project.getProperty('jarsign.keystore.path'),
+				storepass: project.getProperty('jarsign.keystore.password'),
+				preservelastmodified: 'true'
+			)
+		}
+	}
 }

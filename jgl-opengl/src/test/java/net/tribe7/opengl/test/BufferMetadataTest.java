@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.opengl.test;
 
 import static javax.media.opengl.GL.*;
 import static org.junit.Assert.*;
