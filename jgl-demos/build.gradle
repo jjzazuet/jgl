@@ -33,17 +33,14 @@ task jarSign(dependsOn: [copyFiles]) {
 }
 
 task generateJnlp(dependsOn: [jarSign]) << {
+
 	File jnlpTemplateFile = new File('src/jnlp/template/template.vm')
 	def root = new XmlParser().parse(jnlpTemplateFile)
 	def jnlpFileName = "gradle-webstart-example-${version}.jnlp"
-	// Setting values in the jnlp template
-	// Setting root values
-	// File CodeBase
-	// root.@codebase = 'file:/'+new File('webstart/signed').absolutePath
-	// Hppt CodeBase
+
 	root.@codebase = 'https://dl.dropbox.com/u/24028482/jnlp/gradle-webstart-example'
 	root.@href = jnlpFileName
-	// Setting information values
+
 	def information = root.information[0]
 	def title = information.title[0]
 	def vendor = information.vendor[0]
@@ -53,7 +50,7 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	descriptionList.each {
 		it.setValue("Simple example of generating webstart files using gradle")
 	}
-	// Setting resources
+
 	def resource = root.resources[0]
 	def j2se = resource.j2se[0]
 	j2se.@version = "1.6+"
@@ -62,14 +59,14 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	collection.each {
 		def resourceValues = [href: it.name]
 		if (mainJar == it.name) {
-		    resourceValues = [href: it.name, main: 'true']
+			resourceValues = [href: it.name, main: 'true']
 		}
 		resource.appendNode('jar', resourceValues)
 	}
-	// Setting the main class
+
 	def applicationDesc = root.'application-desc'[0]
 	applicationDesc.'@main-class' = "org.anotes.example.gradlewebstart.MainApp"
-	// Writing the jnlp file filled
+
 	File jnlpFile = new File('webstart/signed/' + jnlpFileName)
 	new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 }
