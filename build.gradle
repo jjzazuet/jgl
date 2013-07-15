@@ -6,8 +6,8 @@ subprojects {
 
 	group = 'net.tribe7.jgl'
 	version = '0.02'
-	sourceCompatibility = 1.6
-		
+	sourceCompatibility = 1.5
+
 	ext {
 		osName = System.getProperty("os.name").toLowerCase()
 		osArch = System.getProperty("os.arch").toLowerCase()
