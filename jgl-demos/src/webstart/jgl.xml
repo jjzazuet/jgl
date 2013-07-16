@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+" codebase="" href="">
 	<information>
-		<title>
-			Interforest - Punto de Venta AW-INT
-		</title>
-		<vendor>
-			Interforest S.A.C
-		</vendor>
-		<description kind="one-line">
-			Interforest - Punto de Venta AW-INT
-		</description>
-		<description kind="short">
-			Interforest - Punto de Venta AW-INT
-		</description>
-		<description kind="tooltip">
-			Interforest - Punto de Venta AW-INT
-		</description>
+		<title/>
+		<vendor/>
+		<description kind="one-line" />
+		<description kind="short"/>
+		<description kind="tooltip"/>
 		<offline-allowed />
 	</information>
 	<security>

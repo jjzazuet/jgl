@@ -1,6 +1,7 @@
 dependencies {
 	compile project(':jgl-swt')
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
+	compile 'org.reflections:reflections:0.9.9-RC1'
 }
 
 task copyFiles(type: Copy, dependsOn: [jar]) {	
@@ -34,9 +35,9 @@ task jarSign(dependsOn: [copyFiles]) {
 
 task generateJnlp(dependsOn: [jarSign]) << {
 
-	File jnlpTemplateFile = new File('src/jnlp/template/template.vm')
+	def jnlpTemplateFile = file('src/webstart/jgl.xml')
 	def root = new XmlParser().parse(jnlpTemplateFile)
-	def jnlpFileName = "gradle-webstart-example-${version}.jnlp"
+	def jnlpFileName = "${project.name}-${version}.jnlp"
 
 	root.@codebase = 'https://dl.dropbox.com/u/24028482/jnlp/gradle-webstart-example'
 	root.@href = jnlpFileName
@@ -44,18 +45,22 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def information = root.information[0]
 	def title = information.title[0]
 	def vendor = information.vendor[0]
+
 	title.setValue("Gradle Webstart example")
 	vendor.setValue("ANotes")
+
 	def descriptionList = information.description
+
 	descriptionList.each {
 		it.setValue("Simple example of generating webstart files using gradle")
 	}
 
 	def resource = root.resources[0]
 	def j2se = resource.j2se[0]
-	j2se.@version = "1.6+"
-	def collection = files { file('webstart/lib').listFiles() }
-	def mainJar = "gradle-webstart-example-${version}.jar"
+	j2se.@version = "${project.sourceCompatibility}+"
+	def collection = files { file('build/webstart/lib').listFiles() }
+	def mainJar = "${project.name}-${version}.jar"
+
 	collection.each {
 		def resourceValues = [href: it.name]
 		if (mainJar == it.name) {
@@ -67,7 +72,7 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def applicationDesc = root.'application-desc'[0]
 	applicationDesc.'@main-class' = "org.anotes.example.gradlewebstart.MainApp"
 
-	File jnlpFile = new File('webstart/signed/' + jnlpFileName)
+	def jnlpFile = file('build/webstart/signed/' + jnlpFileName)
 	new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 }
 
