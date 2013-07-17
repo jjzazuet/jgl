@@ -1,10 +1,20 @@
+import eu.infomas.annotation.AnnotationDetector
+import eu.infomas.annotation.AnnotationDetector.TypeReporter
+import java.lang.annotation.Annotation
+
 def webstartUnsignedLibPath = "build/webstart-lib-unsigned"
 def webstartSignedLibPath = "build/webstart/lib"
+
+buildscript {
+	repositories { mavenCentral() }
+	dependencies { classpath 'eu.infomas:annotation-detector:3.0.2' }
+}
 
 dependencies {
 	compile project(':jgl-swt')
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
-	compile 'org.reflections:reflections:0.9.9-RC1'
+	compile 'org.slf4j:slf4j-log4j12:1.7.5'
+	provided 'eu.infomas:annotation-detector:3.0.2'
 }
 
 task copyFiles(type: Copy, dependsOn: [jar]) {	
@@ -12,6 +22,9 @@ task copyFiles(type: Copy, dependsOn: [jar]) {
 	from("build/libs")
 	into(webstartUnsignedLibPath)
 	include('*.jar')
+	exclude { 
+		details -> details.file.name.contains('jogl') || details.file.name.contains('gluegen')
+	}
 }
 
 task jarSign(dependsOn: [copyFiles]) {
@@ -36,13 +49,30 @@ task jarSign(dependsOn: [copyFiles]) {
 	}
 }
 
+task doAnnotations() {
+
+	/*def tr = new TypeReporter() {
+		private List<String> webstartDemos = new ArrayList<String>();
+		public Class<? extends Annotation>[] annotations() { return [WebstartDemo.class] }
+		public void reportTypeAnnotation(Class<? extends Annotation> annotation, String className) {
+			getWebstartDemos().add(className);
+		}
+		public List<String> getWebstartDemos() { return webstartDemos; }
+	};
+
+	def cf = new AnnotationDetector(tr)
+	cf.detect()
+	tr.webstartDemos.each {
+		println it
+	}*/
+}
+
 task generateJnlp(dependsOn: [jarSign]) << {
 
-	def jnlpTemplateFile = file('src/webstart/jgl.xml')
+	def jnlpTemplateFile = file('src/main/webstart/jgl.xml')
 	def root = new XmlParser().parse(jnlpTemplateFile)
 	def jnlpFileName = "${project.name}-${version}.jnlp"
 
-	root.@codebase = 'https://dl.dropbox.com/u/24028482/jnlp/gradle-webstart-example'
 	root.@href = jnlpFileName
 
 	def information = root.information[0]
@@ -65,15 +95,12 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def mainJar = "${project.name}-${version}.jar"
 
 	collection.each {
-		def resourceValues = [href: it.name]
+		def resourceValues = [href: 'lib/' + it.name]
 		if (mainJar == it.name) {
-			resourceValues = [href: it.name, main: 'true']
+			resourceValues = [href: 'lib/' + it.name, main: 'true']
 		}
 		resource.appendNode('jar', resourceValues)
 	}
-
-	def applicationDesc = root.'application-desc'[0]
-	applicationDesc.'@main-class' = "org.anotes.example.gradlewebstart.MainApp"
 
 	def jnlpFile = file('build/webstart/' + jnlpFileName)
 	new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)

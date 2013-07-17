@@ -7,11 +7,13 @@ import static net.tribe7.opengl.util.GLSLUtils.*;
 
 import javax.media.opengl.*;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T001Triangle extends GL3EventListener {
 
 	private GLVertexArray triangleVao = new GLVertexArray();
