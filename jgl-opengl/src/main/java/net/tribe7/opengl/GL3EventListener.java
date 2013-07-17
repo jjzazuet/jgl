@@ -37,23 +37,22 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 			GL3 traceGl = (GL3) c.newInstance(gl, System.err);
 			gad.setGL(traceGl);
 			gl = traceGl;
-			log.info(format("Using TraceGL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
-		} else {
-			log.info(format("Using default GL implementation [%s]", gad.getGL().getClass().getCanonicalName()));
 		}
+
+		log.info(format("GL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
 		getDrawHelper().init(gl);
 		doInit(gl);
 	}
 
 	@Override
-	public void doRender(GLAutoDrawable gad, ExecutionState currentState) throws Exception {
-		doRender((GL3) gad.getGL(), currentState);
-		gad.swapBuffers();
+	public void doRender(GLExecutionState currentState) throws Exception {
+		doRender((GL3) currentState.getContext().getGL(), currentState);
+		currentState.getContext().swapBuffers();
 	}
 
 	@Override
-	protected void doUpdate(GLAutoDrawable gad, ExecutionState currentState) throws Exception {
-		doUpdate((GL3) gad.getGL(), currentState);
+	protected void doUpdate(GLExecutionState currentState) throws Exception {
+		doUpdate((GL3) currentState.getContext().getGL(), currentState);
 	}
 
 	@Override

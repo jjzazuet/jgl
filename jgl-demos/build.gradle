@@ -1,3 +1,6 @@
+def webstartUnsignedLibPath = "build/webstart-lib-unsigned"
+def webstartSignedLibPath = "build/webstart/lib"
+
 dependencies {
 	compile project(':jgl-swt')
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
@@ -7,13 +10,13 @@ dependencies {
 task copyFiles(type: Copy, dependsOn: [jar]) {	
 	from configurations.runtime
 	from("build/libs")
-	into("build/webstart/lib")
+	into(webstartUnsignedLibPath)
 	include('*.jar')
 }
 
 task jarSign(dependsOn: [copyFiles]) {
-	ext.srcDir = file('build/webstart/lib')
-	ext.destDir = file('build/webstart/signed')
+	ext.srcDir = file(webstartUnsignedLibPath)
+	ext.destDir = file(webstartSignedLibPath)
 	inputs.dir srcDir
 	outputs.dir destDir
 	doLast {
@@ -22,7 +25,7 @@ task jarSign(dependsOn: [copyFiles]) {
 		libFiles.each {
 			println "Signing: " + it
 			ant.signjar(
-				destDir: 'build/webstart/signed',
+				destDir: webstartSignedLibPath,
 				alias: project.getProperty('jarsign.keystore.alias'),
 				jar: it,
 				keystore: project.getProperty('jarsign.keystore.path'),
@@ -58,7 +61,7 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def resource = root.resources[0]
 	def j2se = resource.j2se[0]
 	j2se.@version = "${project.sourceCompatibility}+"
-	def collection = files { file('build/webstart/lib').listFiles() }
+	def collection = files { file(webstartSignedLibPath).listFiles() }
 	def mainJar = "${project.name}-${version}.jar"
 
 	collection.each {
@@ -72,10 +75,10 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def applicationDesc = root.'application-desc'[0]
 	applicationDesc.'@main-class' = "org.anotes.example.gradlewebstart.MainApp"
 
-	def jnlpFile = file('build/webstart/signed/' + jnlpFileName)
+	def jnlpFile = file('build/webstart/' + jnlpFileName)
 	new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 }
 
 task generateWebStartFiles (dependsOn: [generateJnlp]) << {
-	println("Generating all webstart files in:webstart/signed")
+	println("Generating all webstart files in: " + webstartSignedLibPath)
 }

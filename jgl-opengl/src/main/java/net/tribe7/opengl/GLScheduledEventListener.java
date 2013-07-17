@@ -7,10 +7,8 @@ import static java.lang.String.format;
 
 import javax.media.opengl.*;
 
-import net.tribe7.opengl.util.GLCheckError;
-import net.tribe7.opengl.util.GLViewSize;
+import net.tribe7.opengl.util.*;
 import net.tribe7.time.*;
-import net.tribe7.time.util.ExecutionState;
 
 import org.slf4j.*;
 
@@ -26,8 +24,8 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	private final Scheduler scheduler = new FixedTimeStepScheduler();
 
 	protected abstract void doInit(GLAutoDrawable gad) throws Exception;
-	protected abstract void doRender(GLAutoDrawable gad, ExecutionState currentState) throws Exception;
-	protected abstract void doUpdate(GLAutoDrawable gad, ExecutionState currentState) throws Exception;
+	protected abstract void doRender(GLExecutionState currentState) throws Exception;
+	protected abstract void doUpdate(GLExecutionState currentState) throws Exception;
 	protected abstract void onResize(GLAutoDrawable gad, GLViewSize newViewport);
 	
 	@Override
@@ -63,7 +61,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 		executionState.setMethod(UPDATE);
 		executionState.setElapsedTimeUs(elapsedTimeUs);
 		executionState.setFrameTimeUs(frameTimeUs);
-		doUpdate(executionState.getContext(), executionState);
+		doUpdate(executionState);
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 		executionState.setMethod(RENDER);
 		executionState.setTickTimeUs(tickTimeUs);
 		executionState.setTickDelta(tickDelta);
-		doRender(executionState.getContext(), executionState);
+		doRender(executionState);
 	}
 
 	@Override
