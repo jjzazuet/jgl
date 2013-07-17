@@ -1,20 +1,17 @@
-import eu.infomas.annotation.AnnotationDetector
-import eu.infomas.annotation.AnnotationDetector.TypeReporter
-import java.lang.annotation.Annotation
+import org.scannotation.AnnotationDB
 
 def webstartUnsignedLibPath = "build/webstart-lib-unsigned"
 def webstartSignedLibPath = "build/webstart/lib"
+def mainJar = "${project.name}-${version}.jar"
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'eu.infomas:annotation-detector:3.0.2' }
+	dependencies { classpath 'net.sf.scannotation:scannotation:1.0.2' }
 }
 
 dependencies {
 	compile project(':jgl-swt')
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
-	compile 'org.slf4j:slf4j-log4j12:1.7.5'
-	provided 'eu.infomas:annotation-detector:3.0.2'
 }
 
 task copyFiles(type: Copy, dependsOn: [jar]) {	
@@ -49,61 +46,53 @@ task jarSign(dependsOn: [copyFiles]) {
 	}
 }
 
-task doAnnotations() {
-
-	/*def tr = new TypeReporter() {
-		private List<String> webstartDemos = new ArrayList<String>();
-		public Class<? extends Annotation>[] annotations() { return [WebstartDemo.class] }
-		public void reportTypeAnnotation(Class<? extends Annotation> annotation, String className) {
-			getWebstartDemos().add(className);
-		}
-		public List<String> getWebstartDemos() { return webstartDemos; }
-	};
-
-	def cf = new AnnotationDetector(tr)
-	cf.detect()
-	tr.webstartDemos.each {
-		println it
-	}*/
-}
-
 task generateJnlp(dependsOn: [jarSign]) << {
 
+	def adb = new AnnotationDB()
+	def mainJarUrl = file('build/libs/' + mainJar).toURI().toURL()
 	def jnlpTemplateFile = file('src/main/webstart/jgl.xml')
-	def root = new XmlParser().parse(jnlpTemplateFile)
-	def jnlpFileName = "${project.name}-${version}.jnlp"
 
-	root.@href = jnlpFileName
+	adb.scanArchives(mainJarUrl)
+	adb.annotationIndex['net.tribe7.demos.WebstartDemo'].each {
 
-	def information = root.information[0]
-	def title = information.title[0]
-	def vendor = information.vendor[0]
+		def root = new XmlParser().parse(jnlpTemplateFile)
+		def jnlpFileName = "${it}.jnlp"
 
-	title.setValue("Gradle Webstart example")
-	vendor.setValue("ANotes")
+		root.@href = jnlpFileName
 
-	def descriptionList = information.description
-
-	descriptionList.each {
-		it.setValue("Simple example of generating webstart files using gradle")
-	}
-
-	def resource = root.resources[0]
-	def j2se = resource.j2se[0]
-	j2se.@version = "${project.sourceCompatibility}+"
-	def collection = files { file(webstartSignedLibPath).listFiles() }
-	def mainJar = "${project.name}-${version}.jar"
-
-	collection.each {
-		def resourceValues = [href: 'lib/' + it.name]
-		if (mainJar == it.name) {
-			resourceValues = [href: 'lib/' + it.name, main: 'true']
+		def information = root.information[0]
+		def title = information.title[0]
+		def vendor = information.vendor[0]
+	
+		title.setValue(it)
+		vendor.setValue("tribe7.net")
+	
+		def descriptionList = information.description
+	
+		descriptionList.each {
+			it.setValue("Demo description")
 		}
-		resource.appendNode('jar', resourceValues)
-	}
+	
+		def resource = root.resources[0]
+		def appletDesc = root['applet-desc'][0]
+		def listenerClassParam = appletDesc.param.find{ it.@name == 'gl_event_listener_class' }
+		def j2se = resource.j2se[0]
+		def collection = files { file(webstartSignedLibPath).listFiles() }
 
-	def jnlpFile = file('build/webstart/' + jnlpFileName)
-	new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
+		listenerClassParam.@value = it
+		j2se.@version = "${project.sourceCompatibility}+"
+		
+		collection.each {
+			def resourceValues = [href: 'lib/' + it.name]
+			/*if (mainJar == it.name) {
+				resourceValues = [href: 'lib/' + it.name, main: 'true']
+			}*/
+			resource.appendNode('jar', resourceValues)
+		}
+	
+		def jnlpFile = file('build/webstart/' + jnlpFileName)
+		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)	
+	}
 }
 
 task generateWebStartFiles (dependsOn: [generateJnlp]) << {

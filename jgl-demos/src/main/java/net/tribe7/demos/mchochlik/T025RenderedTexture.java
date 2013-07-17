@@ -10,6 +10,7 @@ import static net.tribe7.opengl.util.GLSLUtils.*;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.*;
 import net.tribe7.geom.transform.ModelTransform;
 import net.tribe7.math.angle.Angle;
@@ -20,6 +21,7 @@ import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.util.*;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T025RenderedTexture extends GL3EventListener {
 
 	int texSide = 512;

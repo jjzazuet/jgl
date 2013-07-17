@@ -13,6 +13,7 @@ import java.util.Random;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Torus;
 import net.tribe7.geom.transform.ModelTransform;
 import net.tribe7.math.angle.Angle;
@@ -28,6 +29,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T016NoiseTorus extends GL3EventListener {
 
 	private Random r = new Random();

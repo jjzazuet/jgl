@@ -9,6 +9,7 @@ import static net.tribe7.opengl.util.GLSLUtils.*;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Torus;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
@@ -19,6 +20,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T017PhongTorus extends GL3EventListener {
 
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);

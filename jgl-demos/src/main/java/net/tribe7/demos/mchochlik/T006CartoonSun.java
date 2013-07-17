@@ -7,6 +7,7 @@ import static net.tribe7.opengl.util.GLSLUtils.loadProgram;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.GLProgram;
@@ -14,6 +15,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T006CartoonSun extends GL3EventListener {
 
 	private GLProgram p;

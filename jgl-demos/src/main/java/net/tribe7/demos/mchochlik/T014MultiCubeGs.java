@@ -9,6 +9,7 @@ import static javax.media.opengl.GL.*;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
@@ -19,6 +20,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T014MultiCubeGs extends GL3EventListener {
 
 	private Angle fov = new Angle();

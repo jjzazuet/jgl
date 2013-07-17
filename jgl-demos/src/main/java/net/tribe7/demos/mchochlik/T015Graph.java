@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL3;
 
+import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.bezier.BezierCubicLoop;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
@@ -24,6 +25,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
+@WebstartDemo
 public class T015Graph extends GL3EventListener {
 
 	public static final int NODE_COUNT = 512;
