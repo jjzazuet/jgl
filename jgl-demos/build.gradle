@@ -10,7 +10,8 @@ buildscript {
 }
 
 dependencies {
-	compile project(':jgl-swt')
+	compile project(':jgl-opengl')
+	testCompile project(':jgl-swt')
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
 }
 
@@ -84,9 +85,6 @@ task generateJnlp(dependsOn: [jarSign]) << {
 		
 		collection.each {
 			def resourceValues = [href: 'lib/' + it.name]
-			/*if (mainJar == it.name) {
-				resourceValues = [href: 'lib/' + it.name, main: 'true']
-			}*/
 			resource.appendNode('jar', resourceValues)
 		}
 	
