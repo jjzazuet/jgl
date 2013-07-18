@@ -87,6 +87,7 @@ public class GLFrameBuffer extends GLContextBoundResource {
 		return getColorAttachments().get(colorAttachmentIndex);
 	}
 
+	// TODO enable attachment of cube map textures
 	public void setColorAttachment(int colorAttachmentIndex) {
 		checkArgument(colorAttachmentIndex >= ZERO);
 		checkArgument(
