@@ -1,4 +1,4 @@
-![jgl](http://i32.photobucket.com/albums/d9/_Silencer/JGL/jgl-512x212.png)
+![jgl](http://i32.photobucket.com/albums/d9/_Silencer/JGL/jgl-512x182.png)
 
 jgl
 ===
