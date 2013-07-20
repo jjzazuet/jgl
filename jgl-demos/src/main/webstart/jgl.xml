@@ -16,7 +16,7 @@
 	</resources>
 	<applet-desc main-class="com.jogamp.newt.awt.applet.JOGLNewtApplet1Run" name="Test Applet" width="800" height="600">
 		<param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
-		<param name="gl_event_listener_class" value="net.tribe7.demos.mchochlik.T006CartoonSun"/>
+		<param name="gl_event_listener_class" value=""/>
 		<param name="gl_profile" value="GL3"/>
 		<param name="gl_swap_interval" value="1"/>
 		<param name="gl_debug" value="false"/>
