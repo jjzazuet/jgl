@@ -5,4 +5,6 @@ import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({TYPE})
-public @interface WebstartDemo {}
+public @interface WebstartDemo {
+	String imageUrl();
+}
