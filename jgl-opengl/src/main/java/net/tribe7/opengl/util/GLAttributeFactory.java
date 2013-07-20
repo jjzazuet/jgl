@@ -91,7 +91,8 @@ public class GLAttributeFactory {
 						at = new GLUFloatMat4(k, location, sizeBuf.get(), GL_FLOAT_MAT4, attributeName, p);
 						break;
 					case GL_SAMPLER_2D:
-						at = new GLUSampler2D(k, location, sizeBuf.get(), GL_SAMPLER_2D, attributeName, p);
+					case GL_SAMPLER_CUBE:
+						at = new GLUSampler(k, location, sizeBuf.get(), uniformType, attributeName, p);
 						break;
 					default: throw new IllegalStateException(
 							String.format("Unsupported uniform type: [%s]", Integer.toHexString(uniformType)));

@@ -1,16 +1,14 @@
 package net.tribe7.opengl;
 
+import static net.tribe7.common.base.Preconditions.*;
 import static java.lang.String.format;
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2ES2.GL_SHADING_LANGUAGE_VERSION;
+import static javax.media.opengl.GL2.*;
 
 import java.io.PrintStream;
 import java.lang.reflect.Constructor;
-
 import javax.media.opengl.*;
-
-import net.tribe7.opengl.util.GLDrawHelper;
-import net.tribe7.opengl.util.GLViewSize;
+import net.tribe7.opengl.util.*;
 import net.tribe7.time.util.ExecutionState;
 
 public abstract class GL3EventListener extends GLScheduledEventListener {
@@ -31,7 +29,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 		log.info(format("OpenGL version: [%s]", gl.glGetString(GL_VERSION)));
 		log.info(format("OpenGL Shading language version: [%s]", gl.glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
-		if (log.isDebugEnabled()) {
+		if (log.isTraceEnabled()) {
 			Class<?> traceGlClass = Class.forName("javax.media.opengl.TraceGL3");
 			Constructor<?> c = traceGlClass.getConstructor(GL3.class, PrintStream.class);
 			GL3 traceGl = (GL3) c.newInstance(gl, System.err);
@@ -58,6 +56,13 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 	@Override
 	protected void onResize(GLAutoDrawable gad, GLViewSize newViewport) {
 		onResize((GL3) gad.getGL(), newViewport);
+	}
+
+	public void initResource(GL3 gl, GLContextBoundResource ... r) {
+		checkNotNull(r);
+		for (GLContextBoundResource res : r) {
+			res.init(gl);
+		}
 	}
 
 	public GLDrawHelper getDrawHelper() { return drawHelper; }

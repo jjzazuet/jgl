@@ -22,7 +22,7 @@ import net.tribe7.opengl.GLFrameBuffer;
 import net.tribe7.opengl.GLVertexArray;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
-import net.tribe7.opengl.glsl.attribute.GLUSampler2D;
+import net.tribe7.opengl.glsl.attribute.GLUSampler;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
@@ -39,7 +39,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 	private GLFrameBuffer [] fbos = new GLFrameBuffer[2];
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
-	private GLUSampler2D uTexUnit;
+	private GLUSampler uTexUnit;
 
 	private Angle fov = new Angle();
 	private Angle elevation = new Angle();

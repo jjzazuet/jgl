@@ -1,36 +1,13 @@
 package net.tribe7.opengl;
 
-import static java.lang.String.*;
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
-import static net.tribe7.opengl.GLConstants.*;
-import static net.tribe7.opengl.util.GLBufferUtils.*;
 
-import java.nio.IntBuffer;
-import java.util.Random;
+public class GLTexture2D extends GLTexture {
 
-public class GLTexture2D extends GLContextBoundResource {
+	private GLTextureImage image = null;
 
-	private final int textureTarget = GL_TEXTURE_2D;
-	private int textureUnit = MINUS_ONE;
-	private GLTexture2DImage image = null;
-
-	public void setParameter(int parameter, float value) {
-		checkBound();
-		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		getGl().glTexParameterf(getTextureTarget(), parameter, value);
-		checkError();
-	}
-
-	public void setParameter(int parameter, int value) {
-		checkBound();
-		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		getGl().glTexParameteri(getTextureTarget(), parameter, value);
-		checkError();
-	}
-	
-	public void loadData(GLTexture2DImage image) {
+	public void loadData(GLTextureImage image) {
 
 		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
@@ -46,74 +23,13 @@ public class GLTexture2D extends GLContextBoundResource {
 		checkError();
 	}
 
-	@Override
-	protected void doInit() {
-
-		IntBuffer i1 = IntBuffer.allocate(ONE);
-		getGl().glGenTextures(ONE, i1);
-		checkError();
-		setGlResourceHandle(i1.get());
-
-		i1.clear();
-		getGl().glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, i1);
-		checkError();
-		int maxTextureUnits = i1.get();
-		int textureUnit = new Random().nextInt(maxTextureUnits - ZERO + 1) + ZERO;
-		setTextureUnit(textureUnit);
-	}
+	public GLTextureImage getImage() { return image; }
 
 	@Override
-	protected void doBind() {
-		//logActiveTexture();
-		getGl().glBindTexture(getTextureTarget(), getGlResourceHandle());
-	}
-
-	@Override
-	protected void doUnbind() {
-		//logActiveTexture();
-		getGl().glBindTexture(getTextureTarget(), ZERO);
-	}
-
-	@Override
-	protected void doDestroy() {
-		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
-	}
-
-	protected void logActiveTexture() {
-		if (log.isDebugEnabled()) {
-			IntBuffer ib = IntBuffer.wrap(new int[1]);
-			getGl().glGetIntegerv(GL_TEXTURE_BINDING_2D, ib);
-			log.debug(format("%s [%s]", resourceMsg("Bound texture"), ib.get()));
-		}
-	}
-
-	public void generateMipMap() {
-		checkBound();
-		getGl().glGenerateMipmap(getTextureTarget());
-		checkError();
-	}
-
-	public GLTexture2DImage getImage() { return image; }
-
-	public int getTextureTarget() { return textureTarget; }
-	public int getTextureUnitEnum() { 
-		checkState(textureUnit != MINUS_ONE);
-		return GL_TEXTURE0 + textureUnit; 
-	}
-
-	public int getTextureUnit() { return textureUnit; }
-	protected void setTextureUnit(int textureUnit) { 
-		checkArgument(textureUnit > MINUS_ONE);
-		this.textureUnit = textureUnit; 
-	}
+	public int getTextureTarget() { return GL_TEXTURE_2D; }
 
 	@Override
 	public String toString() {
-		return String.format("%s [target: %s, textureUnit: %s, glTextureUnit: %s, image:%s]",
-				super.toString(), 
-				Integer.toHexString(getTextureTarget()),
-				getTextureUnit(),
-				Integer.toHexString(getTextureUnitEnum()),
-				getImage());
+		return String.format("%s [image: %s]", super.toString(), getImage());
 	}
 }

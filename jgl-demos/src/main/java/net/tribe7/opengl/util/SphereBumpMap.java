@@ -9,10 +9,10 @@ import java.nio.*;
 import java.util.*;
 
 import net.tribe7.math.vector.Vector3;
-import net.tribe7.opengl.GLTexture2DImage;
+import net.tribe7.opengl.GLTextureImage;
 import net.tribe7.common.primitives.Floats;
 
-public class SphereBumpMap extends GLTexture2DImage {
+public class SphereBumpMap extends GLTextureImage {
 
 	public static final int ZERO = 0;
 	private int xrep = 1;

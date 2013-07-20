@@ -58,7 +58,7 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 		checkElementIndex(index, getSize());
 
 		if (indexLocations.isEmpty()) {
-			
+
 			GLProgram p = getProgram();
 			GL3 gl = p.getGl();
 			p.checkBound();

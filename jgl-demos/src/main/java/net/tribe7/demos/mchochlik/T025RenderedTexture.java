@@ -75,10 +75,7 @@ public class T025RenderedTexture extends GL3EventListener {
 			fbo.initAttachments();
 		} fbo.unbind();
 
-		cubeProgram.init(gl);
-		cubeVao.init(gl);
-		torusProgram.init(gl);
-		torusVao.init(gl);
+		initResource(gl, cubeProgram, cubeVao, torusProgram, torusVao);
 
 		cubeProgram.bind(); {
 			cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);

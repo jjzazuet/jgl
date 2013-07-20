@@ -88,9 +88,9 @@ public class GLProgram extends GLContextBoundResource {
 		return (GLUFloatMat4) uniforms.get(name);
 	}
 
-	public GLUSampler2D getSampler2D(String name) {
+	public GLUSampler getSampler2D(String name) {
 		checkNameAccess(name);
-		return (GLUSampler2D) uniforms.get(name);
+		return (GLUSampler) uniforms.get(name);
 	}
 
 	protected void checkNameAccess(String name) {

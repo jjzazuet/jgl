@@ -10,6 +10,7 @@ public class GLTextureMetadata extends GLImageMetadata {
 
 	private int pixelDataFormat = MINUS_ONE;
 	private int pixelDataType = MINUS_ONE;
+	private int mipMapLevel = ZERO;
 
 	public int getPixelDataFormat() { return pixelDataFormat; }
 	public void setPixelDataFormat(int format) {
@@ -23,19 +24,27 @@ public class GLTextureMetadata extends GLImageMetadata {
 		this.pixelDataType = type;
 	}
 
+	public int getMipMapLevel() { return mipMapLevel; }
+	public void setMipMapLevel(int mipMapLevel) {
+		checkArgument(mipMapLevel > MINUS_ONE);
+		this.mipMapLevel = mipMapLevel;
+	}
+
 	public void setFrom(GLTextureMetadata reference) {
 		super.setFrom(reference);
 		setPixelDataFormat(reference.getPixelDataFormat());
 		setPixelDataType(reference.getPixelDataType());
+		setMipMapLevel(reference.getMipMapLevel());
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s [w:%s, h:%s, internalFormat:%s, pixelFormat:%s, pixelType:%s]", 
+		return String.format("%s [w:%s, h:%s, internalFormat:%s, pixelFormat:%s, pixelType:%s, mipmap: %s]", 
 				getClass().getSimpleName(),
 				getWidth(), getHeight(), 
 				Integer.toHexString(getInternalFormat()), 
 				Integer.toHexString(getPixelDataFormat()), 
-				Integer.toHexString(getPixelDataType()));
+				Integer.toHexString(getPixelDataType()),
+				getMipMapLevel());
 	}
 }

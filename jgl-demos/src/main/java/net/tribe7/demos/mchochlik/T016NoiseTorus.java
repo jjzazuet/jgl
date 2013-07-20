@@ -22,7 +22,7 @@ import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.GL3EventListener;
 import net.tribe7.opengl.GLBuffer;
 import net.tribe7.opengl.GLTexture2D;
-import net.tribe7.opengl.GLTexture2DImage;
+import net.tribe7.opengl.GLTextureImage;
 import net.tribe7.opengl.GLVertexArray;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
@@ -82,7 +82,7 @@ public class T016NoiseTorus extends GL3EventListener {
 			}
 		}
 
-		GLTexture2DImage noiseImage = new GLTexture2DImage();
+		GLTextureImage noiseImage = new GLTextureImage();
 
 		noiseImage.setImageData(ByteBuffer.wrap(texData));
 		noiseImage.getMetadata().setWidth(s);
