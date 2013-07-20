@@ -21,7 +21,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/019_subsurf_scatter.png")
 public class T019SubsurfaceScattering extends GL3EventListener {
 
 	private int instructionCount = 32;

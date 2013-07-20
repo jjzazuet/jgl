@@ -21,7 +21,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/016_metallic_torus.png")
 public class T016MetallicTorus extends GL3EventListener {
 
 	private GLProgram p;

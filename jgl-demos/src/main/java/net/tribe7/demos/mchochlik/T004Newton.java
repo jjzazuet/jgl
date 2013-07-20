@@ -14,7 +14,7 @@ import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/004_newton.png")
 public class T004Newton extends GL3EventListener {
 
 	private GLProgram p;

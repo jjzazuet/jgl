@@ -21,7 +21,7 @@ import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.util.*;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/025_rendered_texture.png")
 public class T025RenderedTexture extends GL3EventListener {
 
 	int texSide = 512;

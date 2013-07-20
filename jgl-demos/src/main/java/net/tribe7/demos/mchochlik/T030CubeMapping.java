@@ -16,7 +16,7 @@ import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/030_cube_mapping.png")
 public class T030CubeMapping extends GL3EventListener {
 
 	private Sphere sphere = new Sphere(1.0, 72, 48);

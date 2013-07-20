@@ -26,7 +26,7 @@ import net.tribe7.opengl.glsl.attribute.GLUSampler;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/025_recursive_texture.png")
 public class T025RecursiveTexture extends GL3EventListener {
 
 	int currentFbo = 0;

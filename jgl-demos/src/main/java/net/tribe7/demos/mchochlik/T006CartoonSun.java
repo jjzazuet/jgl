@@ -15,7 +15,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/006_cartoon_sun.png")
 public class T006CartoonSun extends GL3EventListener {
 
 	private GLProgram p;

@@ -13,7 +13,7 @@ import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/002_rect.png")
 public class T002Rect extends GL3EventListener {
 
 	private GLVertexArray rectVao = new GLVertexArray();

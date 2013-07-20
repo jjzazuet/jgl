@@ -19,7 +19,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat2;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/006_newton_zoom.png")
 public class T006NewtonZoom extends GL3EventListener {
 
 	private GLProgram p;

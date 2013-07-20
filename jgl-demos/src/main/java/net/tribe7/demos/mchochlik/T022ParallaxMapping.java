@@ -23,7 +23,7 @@ import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.opengl.util.SphereBumpMap;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/022_parallax_map.png")
 public class T022ParallaxMapping extends GL3EventListener {
 
 	private Cube cube = new Cube();

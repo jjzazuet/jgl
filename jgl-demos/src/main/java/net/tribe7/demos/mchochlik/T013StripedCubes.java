@@ -21,7 +21,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/013_striped_cubes.png")
 public class T013StripedCubes extends GL3EventListener {
 
 	private GLProgram p;

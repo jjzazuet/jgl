@@ -29,7 +29,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/016_noise_torus.png")
 public class T016NoiseTorus extends GL3EventListener {
 
 	private Random r = new Random();

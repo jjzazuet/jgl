@@ -14,7 +14,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatVec4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/005_mandelbrot.png")
 public class T005Manderblot extends GL3EventListener {
 
 	private GLProgram p;

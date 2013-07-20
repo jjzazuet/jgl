@@ -20,7 +20,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/017_phong_torus.png")
 public class T017PhongTorus extends GL3EventListener {
 
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);

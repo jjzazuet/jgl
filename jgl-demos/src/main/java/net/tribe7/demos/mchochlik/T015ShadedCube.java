@@ -20,7 +20,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/015_shaded_cube.png")
 public class T015ShadedCube extends GL3EventListener {
 
 	private Cube cube = new Cube();

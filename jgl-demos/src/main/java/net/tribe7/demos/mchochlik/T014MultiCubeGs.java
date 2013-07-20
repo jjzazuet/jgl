@@ -20,7 +20,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/014_multi_cube_gs.png")
 public class T014MultiCubeGs extends GL3EventListener {
 
 	private Angle fov = new Angle();

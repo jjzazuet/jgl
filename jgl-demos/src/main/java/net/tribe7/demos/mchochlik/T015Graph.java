@@ -25,7 +25,7 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/015_graph.png")
 public class T015Graph extends GL3EventListener {
 
 	public static final int NODE_COUNT = 512;
