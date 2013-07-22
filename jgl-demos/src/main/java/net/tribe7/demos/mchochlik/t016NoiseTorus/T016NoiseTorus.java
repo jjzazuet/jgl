@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t016NoiseTorus;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;

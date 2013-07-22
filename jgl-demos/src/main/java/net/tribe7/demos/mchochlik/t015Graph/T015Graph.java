@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t015Graph;
 
 import static net.tribe7.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;

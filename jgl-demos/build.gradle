@@ -64,30 +64,31 @@ task generateJnlp(dependsOn: [jarSign]) << {
 		def information = root.information[0]
 		def title = information.title[0]
 		def vendor = information.vendor[0]
-	
+
 		title.setValue(it)
 		vendor.setValue("tribe7.net")
-	
+
 		def descriptionList = information.description
-	
+
 		descriptionList.each {
 			it.setValue("Demo description")
 		}
-	
+
 		def resource = root.resources[0]
 		def appletDesc = root['applet-desc'][0]
 		def listenerClassParam = appletDesc.param.find{ it.@name == 'gl_event_listener_class' }
 		def j2se = resource.j2se[0]
 		def collection = files { file(webstartSignedLibPath).listFiles() }
 
+		appletDesc.@name = it
 		listenerClassParam.@value = it
 		j2se.@version = "${project.sourceCompatibility}+"
-		
+
 		collection.each {
 			def resourceValues = [href: 'lib/' + it.name]
 			resource.appendNode('jar', resourceValues)
 		}
-	
+
 		def jnlpFile = file('build/webstart/' + jnlpFileName)
 		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)	
 	}

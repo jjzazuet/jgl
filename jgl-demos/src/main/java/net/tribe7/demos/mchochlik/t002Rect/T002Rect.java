@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t002Rect;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.demos.mchochlik.TGeometry.*;
@@ -10,47 +10,41 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.GLProgram;
-import net.tribe7.opengl.glsl.attribute.GLUFloatVec4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/005_mandelbrot.png")
-public class T005Manderblot extends GL3EventListener {
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/002_rect.png")
+public class T002Rect extends GL3EventListener {
 
-	private GLProgram p;
 	private GLVertexArray rectVao = new GLVertexArray();
-
+	private GLProgram p;
+	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
-
-		p = loadProgram("/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.vs", 
-				"/net/tribe7/demos/mchochlik/t005Manderblot/manderblot.fs", gl);
+		
+		p = loadProgram("/net/tribe7/demos/mchochlik/t002Rect/rect.vs", 
+				"/net/tribe7/demos/mchochlik/t002Rect/rect.fs", gl);
 
 		rectVao.init(gl);
 		p.bind(); {
-			GLUFloatVec4 clrs = p.getVec4("clrs");
+			GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
+			GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
+			p.getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
+			p.getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
+		} p.unbind();
 
-			p.getStageAttribute("Position").set(rectVao, 
-					buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
-					false, 0).enable();
-			p.getStageAttribute("Coord").set(rectVao, 
-					buffer(rectangle_coords, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
-					false, 0).enable();
-			clrs.set(0, color_map[0]);
-			clrs.set(1, color_map[1]);
-			clrs.set(2, color_map[2]);
-			clrs.set(3, color_map[3]);
-			clrs.set(4, color_map[4]);
-		}
+		gl.glClearColor(0, 0, 0, 1);
 		gl.glClearDepth(1);
 	}
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
+		p.bind();
 		rectVao.bind();
 		getDrawHelper().glClearColor().glClearDepth();
 		gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		rectVao.unbind();
+		p.unbind();	
 	}
 
 	@Override
@@ -58,6 +52,7 @@ public class T005Manderblot extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		getDrawHelper().glViewPort(newViewport);;
+		gl.glViewport(newViewport.x, newViewport.y, 
+				(int) newViewport.width, (int) newViewport.height);
 	}
 }

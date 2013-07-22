@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t016CartoonTorus;
 
 import static net.tribe7.math.angle.AngleOps.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;

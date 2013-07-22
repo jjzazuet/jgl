@@ -5,7 +5,7 @@ import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
 
-import net.tribe7.demos.mchochlik.*;
+import net.tribe7.demos.mchochlik.t025RecursiveTexture.T025RecursiveTexture;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;
 

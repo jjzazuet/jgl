@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t001Triangle;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.demos.mchochlik.TGeometry.*;

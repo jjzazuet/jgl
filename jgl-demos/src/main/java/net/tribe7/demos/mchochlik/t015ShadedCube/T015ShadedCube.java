@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t015ShadedCube;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
@@ -20,39 +20,40 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/012_checker_cube.png")
-public class T012CheckerCube extends GL3EventListener {
+@WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/015_shaded_cube.png")
+public class T015ShadedCube extends GL3EventListener {
 
-	private GLProgram p;
 	private Cube cube = new Cube();
 	private GLVertexArray cubeVao = new GLVertexArray();
-	private GLBuffer cubeVerts;
-	private GLBuffer cubeTexCoords;
+	private GLBuffer cubeVertices, cubeNormals;
+	private GLProgram p;
 	
+	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
+	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
+	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private GLUFloatMat4 cameraMatrixAttr;
-	private GLUFloatMat4 projectionMatrixAttr;
+	private Vector3 orbitTarget = new Vector3();
 	
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		p = loadProgram("/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.vs", 
-				"/net/tribe7/demos/mchochlik/t012CheckerCube/checkerCube.fs", gl);
-
-		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		cameraMatrixAttr = p.getMat4("CameraMatrix");
-		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
+		p = loadProgram("/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.vs", 
+				"/net/tribe7/demos/mchochlik/t015ShadedCube/shadedCube.fs", gl);
 
 		cubeVao.init(gl);
 		p.bind();
-		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
-		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
-		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
+
+		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getMat4("CameraMatrix");
+		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+		cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
+
+		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+
+		gl.glClearColor(0.03f, 0.03f, 0.03f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
 	}
@@ -61,25 +62,23 @@ public class T012CheckerCube extends GL3EventListener {
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		cubeVao.bind();
 		getDrawHelper().glClearColor().glClearDepth();
-		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
+		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 		cubeVao.unbind();
 	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
-
 		double time = currentState.getElapsedTimeSeconds();
-
-		azimuth.setDegrees(time * 135);
-		elevation.setDegrees(sineWave(time / 20) * 90);
-		orbit(cameraMatrix, new Vector3(), 2.7, azimuth, elevation);
-		cameraMatrixAttr.set(cameraMatrix);
+		orbit(camMatrix, orbitTarget, 3, 
+				azimuth.setDegrees(time * 135), 
+				elevation.setDegrees(sineWave(time / 20) * 90));
+		uCameraMatrix.set(camMatrix);
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMatrix, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 20);
-		projectionMatrixAttr.set(projMatrix);
+		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 20);
+		uProjectionMatrix.set(projMatrix);
 	}
 }

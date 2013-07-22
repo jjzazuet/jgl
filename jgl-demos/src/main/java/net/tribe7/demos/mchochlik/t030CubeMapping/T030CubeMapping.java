@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik;
+package net.tribe7.demos.mchochlik.t030CubeMapping;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
