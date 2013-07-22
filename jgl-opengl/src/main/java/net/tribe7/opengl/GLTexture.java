@@ -9,13 +9,19 @@ import static net.tribe7.opengl.GLConstants.*;
 import static net.tribe7.opengl.util.GLBufferUtils.intBuffer;
 
 import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public abstract class GLTexture extends GLContextBoundResource {
 
 	private int textureUnit = MINUS_ONE;
+	private boolean dataLoaded = false;
+	private Map<Integer, Number> parameters = new HashMap<Integer, Number>();
 
 	public abstract int getTextureTarget();
+	public abstract void doLoadData();
 
 	@Override
 	protected void doInit() {
@@ -48,7 +54,7 @@ public abstract class GLTexture extends GLContextBoundResource {
 		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
 	}
 
-	protected void loadData(GLTextureImage image, int textureImageTarget) {
+	protected void loadImage(GLTextureImage image, int textureImageTarget) {
 		checkBound();
 		checkNotNull(image);
 		getGl().glTexImage2D(textureImageTarget, 
@@ -62,17 +68,22 @@ public abstract class GLTexture extends GLContextBoundResource {
 		checkError();
 	}
 
-	public void setParameter(int parameter, float value) {
-		checkBound();
-		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		getGl().glTexParameterf(getTextureTarget(), parameter, value);
-		checkError();
+	public void loadData() {
+		checkState(!isDataLoaded(), resourceMsg("Image data already loaded."));
+		doLoadData();
+		setDataLoaded(true);
 	}
 
-	public void setParameter(int parameter, int value) {
+	public void applyParameters() {
 		checkBound();
-		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
-		getGl().glTexParameteri(getTextureTarget(), parameter, value);
+		for (Entry<Integer, Number> parameter : getParameters().entrySet()) {
+			checkArgument(GL_TEXTURE_PARAMETER.contains(parameter.getKey()));
+			if (parameter.getValue() instanceof Integer) {
+				getGl().glTexParameteri(getTextureTarget(), parameter.getKey(), (Integer) parameter.getValue());
+			} else if (parameter.getValue() instanceof Float) {
+				getGl().glTexParameterf(getTextureTarget(), parameter.getKey(), (Float) parameter.getValue());
+			} else throw new IllegalArgumentException(parameter.getValue().getClass().getCanonicalName());
+		}
 		checkError();
 	}
 
@@ -93,6 +104,8 @@ public abstract class GLTexture extends GLContextBoundResource {
 		return GL_TEXTURE0 + textureUnit; 
 	}
 
+	public Map<Integer, Number> getParameters() { return parameters; }
+
 	protected void logActiveTexture() {
 		if (log.isDebugEnabled()) {
 			IntBuffer ib = IntBuffer.wrap(new int[1]);
@@ -100,6 +113,9 @@ public abstract class GLTexture extends GLContextBoundResource {
 			log.debug(format("%s [%s]", resourceMsg("Bound texture"), ib.get()));
 		}
 	}
+
+	protected boolean isDataLoaded() { return dataLoaded; }
+	protected void setDataLoaded(boolean dataLoaded) { this.dataLoaded = dataLoaded; }
 
 	@Override
 	public String toString() {

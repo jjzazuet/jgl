@@ -74,12 +74,14 @@ public class T022ParallaxMapping extends GL3EventListener {
 
 		bumpTexture.init(gl);
 		bumpTexture.bind(); {
-			bumpTexture.loadData(bumpMap);
+			bumpTexture.getImage().setFrom(bumpMap);
+			bumpTexture.loadData();
 			bumpTexture.generateMipMap();
-			bumpTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			bumpTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			bumpTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-			bumpTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+			bumpTexture.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			bumpTexture.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			bumpTexture.getParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
+			bumpTexture.getParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
+			bumpTexture.applyParameters();
 		} bumpTexture.unbind();
 
 		p.getSampler2D("BumpTex").set(bumpTexture);

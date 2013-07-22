@@ -1,5 +1,6 @@
 package net.tribe7.opengl;
 
+import static net.tribe7.common.base.Preconditions.*;
 import java.nio.*;
 
 public class GLTextureImage {
@@ -10,6 +11,13 @@ public class GLTextureImage {
 	public Buffer getImageData() { return imageData; }
 	public void setImageData(Buffer imageData) { this.imageData = imageData; }
 	public GLTextureMetadata getMetadata() { return metadata; }
+
+	public void setFrom(GLTextureImage other) {
+		checkNotNull(other);
+		checkArgument(this != other);
+		setImageData(other.getImageData());
+		getMetadata().setFrom(other.getMetadata());
+	}
 
 	@Override
 	public String toString() {

@@ -16,10 +16,7 @@ import net.tribe7.geom.transform.ModelTransform;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
-import net.tribe7.opengl.GL3EventListener;
-import net.tribe7.opengl.GLBuffer;
-import net.tribe7.opengl.GLFrameBuffer;
-import net.tribe7.opengl.GLVertexArray;
+import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.glsl.attribute.GLUSampler;
@@ -36,7 +33,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 	private Cube cube = new Cube();
 	private GLBuffer cubeVertices;
 	private GLProgram p;
-	private GLFrameBuffer [] fbos = new GLFrameBuffer[2];
+	private GLFrameBufferCompact [] fbos = new GLFrameBufferCompact[2];
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 	private GLUSampler uTexUnit;
@@ -57,23 +54,22 @@ public class T025RecursiveTexture extends GL3EventListener {
 
 		for (int k = 0; k < fbos.length; k++) {
 
-			GLFrameBuffer fb = new GLFrameBuffer();
+			GLFrameBufferCompact fb = new GLFrameBufferCompact();
 			fb.init(gl);
 			fb.setBindTarget(GL_DRAW_FRAMEBUFFER);
 			fb.bind(); {
-				fb.setColorAttachment(0);
-				fb.getColorAttachmentFormat().setWidth(width);
-				fb.getColorAttachmentFormat().setHeight(height);
-				fb.getColorAttachmentFormat().setInternalFormat(GL_RGBA);
-				fb.getColorAttachmentFormat().setPixelDataFormat(GL_RGBA);
-				fb.getColorAttachmentFormat().setPixelDataType(GL_UNSIGNED_BYTE);
+				fb.getColorAttachment().getImage().getMetadata().setWidth(width);
+				fb.getColorAttachment().getImage().getMetadata().setHeight(height);
+				fb.getColorAttachment().getImage().getMetadata().setInternalFormat(GL_RGBA);
+				fb.getColorAttachment().getImage().getMetadata().setPixelDataFormat(GL_RGBA);
+				fb.getColorAttachment().getImage().getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
 				fb.getDepthStencilBuffer().getBufferFormat().setWidth(texSide);
 				fb.getDepthStencilBuffer().getBufferFormat().setHeight(texSide);
 				fb.getDepthStencilBuffer().getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
-				fb.getColorAttachmentParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				fb.getColorAttachmentParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				fb.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
-				fb.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
+				fb.getColorAttachment().getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				fb.getColorAttachment().getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				fb.getColorAttachment().getParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
+				fb.getColorAttachment().getParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
 				fb.initAttachments();
 			} fb.unbind();
 			fbos[k] = fb;
@@ -112,7 +108,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 		int back = (currentFbo + 1) % 2;
 		currentFbo = back;
 
-		uTexUnit.set(fbos[front].getColorAttachment(0));
+		uTexUnit.set(fbos[front].getColorAttachment());
 
 		orbit(cameraMatrix, camTarget, 3.0, 
 				azimuth.setDegrees(time * 35), 
@@ -125,7 +121,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 		perspectiveX(projMatrix, fov.setDegrees(40), 1.0, 1, 40);
 		uProjectionMatrix.set(projMatrix);
 
-		fbos[front].getColorAttachment(0).bind(); {
+		fbos[front].getColorAttachment().bind(); {
 
 			fbos[back].bind(); {
 				getDrawHelper().glViewPort(texSide, texSide);
@@ -152,7 +148,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 			getDrawHelper().glFrontFace(cube.getFaceWinding());
 			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
 			cubeVao.unbind();
-		} fbos[front].getColorAttachment(0).unbind();
+		} fbos[front].getColorAttachment().unbind();
 	}
 
 	@Override

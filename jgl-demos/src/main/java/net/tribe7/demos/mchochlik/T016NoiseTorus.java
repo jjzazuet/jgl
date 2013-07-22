@@ -20,11 +20,7 @@ import net.tribe7.geom.transform.ModelTransform;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
-import net.tribe7.opengl.GL3EventListener;
-import net.tribe7.opengl.GLBuffer;
-import net.tribe7.opengl.GLTexture2D;
-import net.tribe7.opengl.GLTextureImage;
-import net.tribe7.opengl.GLVertexArray;
+import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -83,24 +79,23 @@ public class T016NoiseTorus extends GL3EventListener {
 			}
 		}
 
-		GLTextureImage noiseImage = new GLTextureImage();
-
-		noiseImage.setImageData(ByteBuffer.wrap(texData));
-		noiseImage.getMetadata().setWidth(s);
-		noiseImage.getMetadata().setHeight(s);
-		noiseImage.getMetadata().setInternalFormat(GL_RED);
-		noiseImage.getMetadata().setPixelDataFormat(GL_RED);
-		noiseImage.getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
-
 		noiseTexture.init(gl);
+		noiseTexture.getImage().setImageData(ByteBuffer.wrap(texData));
+		noiseTexture.getImage().getMetadata().setWidth(s);
+		noiseTexture.getImage().getMetadata().setHeight(s);
+		noiseTexture.getImage().getMetadata().setInternalFormat(GL_RED);
+		noiseTexture.getImage().getMetadata().setPixelDataFormat(GL_RED);
+		noiseTexture.getImage().getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
+		noiseTexture.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		noiseTexture.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		noiseTexture.getParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
+		noiseTexture.getParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
+		noiseTexture.getParameters().put(GL_TEXTURE_SWIZZLE_G, GL_RED);
+		noiseTexture.getParameters().put(GL_TEXTURE_SWIZZLE_B, GL_RED);
+
 		noiseTexture.bind(); {
-			noiseTexture.loadData(noiseImage);
-			noiseTexture.setParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			noiseTexture.setParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			noiseTexture.setParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-			noiseTexture.setParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
-			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_G, GL_RED);
-			noiseTexture.setParameter(GL_TEXTURE_SWIZZLE_B, GL_RED);
+			noiseTexture.loadData();
+			noiseTexture.applyParameters();
 		} noiseTexture.unbind();
 
 		p.getSampler2D("TexUnit").set(noiseTexture);

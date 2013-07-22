@@ -1,20 +1,18 @@
 package net.tribe7.opengl;
 
 import static javax.media.opengl.GL.*;
-import static net.tribe7.common.base.Preconditions.*;
 
 public class GLTexture2D extends GLTexture {
 
-	private GLTextureImage image = null;
+	private final GLTextureImage image = new GLTextureImage();
 
-	public void loadData(GLTextureImage image) {
-		checkState(this.image == null, "Image data already loaded!");
-		super.loadData(image, getTextureTarget());
-		this.image = image;
+	@Override
+	public void doLoadData() {
+		super.loadImage(image, getTextureTarget());
 	}
 
 	public GLTextureImage getImage() { return image; }
-
+	
 	@Override
 	public int getTextureTarget() { return GL_TEXTURE_2D; }
 

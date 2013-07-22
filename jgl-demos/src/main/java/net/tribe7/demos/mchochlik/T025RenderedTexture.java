@@ -30,7 +30,7 @@ public class T025RenderedTexture extends GL3EventListener {
 	private Torus torus = new Torus(1.0, 0.5, 72, 48);
 	private GLProgram cubeProgram;
 	private GLProgram torusProgram;
-	private GLFrameBuffer fbo = new GLFrameBuffer();
+	private GLFrameBufferCompact fbo = new GLFrameBufferCompact();
 	private GLBuffer torusIndices;
 	private GLBuffer cubeVertices;
 
@@ -59,19 +59,18 @@ public class T025RenderedTexture extends GL3EventListener {
 		fbo.init(gl);
 		fbo.setBindTarget(GL_DRAW_FRAMEBUFFER);
 		fbo.bind(); {
-			fbo.setColorAttachment(0);
-			fbo.getColorAttachmentFormat().setWidth(width);
-			fbo.getColorAttachmentFormat().setHeight(height);
-			fbo.getColorAttachmentFormat().setInternalFormat(GL_RGBA);
-			fbo.getColorAttachmentFormat().setPixelDataFormat(GL_RGBA);
-			fbo.getColorAttachmentFormat().setPixelDataType(GL_UNSIGNED_BYTE);
+			fbo.getColorAttachment().getImage().getMetadata().setWidth(width);
+			fbo.getColorAttachment().getImage().getMetadata().setHeight(height);
+			fbo.getColorAttachment().getImage().getMetadata().setInternalFormat(GL_RGBA);
+			fbo.getColorAttachment().getImage().getMetadata().setPixelDataFormat(GL_RGBA);
+			fbo.getColorAttachment().getImage().getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
 			fbo.getDepthStencilBuffer().getBufferFormat().setWidth(texSide);
 			fbo.getDepthStencilBuffer().getBufferFormat().setHeight(texSide);
 			fbo.getDepthStencilBuffer().getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
-			fbo.getColorAttachmentParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			fbo.getColorAttachmentParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
-			fbo.getColorAttachmentParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
+			fbo.getColorAttachment().getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			fbo.getColorAttachment().getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			fbo.getColorAttachment().getParameters().put(GL_TEXTURE_WRAP_S, GL_REPEAT);
+			fbo.getColorAttachment().getParameters().put(GL_TEXTURE_WRAP_T, GL_REPEAT);
 			fbo.initAttachments();
 		} fbo.unbind();
 
@@ -86,8 +85,8 @@ public class T025RenderedTexture extends GL3EventListener {
 			cubeProgram.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment(0));
-			fbo.getColorAttachment(0).bind();
+			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment());
+			fbo.getColorAttachment().bind();
 		} cubeProgram.unbind();
 
 		torusProgram.bind(); {
