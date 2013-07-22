@@ -8,19 +8,9 @@ public class GLTexture2D extends GLTexture {
 	private GLTextureImage image = null;
 
 	public void loadData(GLTextureImage image) {
-
-		checkBound();
 		checkState(this.image == null, "Image data already loaded!");
+		super.loadData(image, getTextureTarget());
 		this.image = image;
-
-		getGl().glTexImage2D(getTextureTarget(), ZERO,
-				getImage().getMetadata().getInternalFormat(),
-				getImage().getMetadata().getWidth(),
-				getImage().getMetadata().getHeight(), ZERO,
-				getImage().getMetadata().getPixelDataFormat(),
-				getImage().getMetadata().getPixelDataType(),
-				getImage().getImageData());
-		checkError();
 	}
 
 	public GLTextureImage getImage() { return image; }

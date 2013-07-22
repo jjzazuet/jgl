@@ -2,7 +2,6 @@ package net.tribe7.opengl.util;
 
 import static net.tribe7.math.vector.VectorOps.*;
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 
 import java.nio.*;

@@ -1,8 +1,8 @@
 package net.tribe7.opengl;
 
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2ES2.*;
 import static javax.media.opengl.GL3.*;
+import static javax.media.opengl.GL4.*;
 
 import java.util.Arrays;
 import java.util.HashSet;

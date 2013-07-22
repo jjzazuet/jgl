@@ -11,8 +11,9 @@
 		<all-permissions />
 	</security>
 	<resources>
+		<!-- JOGL 2.0.2 -->
 		<j2se href="http://java.sun.com/products/autodl/j2se" version=""/>
-		<extension name="jogl-all-awt" href="http://jogamp.org/deployment/archive/rc/v2.0.2-rc12/jogl-all-awt.jnlp" />
+		<extension name="jogl-all-awt" href="http://jogamp.org/deployment/webstart/jogl-all-awt.jnlp" />
 	</resources>
 	<applet-desc main-class="com.jogamp.newt.awt.applet.JOGLNewtApplet1Run" name="Test Applet" width="800" height="600">
 		<param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>

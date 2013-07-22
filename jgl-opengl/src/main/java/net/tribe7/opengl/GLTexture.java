@@ -15,6 +15,8 @@ public abstract class GLTexture extends GLContextBoundResource {
 
 	private int textureUnit = MINUS_ONE;
 
+	public abstract int getTextureTarget();
+
 	@Override
 	protected void doInit() {
 
@@ -46,6 +48,20 @@ public abstract class GLTexture extends GLContextBoundResource {
 		getGl().glDeleteTextures(ONE, intBuffer(getGlResourceHandle()));
 	}
 
+	protected void loadData(GLTextureImage image, int textureImageTarget) {
+		checkBound();
+		checkNotNull(image);
+		getGl().glTexImage2D(textureImageTarget, 
+				image.getMetadata().getMipMapLevel(),
+				image.getMetadata().getInternalFormat(),
+				image.getMetadata().getWidth(),
+				image.getMetadata().getHeight(), ZERO,
+				image.getMetadata().getPixelDataFormat(),
+				image.getMetadata().getPixelDataType(),
+				image.getImageData());
+		checkError();
+	}
+
 	public void setParameter(int parameter, float value) {
 		checkBound();
 		checkArgument(GL_TEXTURE_PARAMETER.contains(parameter));
@@ -65,8 +81,6 @@ public abstract class GLTexture extends GLContextBoundResource {
 		getGl().glGenerateMipmap(getTextureTarget());
 		checkError();
 	}
-
-	public abstract int getTextureTarget();
 
 	public int getTextureUnit() { return textureUnit; }
 	protected void setTextureUnit(int textureUnit) { 

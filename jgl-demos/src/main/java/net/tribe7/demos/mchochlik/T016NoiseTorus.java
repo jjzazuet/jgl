@@ -2,6 +2,7 @@ package net.tribe7.demos.mchochlik;
 
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
+import static javax.media.opengl.GL3.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
 import static net.tribe7.math.matrix.Matrix4OpsPersp.*;
 import static net.tribe7.math.angle.AngleOps.*;
