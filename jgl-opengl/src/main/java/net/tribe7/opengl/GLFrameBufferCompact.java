@@ -4,6 +4,11 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 
+/**
+ * A Framebuffer Object with one {@link GLTexture2D} color attachment 
+ * and one {@link GLRenderBuffer} depth/stencil attachment.
+ * @author jjzazuet
+ */
 public class GLFrameBufferCompact extends GLFrameBuffer {
 
 	private final GLTexture2D colorAttachment = new GLTexture2D();
@@ -22,10 +27,7 @@ public class GLFrameBufferCompact extends GLFrameBuffer {
 		getColorAttachment().bind(); {
 			getColorAttachment().loadData();
 			getColorAttachment().applyParameters();
-			getGl().glFramebufferTexture(
-					getBindTarget(), GL_COLOR_ATTACHMENT0,
-					colorAttachment.getGlResourceHandle(), ZERO);
-			checkError();
+			setColorAttachment(GL_COLOR_ATTACHMENT0, getColorAttachment());
 		} getColorAttachment().unbind();
 
 		depthStencilBuffer.init(getGl());
@@ -37,25 +39,17 @@ public class GLFrameBufferCompact extends GLFrameBuffer {
 
 		switch (depthStencilInternalFormat) {
 		case GL_DEPTH_COMPONENT:
-			setRenderBuffer(GL_DEPTH_ATTACHMENT);
+			setRenderBuffer(GL_DEPTH_ATTACHMENT, getDepthStencilBuffer());
 			break;
 		case GL_DEPTH_STENCIL:
-			setRenderBuffer(GL_DEPTH_ATTACHMENT);
-			setRenderBuffer(GL_STENCIL_ATTACHMENT);
+			setRenderBuffer(GL_DEPTH_ATTACHMENT, getDepthStencilBuffer());
+			setRenderBuffer(GL_STENCIL_ATTACHMENT, getDepthStencilBuffer());
 			break;
 		default: throw new IllegalArgumentException(
 				resourceMsg(Integer.toHexString(depthStencilInternalFormat)));
 		}
 		checkError();
 		depthStencilBuffer.unbind();
-	}
-
-	protected void setRenderBuffer(int attachmentTarget) {
-		checkBound();
-		checkArgument(isValidDepthStencilAttachment(attachmentTarget));
-		getGl().glFramebufferRenderbuffer(getBindTarget(),
-				attachmentTarget, GL_RENDERBUFFER, depthStencilBuffer.getGlResourceHandle());
-		checkError();
 	}
 
 	public GLTexture2D getColorAttachment() { return colorAttachment; }

@@ -24,10 +24,24 @@ public abstract class GLFrameBuffer extends GLContextBoundResource {
 		checkState(fbStatus == GL_FRAMEBUFFER_COMPLETE, 
 				resourceMsg("Unable to initialize Framebuffer [%s]"), 
 				Integer.toHexString(fbStatus));
-
 		if (log.isDebugEnabled()) {
 			log.debug(resourceMsg("Framebuffer attachments initialized."));
 		}
+	}
+
+	protected void setColorAttachment(int attachmentTarget, GLTexture t) {
+		checkArgument(attachmentTarget >= GL_COLOR_ATTACHMENT0);
+		getGl().glFramebufferTexture(getBindTarget(), attachmentTarget,
+				t.getGlResourceHandle(), ZERO);
+		checkError();
+	}
+
+	protected void setRenderBuffer(int attachmentTarget, GLRenderBuffer rb) {
+		checkBound();
+		checkArgument(isValidDepthStencilAttachment(attachmentTarget));
+		getGl().glFramebufferRenderbuffer(getBindTarget(),
+				attachmentTarget, GL_RENDERBUFFER, rb.getGlResourceHandle());
+		checkError();
 	}
 
 	@Override
