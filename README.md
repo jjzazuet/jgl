@@ -5,7 +5,7 @@ jgl
 
 A Java wrapper for OpenGL© version 3 and higher.
 
-This project is inspired on and aims to provide similar functionality as the [OGLPlus](http://oglplus.org "OGL Plus") C++ OpenGL framework.
+This project is inspired on and aims to provide similar functionality as the [OGLPlus](http://oglplus.org "OGL Plus") C++ OpenGL framework. jgl makes use of the [JOGL](http://jogamp.org/jogl/www/) Java library to access OpenGL in a cross platform fashion.
 
 With jgl, you get a set of wrapper classes which abstract most of the housekeeping tasks one inevitably faces when dealing with OpenGL. This framework is primarily focused on OpenGL 3 since it is the currently accepted programming standard for OpenGL and is on par with DirectX feature wise (if not more ;)).
 

@@ -12,7 +12,7 @@ public class GLTexture2D extends GLTexture {
 	}
 
 	public GLTextureImage getImage() { return image; }
-	
+
 	@Override
 	public int getTextureTarget() { return GL_TEXTURE_2D; }
 

@@ -83,8 +83,8 @@ public abstract class GLTexture extends GLContextBoundResource {
 			} else if (parameter.getValue() instanceof Float) {
 				getGl().glTexParameterf(getTextureTarget(), parameter.getKey(), (Float) parameter.getValue());
 			} else throw new IllegalArgumentException(parameter.getValue().getClass().getCanonicalName());
+			checkError();
 		}
-		checkError();
 	}
 
 	public void generateMipMap() {
