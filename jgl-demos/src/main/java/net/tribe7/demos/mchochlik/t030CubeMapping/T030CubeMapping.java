@@ -1,6 +1,7 @@
 package net.tribe7.demos.mchochlik.t030CubeMapping;
 
 import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static net.tribe7.math.matrix.Matrix4OpsPersp.*;
@@ -19,12 +20,14 @@ import net.tribe7.time.util.ExecutionState;
 @WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/030_cube_mapping.png")
 public class T030CubeMapping extends GL3EventListener {
 
+	private int texSide = 128;
 	private Sphere sphere = new Sphere(1.0, 72, 48);
 	private Cube cube = new Cube();	
 
 	private GLProgram sphereProg, cubeProg = new GLProgram(), cubeMapProg = new GLProgram();
 	private GLVertexArray sphereVao = new GLVertexArray();
 	private GLVertexArray cubeVao = new GLVertexArray();
+	private CubeMapFramebuffer fbo = new CubeMapFramebuffer(texSide, texSide);
 
 	//private BufferedMatrix4 camMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
@@ -44,7 +47,12 @@ public class T030CubeMapping extends GL3EventListener {
 		cubeProg.attachShader(cubeVs).attachShader(cubeFs).init(gl);
 		cubeMapProg.attachShader(cubeMapVs).attachShader(cubeMapGs).attachShader(cubeFs).init(gl);
 
-		initResource(gl, sphereVao, cubeVao);
+		initResource(gl, sphereVao, cubeVao, fbo);
+
+		fbo.setBindTarget(GL_DRAW_FRAMEBUFFER);
+		fbo.bind(); {
+			fbo.initAttachments();
+		} fbo.unbind();
 
 		sphereProg.bind(); {
 			GLBuffer sphereVertices = buffer(sphere.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
@@ -56,6 +64,7 @@ public class T030CubeMapping extends GL3EventListener {
 			sphereProg.getStageAttribute("Normal").set(sphereVao, sphereNormals, false, 0).enable();
 			sphereProg.getStageAttribute("Tangent").set(sphereVao, sphereTangents, false, 0).enable();
 			sphereProg.getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
+			sphereProg.getSampler("CubeTex").set(fbo.getCubeColorAttachment());
 		} sphereProg.unbind();
 
 		GLBuffer cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);

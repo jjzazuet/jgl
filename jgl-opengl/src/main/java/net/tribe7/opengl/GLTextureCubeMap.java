@@ -42,4 +42,5 @@ public class GLTextureCubeMap extends GLTexture {
 	public GLTextureImage getNegativeX() { return negativeX; }
 	public GLTextureImage getNegativeY() { return negativeY; }
 	public GLTextureImage getNegativeZ() { return negativeZ; }
+	public GLTextureImage[] getCubeFaces() { return cubeFaces; }
 }

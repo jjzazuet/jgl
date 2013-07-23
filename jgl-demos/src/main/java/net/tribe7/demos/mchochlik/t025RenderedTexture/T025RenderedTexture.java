@@ -85,7 +85,7 @@ public class T025RenderedTexture extends GL3EventListener {
 			cubeProgram.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 			cubeProgram.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 			cubeProgram.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
-			cubeProgram.getSampler2D("TexUnit").set(fbo.getColorAttachment());
+			cubeProgram.getSampler("TexUnit").set(fbo.getColorAttachment());
 			fbo.getColorAttachment().bind();
 		} cubeProgram.unbind();
 

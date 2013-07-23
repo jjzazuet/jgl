@@ -89,7 +89,7 @@ public class T025RecursiveTexture extends GL3EventListener {
 			uProjectionMatrix = p.getMat4("ProjectionMatrix");
 			uCameraMatrix = p.getMat4("CameraMatrix");
 			uModelMatrix = p.getMat4("ModelMatrix");
-			uTexUnit = p.getSampler2D("TexUnit");
+			uTexUnit = p.getSampler("TexUnit");
 		}
 
 		gl.glEnable(GL_DEPTH_TEST);

@@ -17,17 +17,13 @@ public class GLFrameBufferCompact extends GLFrameBuffer {
 	@Override
 	protected void doInitAttachments() {
 
-		checkBound();
-		checkState(getDepthStencilBuffer().getBufferFormat().getWidth() ==
-				getColorAttachment().getImage().getMetadata().getWidth());
-		checkState(getDepthStencilBuffer().getBufferFormat().getHeight() ==
-				getColorAttachment().getImage().getMetadata().getHeight());
-
+		getDepthStencilBuffer().getBufferFormat().checkSize(
+				getColorAttachment().getImage().getMetadata());
 		getColorAttachment().init(getGl());
 		getColorAttachment().bind(); {
 			getColorAttachment().loadData();
 			getColorAttachment().applyParameters();
-			setColorAttachment(GL_COLOR_ATTACHMENT0, getColorAttachment());
+			setAttachment(GL_COLOR_ATTACHMENT0, getColorAttachment());
 		} getColorAttachment().unbind();
 
 		depthStencilBuffer.init(getGl());

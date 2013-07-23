@@ -38,4 +38,12 @@ public class GLImageMetadata {
 		setHeight(reference.getHeight());
 		setInternalFormat(reference.getInternalFormat());
 	}
+
+	public GLImageMetadata checkSize(GLImageMetadata other) {
+		checkNotNull(other);
+		boolean dimensionsMatch = this.getWidth() == other.getWidth()
+				&& this.getHeight() == other.getHeight();
+		checkState(dimensionsMatch);
+		return other;
+	}
 }

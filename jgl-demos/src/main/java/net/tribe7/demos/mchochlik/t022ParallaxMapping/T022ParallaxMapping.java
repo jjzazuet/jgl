@@ -84,7 +84,7 @@ public class T022ParallaxMapping extends GL3EventListener {
 			bumpTexture.applyParameters();
 		} bumpTexture.unbind();
 
-		p.getSampler2D("BumpTex").set(bumpTexture);
+		p.getSampler("BumpTex").set(bumpTexture);
 		p.getInt("BumpTexWidth").set(bumpTexture.getImage().getMetadata().getWidth());
 		p.getInt("BumpTexHeight").set(bumpTexture.getImage().getMetadata().getHeight());
 

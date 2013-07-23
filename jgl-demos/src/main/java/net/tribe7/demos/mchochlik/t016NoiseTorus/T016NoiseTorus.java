@@ -98,7 +98,7 @@ public class T016NoiseTorus extends GL3EventListener {
 			noiseTexture.applyParameters();
 		} noiseTexture.unbind();
 
-		p.getSampler2D("TexUnit").set(noiseTexture);
+		p.getSampler("TexUnit").set(noiseTexture);
 		p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
 		noiseTexture.bind();
 
