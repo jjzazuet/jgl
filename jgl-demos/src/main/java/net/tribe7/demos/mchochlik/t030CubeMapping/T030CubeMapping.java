@@ -6,12 +6,16 @@ import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static net.tribe7.math.matrix.Matrix4OpsPersp.*;
 
+import java.util.List;
+
 import javax.media.opengl.GL3;
 
 import net.tribe7.demos.WebstartDemo;
+import net.tribe7.geom.bezier.BezierCubicLoop;
 import net.tribe7.geom.solid.*;
 import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
+import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
 import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -20,9 +24,15 @@ import net.tribe7.time.util.ExecutionState;
 @WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/030_cube_mapping.png")
 public class T030CubeMapping extends GL3EventListener {
 
-	private int texSide = 128;
+	private int texSide = 128, width, height;
 	private Sphere sphere = new Sphere(1.0, 72, 48);
-	private Cube cube = new Cube();	
+	private Cube cube = new Cube();
+	private List<Vector3> cubeOffsets = new MakeCubeOffsets().apply(2.5, 6);
+	private BezierCubicLoop lightPath = new BezierCubicLoop(
+			new Vector3( 0.0f,  6.0f,  0.0f),
+			new Vector3(-3.0f, -4.0f,  3.5f),
+			new Vector3( 0.0f, -3.0f, -4.0f),
+			new Vector3( 3.5f, -4.0f,  3.0f));
 
 	private GLProgram sphereProg, cubeProg = new GLProgram(), cubeMapProg = new GLProgram();
 	private GLVertexArray sphereVao = new GLVertexArray();
@@ -65,6 +75,7 @@ public class T030CubeMapping extends GL3EventListener {
 			sphereProg.getStageAttribute("Tangent").set(sphereVao, sphereTangents, false, 0).enable();
 			sphereProg.getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
 			sphereProg.getSampler("CubeTex").set(fbo.getCubeColorAttachment());
+			fbo.getCubeColorAttachment().bind();
 		} sphereProg.unbind();
 
 		GLBuffer cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
@@ -101,8 +112,7 @@ public class T030CubeMapping extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		// TODO Auto-generated method stub
-
+		width = (int) newViewport.width;
+		height = (int) newViewport.height;
 	}
-
 }

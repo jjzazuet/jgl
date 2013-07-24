@@ -39,7 +39,7 @@ public class BezierCubicLoop {
 		
 		return pathCurves.get(targetCurve).pointAt(curveLocalOffset);
 	}
-	
+
 	public void setPoints(List<Vector3> points) {
 		
 		checkNotNull(points);
@@ -65,7 +65,7 @@ public class BezierCubicLoop {
 			pathCurves.add(curve);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("%s[%n%s]", 

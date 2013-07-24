@@ -38,7 +38,7 @@ public class BezierOps {
 		dst.y += ttt * p3.y;
 		dst.z += ttt * p3.z;
 	}
-	
+
 	/**
 	 * Creates a list of bezier curve segment points which, when interpolated
 	 * by a cubic Bezier curve function, will result in a looped path which crosses
@@ -96,7 +96,7 @@ public class BezierOps {
 		checkState(ir == last);
 		return result;
 	}
-	
+
 	public static double wrap(double t) {
 		if (t < 0) { t += floor(abs(t)) + 1; } 
 		else if (t > 1) { t -= floor(t); }
