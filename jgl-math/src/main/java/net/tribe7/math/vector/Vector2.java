@@ -3,9 +3,8 @@ package net.tribe7.math.vector;
 public class Vector2 extends Vector {
 
 	public double y = 0;
-	
+
 	public Vector2() {}
-	
 	public Vector2(double x, double y) {
 		super(x); setY(y);
 	}

@@ -6,6 +6,7 @@ import static java.lang.Math.*;
 import net.tribe7.geom.FaceWinding;
 import net.tribe7.geom.io.GeometryBuffer;
 import net.tribe7.geom.solid.model.IndexDrawable;
+import net.tribe7.geom.solid.model.IndexRestartable;
 import net.tribe7.geom.solid.model.NormalMapped;
 import net.tribe7.geom.solid.model.Drawable;
 import net.tribe7.geom.solid.model.SphereBound;
@@ -13,7 +14,7 @@ import net.tribe7.geom.solid.model.TangentMapped;
 import net.tribe7.geom.solid.model.Textured;
 import net.tribe7.math.vector.Vector4;
 
-public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound {
+public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound, IndexRestartable {
 
 	private double radius;
 	private int sections, rings;
@@ -133,6 +134,11 @@ public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, 
 	@Override
 	public Vector4 getBoundingSphere() {
 		return new Vector4(0, 0, 0, getRadius());
+	}
+
+	@Override
+	public int getPrimitiveRestartIndex() {
+		return (getRings() + 1)*(2 * (getSections() + 1) + 1);
 	}
 
 	public double getRadius() { return radius; }

@@ -5,7 +5,6 @@ public class Vector4 extends Vector3 {
 	public double w = 0;
 
 	public Vector4() {}
-	
 	public Vector4(double x, double y, double z, double w) {
 		super(x, y, z); setW(w);
 	}
