@@ -30,7 +30,7 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T025RecursiveTexture();
+		GLScheduledEventListener target = new T030CubeMapping();
 		setTarget(target);
 	}
 

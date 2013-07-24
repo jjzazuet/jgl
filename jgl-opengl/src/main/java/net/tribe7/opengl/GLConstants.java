@@ -11,8 +11,8 @@ import java.util.Set;
 public class GLConstants {
 
 	public static final Set<Integer> GLTEXTURE_PIXEL_DATA_FORMAT = new HashSet<Integer>(
-			Arrays.asList(new Integer[] { GL_RED, GL_RG, GL_RGB, GL_BGR,
-					GL_RGBA, GL_BGRA }));
+			Arrays.asList(new Integer[] { GL_RED, GL_RG, GL_RGB, GL_BGR, GL_RGBA,
+			GL_BGRA, GL_DEPTH_COMPONENT, GL_DEPTH_STENCIL }));
 
 	public static final Set<Integer> GL_TEXTURE_PIXEL_DATA_TYPE = new HashSet<Integer>(
 			Arrays.asList(new Integer[] { GL_UNSIGNED_BYTE, GL_BYTE,
