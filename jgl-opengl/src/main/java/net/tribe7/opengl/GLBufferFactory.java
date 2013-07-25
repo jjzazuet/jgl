@@ -1,6 +1,5 @@
 package net.tribe7.opengl;
 
-import static com.jogamp.common.nio.Buffers.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
@@ -76,7 +75,7 @@ public class GLBufferFactory {
 	
 			case GL_FLOAT:
 				float[] floatData = (float[]) dataArray;
-				targetBuffer = newDirectFloatBuffer(floatData);
+				targetBuffer = FloatBuffer.wrap(floatData);
 				glSizeIptr = floatData.length;
 				break;
 	
