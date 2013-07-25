@@ -34,7 +34,16 @@ task jarSign(dependsOn: [copyFiles]) {
 		destDir.mkdirs()
 		def libFiles = files { srcDir.listFiles() }
 		libFiles.each {
-			println "Signing: " + it
+
+			println "Initializing: " + it
+
+			ant.jar(destfile: it, update: true) {
+				delegate.manifest {
+					attribute(name: 'permissions', value: 'all-permissions')
+					attribute(name: 'codebase', value: '*')
+				}
+			}
+
 			ant.signjar(
 				destDir: webstartSignedLibPath,
 				alias: project.getProperty('jarsign.keystore.alias'),

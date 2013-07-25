@@ -27,10 +27,7 @@ subprojects {
 
 	configurations { provided }
 
-	jar {
-		manifest.attributes provider: 'tribe7.net'
-		manifest.attributes permissions: 'all-permissions'
-	}
+	jar { manifest.attributes provider: 'tribe7.net' }
 
 	sourceSets {
 		main.compileClasspath += configurations.provided

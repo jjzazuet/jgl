@@ -29,7 +29,7 @@ public class T016CartoonTorus extends GL3EventListener {
 	private Torus torus = new Torus(1.0, 0.5, 72, 48); // 72, 48
 	private GLVertexArray torusVao = new GLVertexArray();
 	private GLBuffer torusIndices;
-	
+
 	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
