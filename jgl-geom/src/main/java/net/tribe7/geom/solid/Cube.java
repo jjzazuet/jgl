@@ -24,7 +24,7 @@ import static net.tribe7.common.base.Preconditions.*;
 public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound {
 
 	private double x, y, z;
-	
+
 	public Cube() { this(1, 1, 1); }
 	public Cube(double size) { this(size, size, size); }
 	

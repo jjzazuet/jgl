@@ -26,6 +26,7 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 	public void set(int index, T value) {
 		checkElementIndex(index, getSize());
 		checkNotNull(value);
+		getProgram().checkBound();
 		doSet(index, value);
 	}
 

@@ -30,6 +30,7 @@ public class GLTestShell {
 		getCapabilities().setSampleBuffers(false);
 
 		GLScheduledEventListener target = new T030CubeMapping();
+		//target.getScheduler().setFrameTicksPerSecond(200);
 		setTarget(target);
 	}
 

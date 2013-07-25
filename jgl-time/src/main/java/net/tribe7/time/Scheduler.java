@@ -21,7 +21,6 @@ public abstract class Scheduler {
 	private double frameTicksPerSecond = MINUS_ONE;
 	private long currentTimeUs;
 	private long frameDeltaUs;
-
 	private boolean ready = false;
 
 	protected RenderStateListener stateListener;

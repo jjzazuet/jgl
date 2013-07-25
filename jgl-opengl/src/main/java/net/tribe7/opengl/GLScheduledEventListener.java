@@ -6,10 +6,8 @@ import static net.tribe7.time.util.StateMethod.*;
 import static java.lang.String.format;
 
 import javax.media.opengl.*;
-
 import net.tribe7.opengl.util.*;
 import net.tribe7.time.*;
-
 import org.slf4j.*;
 
 public abstract class GLScheduledEventListener implements GLEventListener, RenderStateListener {
@@ -19,6 +17,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	protected static final Logger log = LoggerFactory.getLogger(GLScheduledEventListener.class);
 	protected final GLCheckError checkError = new GLCheckError();
 
+	private long debugTickCounter = 0l;
 	private GLViewSize glViewSize = new GLViewSize(0, 0, 0, 0);
 	private GLExecutionState executionState = new GLExecutionState();
 	private final Scheduler scheduler = new FixedTimeStepScheduler();
@@ -27,7 +26,7 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 	protected abstract void doRender(GLExecutionState currentState) throws Exception;
 	protected abstract void doUpdate(GLExecutionState currentState) throws Exception;
 	protected abstract void onResize(GLAutoDrawable gad, GLViewSize newViewport);
-	
+
 	@Override
 	public void init(GLAutoDrawable arg0) {
 
@@ -57,6 +56,15 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 
 	@Override
 	public void updateTick(double elapsedTimeUs, double frameTimeUs) throws Exception {
+
+		if (log.isTraceEnabled()) {
+			debugTickCounter++;
+			if (debugTickCounter % 120 == 0) {
+				log.info(format("U:[%s]", getExecutionState().getLogicTimer().getFps()));
+				log.info(format("R:[%s]", getExecutionState().getRenderTimer().getFps()));
+			}
+		}
+
 		executionState.getLogicTimer().update();
 		executionState.setMethod(UPDATE);
 		executionState.setElapsedTimeUs(elapsedTimeUs);
