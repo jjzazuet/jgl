@@ -1,4 +1,5 @@
 import org.scannotation.AnnotationDB
+import groovy.json.JsonBuilder
 
 def webstartUnsignedLibPath = "build/webstart-lib-unsigned"
 def webstartSignedLibPath = "build/webstart/lib"
@@ -26,11 +27,14 @@ task copyFiles(type: Copy, dependsOn: [jar]) {
 }
 
 task jarSign(dependsOn: [copyFiles]) {
+
 	ext.srcDir = file(webstartUnsignedLibPath)
 	ext.destDir = file(webstartSignedLibPath)
 	inputs.dir srcDir
 	outputs.dir destDir
+
 	doLast {
+
 		destDir.mkdirs()
 		def libFiles = files { srcDir.listFiles() }
 		libFiles.each {
@@ -63,7 +67,9 @@ task generateJnlp(dependsOn: [jarSign]) << {
 	def jnlpTemplateFile = file('src/main/webstart/jgl.xml')
 
 	adb.scanArchives(mainJarUrl)
-	adb.annotationIndex['net.tribe7.demos.WebstartDemo'].each {
+	def demoList = adb.annotationIndex['net.tribe7.demos.WebstartDemo']
+
+	demoList.each {
 
 		def root = new XmlParser().parse(jnlpTemplateFile)
 		def jnlpFileName = "${it}.jnlp"
@@ -99,8 +105,13 @@ task generateJnlp(dependsOn: [jarSign]) << {
 		}
 
 		def jnlpFile = file('build/webstart/' + jnlpFileName)
-		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)	
+		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 	}
+
+	def demoJson = file('build/webstart/${project.name}.json')
+	def data = [ demos: demoList.collect {[id: it]} ]
+	def json = new JsonBuilder(data)
+	println json.toPrettyString()
 }
 
 task generateWebStartFiles (dependsOn: [generateJnlp]) << {
