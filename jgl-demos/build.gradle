@@ -108,10 +108,11 @@ task generateJnlp(dependsOn: [jarSign]) << {
 		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 	}
 
-	def demoJson = file('build/webstart/${project.name}.json')
+	def demoJson = file("build/webstart/${project.name}.json")
 	def data = [ demos: demoList.collect {[id: it]} ]
 	def json = new JsonBuilder(data)
-	println json.toPrettyString()
+
+	demoJson.write(json.toString())
 }
 
 task generateWebStartFiles (dependsOn: [generateJnlp]) << {
