@@ -27,13 +27,10 @@ In case you need the libraries as Maven artifacts, you may install them to your 
 
 ## Current Caveats
 
-Please note that jgl is a work in progress project. Therefore, not all of OGLPlus' features have been implemented yet. Last time I checked, Matúš Chochlík has around 60 or 70 OpenGL demos implemented using his framework. I have only ported around 25 so far. Please contact me if you think you might be able to help with the demo porting effort.
+Please note that jgl is a work in progress project. Therefore, not all of OGLPlus' features have been implemented yet. Last time I checked, Matúš Chochlík has around 110 OpenGL demos implemented using his framework. I have only ported around 22 so far. Please contact me if you think you might be able to help with the demo porting effort.
 
 ## Examples
 
 The source code includes some ports of the [OGPlus example set](http://oglplus.org/oglplus/html/examples.html). It is the best way to understand how to use jgl since they are very compact and concise.
 
 If you'd like to see the demos that have been ported, please check the follwing Java Webstart examples:
-
-TODO add webstart jnlp links from jgl-demos.
-

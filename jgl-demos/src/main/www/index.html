@@ -11,6 +11,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
+    <script src="./js/sprintf.min.js"></script>
   </head>
   <body>
 
@@ -31,9 +32,10 @@
         $.getJSON('./jgl-demos.json', function(data) {
           var items = [];
           $.each(data, function(index, element) {
-            items.push('<li id="' + element.id + '">' + element.id + '</li>');
+            var item = sprintf('<li><a href="./jnlp/%s.jnlp">%s</a></li>', element.id, element.id);
+            items.push(item);
           });
-          $('<ul/>', { 'class': 'aaa', html: items.join('') }).appendTo($('#jgl-demos'));
+          $('<ul/>', { 'class': 'jgl-demos', html: items.join('') }).appendTo($('#jgl-demos'));
         });
       })
     }(window.jQuery)
