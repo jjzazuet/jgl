@@ -1,8 +1,9 @@
 import org.scannotation.AnnotationDB
 import groovy.json.JsonBuilder
 
+def webstartDir = "build/webstart"
 def webstartUnsignedLibPath = "build/webstart-lib-unsigned"
-def webstartSignedLibPath = "build/webstart/lib"
+def webstartSignedLibPath = "$webstartDir/lib"
 def mainJar = "${project.name}-${version}.jar"
 
 buildscript {
@@ -16,7 +17,7 @@ dependencies {
 	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
 }
 
-task copyFiles(type: Copy, dependsOn: [jar]) {	
+task copyJars(type: Copy, dependsOn: [jar]) {	
 	from configurations.runtime
 	from("build/libs")
 	into(webstartUnsignedLibPath)
@@ -26,7 +27,7 @@ task copyFiles(type: Copy, dependsOn: [jar]) {
 	}
 }
 
-task jarSign(dependsOn: [copyFiles]) {
+task jarSign(dependsOn: [copyJars]) {
 
 	ext.srcDir = file(webstartUnsignedLibPath)
 	ext.destDir = file(webstartSignedLibPath)
@@ -60,61 +61,75 @@ task jarSign(dependsOn: [copyFiles]) {
 	}
 }
 
-task generateJnlp(dependsOn: [jarSign]) << {
+task generateJnlp(dependsOn: [jarSign]) {
+
+	ext.srcFile = file("${project.libsDir}/${mainJar}")
+	ext.destDir = file("${webstartDir}/jnlp")
+	inputs.file srcFile
+	outputs.dir destDir
 
 	def adb = new AnnotationDB()
-	def mainJarUrl = file('build/libs/' + mainJar).toURI().toURL()
+	def mainJarUrl = ext.srcFile.toURI().toURL()
 	def jnlpTemplateFile = file('src/main/webstart/jgl.xml')
 
-	adb.scanArchives(mainJarUrl)
-	def demoList = adb.annotationIndex['net.tribe7.demos.WebstartDemo']
+	doLast {
+		destDir.mkdirs()	
+		adb.scanArchives(mainJarUrl)
+		def demoList = adb.annotationIndex['net.tribe7.demos.WebstartDemo']
+	
+		demoList.each {
+	
+			def root = new XmlParser().parse(jnlpTemplateFile)
+			def jnlpFileName = "${it}.jnlp"
+	
+			root.@href = jnlpFileName
+	
+			def information = root.information[0]
+			def title = information.title[0]
+			def vendor = information.vendor[0]
+	
+			title.setValue(it)
+			vendor.setValue("tribe7.net")
+	
+			def descriptionList = information.description
+	
+			descriptionList.each {
+				it.setValue("Demo description")
+			}
+	
+			def resource = root.resources[0]
+			def appletDesc = root['applet-desc'][0]
+			def listenerClassParam = appletDesc.param.find{ it.@name == 'gl_event_listener_class' }
+			def j2se = resource.j2se[0]
+			def collection = files { file(webstartSignedLibPath).listFiles() }
+	
+			appletDesc.@name = it
+			listenerClassParam.@value = it
+			j2se.@version = "${project.sourceCompatibility}+"
+	
+			collection.each {
+				def resourceValues = [href: '../lib/' + it.name]
+				resource.appendNode('jar', resourceValues)
+			}
 
-	demoList.each {
-
-		def root = new XmlParser().parse(jnlpTemplateFile)
-		def jnlpFileName = "${it}.jnlp"
-
-		root.@href = jnlpFileName
-
-		def information = root.information[0]
-		def title = information.title[0]
-		def vendor = information.vendor[0]
-
-		title.setValue(it)
-		vendor.setValue("tribe7.net")
-
-		def descriptionList = information.description
-
-		descriptionList.each {
-			it.setValue("Demo description")
+			def jnlpFile = new File(ext.destDir, jnlpFileName)
+			new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 		}
-
-		def resource = root.resources[0]
-		def appletDesc = root['applet-desc'][0]
-		def listenerClassParam = appletDesc.param.find{ it.@name == 'gl_event_listener_class' }
-		def j2se = resource.j2se[0]
-		def collection = files { file(webstartSignedLibPath).listFiles() }
-
-		appletDesc.@name = it
-		listenerClassParam.@value = it
-		j2se.@version = "${project.sourceCompatibility}+"
-
-		collection.each {
-			def resourceValues = [href: 'lib/' + it.name]
-			resource.appendNode('jar', resourceValues)
-		}
-
-		def jnlpFile = file('build/webstart/' + jnlpFileName)
-		new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
+	
+		def demoJson = new File(ext.destDir.parentFile, "${project.name}.json")
+		def data = demoList.sort().collect {[id: it]}
+		def json = new JsonBuilder(data)
+	
+		demoJson.write(json.toString())
 	}
-
-	def demoJson = file("build/webstart/${project.name}.json")
-	def data = [ demos: demoList.collect {[id: it]} ]
-	def json = new JsonBuilder(data)
-
-	demoJson.write(json.toString())
 }
 
-task generateWebStartFiles (dependsOn: [generateJnlp]) << {
+task copyWebContent(type: Copy, dependsOn: [generateJnlp]) {
+	from('src/main/www')
+	from('../README.md')
+	into("${webstartDir}")
+}
+
+task generateWebStartFiles (dependsOn: [copyWebContent]) << {
 	println("Generating all webstart files in: " + webstartSignedLibPath)
 }
