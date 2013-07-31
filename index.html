@@ -18,13 +18,22 @@
     !function ($) {
       $(function(){
         $.ajax({
-          url: 'https://raw.github.com/jjzazuet/jgl/master/README.md', type: 'get', dataType: 'html',
+          url: './README.md', 
+          type: 'get', dataType: 'html',
           beforeSend: function() {}, complete: function() {}, 
           success: function(html) { 
             var decoded = $("#readme").html(html).text();
             var converter = new Markdown.Converter();
             $("#readme").html(converter.makeHtml(decoded));
           }
+        });
+
+        $.getJSON('./jgl-demos.json', function(data) {
+          var items = [];
+          $.each(data, function(index, element) {
+            items.push('<li id="' + element.id + '">' + element.id + '</li>');
+          });
+          $('<ul/>', { 'class': 'aaa', html: items.join('') }).appendTo($('#jgl-demos'));
         });
       })
     }(window.jQuery)
@@ -51,8 +60,13 @@
           </div>
         </div>
       </div>
-
+      <div class="text-center">
+        <img src="http://i32.photobucket.com/albums/d9/_Silencer/JGL/jgl-200x200.png" alt="jgl" class="img-responsive"/>
+      </div>
+      <div class="container">
+      </div>
       <div id="readme" class="container"/>
+      <div id="jgl-demos"/> 
     </div>
 
     <script>
