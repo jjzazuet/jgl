@@ -1,0 +1,39 @@
+<jnlp spec="1.0+" href="net.tribe7.demos.mchochlik.t016CartoonTorus.T016CartoonTorus.jnlp">
+  <information>
+    <title>
+      net.tribe7.demos.mchochlik.t016CartoonTorus.T016CartoonTorus
+    </title>
+    <vendor>
+      tribe7.net
+    </vendor>
+    <homepage href="http://jgl.tribe7.net"/>
+    <description>
+      Demo description
+    </description>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
+    <extension name="jogl-all-awt" href="http://jogamp.org/deployment/webstart/jogl-all-awt.jnlp"/>
+    <jar href="../lib/jgl-demos-0.02.jar"/>
+    <jar href="../lib/jgl-geom-0.02.jar"/>
+    <jar href="../lib/jgl-math-0.02.jar"/>
+    <jar href="../lib/jgl-opengl-0.02.jar"/>
+    <jar href="../lib/jgl-time-0.02.jar"/>
+    <jar href="../lib/seeds-base-14.0.1.jar"/>
+    <jar href="../lib/seeds-primitives-14.0.1.jar"/>
+    <jar href="../lib/slf4j-api-1.7.5.jar"/>
+    <jar href="../lib/slf4j-simple-1.7.5.jar"/>
+  </resources>
+  <applet-desc main-class="com.jogamp.newt.awt.applet.JOGLNewtApplet1Run" name="net.tribe7.demos.mchochlik.t016CartoonTorus.T016CartoonTorus" width="800" height="600">
+    <param name="java_arguments" value="-Dsun.java2d.noddraw=true"/>
+    <param name="gl_event_listener_class" value="net.tribe7.demos.mchochlik.t016CartoonTorus.T016CartoonTorus"/>
+    <param name="gl_profile" value="GL3"/>
+    <param name="gl_swap_interval" value="1"/>
+    <param name="gl_debug" value="false"/>
+    <param name="gl_trace" value="false"/>
+  </applet-desc>
+</jnlp>
