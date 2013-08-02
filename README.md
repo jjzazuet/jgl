@@ -31,6 +31,6 @@ Please note that jgl is a work in progress project. Therefore, not all of OGLPlu
 
 ## Examples
 
-The source code includes some ports of the [OGLPlus example set](http://oglplus.org/oglplus/html/examples.html). It is the best way to understand how to use jgl since they are very compact and concise.
+The source code includes some ports of the [OGPlus example set](http://oglplus.org/oglplus/html/examples.html). It is the best way to understand how to use jgl since they are very compact and concise.
 
 If you'd like to see the demos that have been ported, please check the follwing Java Webstart examples:
