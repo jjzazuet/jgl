@@ -12,37 +12,10 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/pagedown/1.0/Markdown.Converter.min.js"></script>
     <script src="./js/sprintf.min.js"></script>
+    <script src="./js/jgl.js"></script>
   </head>
   <body>
-
-    <script>
-    !function ($) {
-      $(function(){
-        $.ajax({
-          url: './README.md', 
-          type: 'get', dataType: 'html',
-          beforeSend: function() {}, complete: function() {}, 
-          success: function(html) { 
-            var decoded = $("#readme").html(html).text();
-            var converter = new Markdown.Converter();
-            $("#readme").html(converter.makeHtml(decoded));
-          }
-        });
-
-        $.getJSON('./jgl-demos.json', function(data) {
-          var items = [];
-          $.each(data, function(index, element) {
-            var item = sprintf('<li><a href="./jnlp/%s.jnlp">%s</a></li>', element.id, element.id);
-            items.push(item);
-          });
-          $('<ul/>', { 'class': 'jgl-demos', html: items.join('') }).appendTo($('#jgl-demos'));
-        });
-      })
-    }(window.jQuery)
-    </script>
-
     <div class="container">
-
       <div class="navbar">
         <div class="container">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
@@ -65,10 +38,8 @@
       <div class="text-center">
         <img src="http://i32.photobucket.com/albums/d9/_Silencer/JGL/jgl-200x200.png" alt="jgl" class="img-responsive"/>
       </div>
-      <div class="container">
-      </div>
-      <div id="jgl-demos"/> 
-      <div id="readme" class="container"/>
+      <div id="readme"></div>
+      <div id="webstart"></div>
     </div>
 
     <script>
@@ -79,6 +50,5 @@
     ga('create', 'UA-42321686-2', 'jgl.tribe7.net');
     ga('send', 'pageview');
     </script>
-
   </body>
 </html>
