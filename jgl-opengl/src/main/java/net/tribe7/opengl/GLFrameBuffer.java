@@ -28,18 +28,34 @@ public abstract class GLFrameBuffer extends GLContextBoundResource {
 	}
 
 	protected void setAttachment(int attachmentTarget, GLTexture t) {
+		checkBound();
 		checkArgument(attachmentTarget >= GL_COLOR_ATTACHMENT0);
 		getGl().glFramebufferTexture(getBindTarget(), attachmentTarget,
 				t.getGlResourceHandle(), ZERO);
 		checkError();
 	}
 
-	protected void setRenderBuffer(int attachmentTarget, GLRenderBuffer rb) {
+	protected void setRenderBuffer(GLRenderBuffer rb) {
+
 		checkBound();
-		checkArgument(isValidDepthStencilAttachment(attachmentTarget));
-		getGl().glFramebufferRenderbuffer(getBindTarget(),
-				attachmentTarget, GL_RENDERBUFFER, rb.getGlResourceHandle());
-		checkError();
+		checkArgument(rb.isStorageReady());
+		rb.checkBound();
+
+		int depthStencilInternalFormat = rb.getBufferFormat().getInternalFormat();
+		checkState(isValidDepthStencilFormat(depthStencilInternalFormat));
+
+		switch (depthStencilInternalFormat) {
+		case GL_DEPTH_COMPONENT:
+			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+			checkError();
+			break;
+		case GL_DEPTH_STENCIL:
+			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+			checkError();
+			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+			checkError();
+			break;
+		}
 	}
 
 	@Override

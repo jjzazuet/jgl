@@ -72,6 +72,9 @@ public class GLAttributeFactory {
 					case GL_INT:
 						at = new GLUInt(k, location, sizeBuf.get(), GL_INT, attributeName, p);
 						break;
+					case GL_UNSIGNED_INT:
+						at = new GLUInt(k, location, sizeBuf.get(), GL_UNSIGNED_INT, attributeName, p);
+						break;
 					case GL_FLOAT: 
 						at = new GLUFloat(k, location, sizeBuf.get(), GL_FLOAT, attributeName, p);
 						break;

@@ -1,8 +1,6 @@
 package net.tribe7.opengl;
 
 import static javax.media.opengl.GL.*;
-import static javax.media.opengl.GL2.*;
-import static net.tribe7.common.base.Preconditions.*;
 
 /**
  * A Framebuffer Object with one {@link GLTexture2D} color attachment 
@@ -17,35 +15,20 @@ public class GLFrameBufferCompact extends GLFrameBuffer {
 	@Override
 	protected void doInitAttachments() {
 
-		getDepthStencilBuffer().getBufferFormat().checkSize(
-				getColorAttachment().getImage().getMetadata());
-		getColorAttachment().init(getGl());
-		getColorAttachment().bind(); {
-			getColorAttachment().loadData();
-			getColorAttachment().applyParameters();
-			setAttachment(GL_COLOR_ATTACHMENT0, getColorAttachment());
-		} getColorAttachment().unbind();
+		getDepthStencilBuffer().getBufferFormat().checkSize(getColorAttachment().getImage().getMetadata());
+
+		colorAttachment.init(getGl());
+		colorAttachment.bind(); {
+			colorAttachment.loadData();
+			colorAttachment.applyParameters();
+			setAttachment(GL_COLOR_ATTACHMENT0, colorAttachment);
+		} colorAttachment.unbind();
 
 		depthStencilBuffer.init(getGl());
-		depthStencilBuffer.bind();
-		depthStencilBuffer.initStorage();
-
-		int depthStencilInternalFormat = depthStencilBuffer.getBufferFormat().getInternalFormat();
-		checkState(isValidDepthStencilFormat(depthStencilInternalFormat));
-
-		switch (depthStencilInternalFormat) {
-		case GL_DEPTH_COMPONENT:
-			setRenderBuffer(GL_DEPTH_ATTACHMENT, getDepthStencilBuffer());
-			break;
-		case GL_DEPTH_STENCIL:
-			setRenderBuffer(GL_DEPTH_ATTACHMENT, getDepthStencilBuffer());
-			setRenderBuffer(GL_STENCIL_ATTACHMENT, getDepthStencilBuffer());
-			break;
-		default: throw new IllegalArgumentException(
-				resourceMsg(Integer.toHexString(depthStencilInternalFormat)));
-		}
-		checkError();
-		depthStencilBuffer.unbind();
+		depthStencilBuffer.bind(); {
+			depthStencilBuffer.initStorage();
+			setRenderBuffer(getDepthStencilBuffer());
+		} depthStencilBuffer.unbind();
 	}
 
 	public GLTexture2D getColorAttachment() { return colorAttachment; }
