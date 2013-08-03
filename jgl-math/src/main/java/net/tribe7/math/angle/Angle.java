@@ -3,7 +3,7 @@ package net.tribe7.math.angle;
 public class Angle {
 
 	public static final double TWO_PI  = Math.PI * 2;
-	
+	public static final double HALF_PI = Math.PI / 2;
 	private double radians;
 
 	public double getRadians() { return radians; }
@@ -38,6 +38,10 @@ public class Angle {
 	public Angle setDegrees(double degrees) { 
 		this.radians = Math.toRadians(degrees);
 		return this;
+	}
+
+	public Angle setRightAngles(double value) {
+		return setRadians(value * HALF_PI);
 	}
 
 	public final double cos() { return Math.cos(getRadians()); }

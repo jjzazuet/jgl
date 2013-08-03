@@ -1,5 +1,7 @@
 package net.tribe7.opengl.glsl.attribute;
 
+import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 import net.tribe7.opengl.glsl.GLProgram;
 
@@ -14,7 +16,16 @@ public class GLUInt extends GLUniformAttribute<Integer> {
 		int offset = index + (value.length - 1);
 		checkElementIndex(offset, getSize());
 		getProgram().checkBound();
-		getProgram().getGl().glUniform1iv(getIndexLocation(index), value.length, bufferData(value));
+
+		switch (getGlType()) {
+		case GL_UNSIGNED_INT:
+			getProgram().getGl().glUniform1uiv(getIndexLocation(index), value.length, bufferData(value));
+			break;
+		case GL_INT:
+			getProgram().getGl().glUniform1iv(getIndexLocation(index), value.length, bufferData(value));
+			break;
+		default: throw new IllegalArgumentException(Integer.toHexString(getGlType()));
+		}
 		getProgram().checkError();
 	}
 

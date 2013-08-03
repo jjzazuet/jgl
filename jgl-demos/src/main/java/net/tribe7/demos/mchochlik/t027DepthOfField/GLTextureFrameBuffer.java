@@ -1,34 +1,61 @@
 package net.tribe7.demos.mchochlik.t027DepthOfField;
 
 import static javax.media.opengl.GL.*;
+import static javax.media.opengl.GL2.*;
 import net.tribe7.opengl.GLFrameBuffer;
 import net.tribe7.opengl.GLTexture2D;
+import net.tribe7.opengl.GLTextureRectangle;
 
 public class GLTextureFrameBuffer extends GLFrameBuffer {
 
-	private final GLTexture2D colorAttachment = new GLTexture2D();
-	private final GLTexture2D depthAttachment = new GLTexture2D();
+	public static final int WIDHT = 4096;
+	public static final int HEIGHT = 4096;
+
+	private final GLTextureRectangle colorAttachment = new GLTextureRectangle();
+	private final GLTextureRectangle depthAttachment = new GLTextureRectangle();
 
 	@Override
 	protected void doInitAttachments() {
 
-		getColorAttachment().getImage().getMetadata().checkSize(
-				getDepthAttachment().getImage().getMetadata());
+		colorAttachment.getImage().getMetadata().checkSize(
+				depthAttachment.getImage().getMetadata());
 
-		getColorAttachment().init(getGl());
-		getDepthAttachment().init(getGl());
+		colorAttachment.init(getGl());
+		depthAttachment.init(getGl());
 
-		getColorAttachment().bind(); {
-			getColorAttachment().loadData();
-			getColorAttachment().applyParameters();
-			setAttachment(GL_COLOR_ATTACHMENT0, getColorAttachment());
-		} getColorAttachment().unbind();
+		colorAttachment.bind(); {
+			colorAttachment.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			colorAttachment.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			colorAttachment.getParameters().put(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			colorAttachment.getParameters().put(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		getDepthAttachment().bind(); {
-			getDepthAttachment().loadData();
-			getDepthAttachment().applyParameters();
-			setAttachment(GL_DEPTH_ATTACHMENT, getDepthAttachment());
-		} getDepthAttachment().unbind();
+			colorAttachment.getImage().getMetadata().setWidth(WIDHT);
+			colorAttachment.getImage().getMetadata().setHeight(HEIGHT);
+			colorAttachment.getImage().getMetadata().setInternalFormat(GL_RGB);
+			colorAttachment.getImage().getMetadata().setPixelDataFormat(GL_RGB);
+			colorAttachment.getImage().getMetadata().setPixelDataType(GL_UNSIGNED_BYTE);
+
+			colorAttachment.loadData();
+			colorAttachment.applyParameters();
+			setAttachment(GL_COLOR_ATTACHMENT0, colorAttachment);
+		} colorAttachment.unbind();
+
+		depthAttachment.bind(); {
+			depthAttachment.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			depthAttachment.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			depthAttachment.getParameters().put(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			depthAttachment.getParameters().put(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+			depthAttachment.getImage().getMetadata().setWidth(WIDHT);
+			depthAttachment.getImage().getMetadata().setHeight(HEIGHT);
+			depthAttachment.getImage().getMetadata().setInternalFormat(GL_DEPTH_COMPONENT);
+			depthAttachment.getImage().getMetadata().setPixelDataFormat(GL_DEPTH_COMPONENT);
+			depthAttachment.getImage().getMetadata().setPixelDataType(GL_FLOAT);
+
+			depthAttachment.loadData();
+			depthAttachment.applyParameters();
+			setAttachment(GL_DEPTH_ATTACHMENT, depthAttachment);
+		} depthAttachment.unbind();
 	}
 
 	public GLTexture2D getColorAttachment() { return colorAttachment; }

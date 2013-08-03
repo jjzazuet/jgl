@@ -69,7 +69,7 @@ public abstract class GLTexture extends GLContextBoundResource {
 	}
 
 	public void loadData() {
-		checkState(!isDataLoaded(), resourceMsg("Image data already loaded."));
+		checkState(!isDataLoaded(), resourceMsg("Texture data already loaded."));
 		doLoadData();
 		setDataLoaded(true);
 	}

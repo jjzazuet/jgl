@@ -5,6 +5,7 @@ import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
 
+import net.tribe7.demos.mchochlik.t027DepthOfField.T027DepthOfField;
 import net.tribe7.demos.mchochlik.t030CubeMapping.T030CubeMapping;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;
@@ -29,7 +30,7 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T030CubeMapping();
+		GLScheduledEventListener target = new T027DepthOfField();
 		setTarget(target);
 	}
 

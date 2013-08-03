@@ -70,10 +70,8 @@ public class GLAttributeFactory {
 
 				switch (uniformType) {
 					case GL_INT:
-						at = new GLUInt(k, location, sizeBuf.get(), GL_INT, attributeName, p);
-						break;
 					case GL_UNSIGNED_INT:
-						at = new GLUInt(k, location, sizeBuf.get(), GL_UNSIGNED_INT, attributeName, p);
+						at = new GLUInt(k, location, sizeBuf.get(), uniformType, attributeName, p);
 						break;
 					case GL_FLOAT: 
 						at = new GLUFloat(k, location, sizeBuf.get(), GL_FLOAT, attributeName, p);
@@ -94,6 +92,7 @@ public class GLAttributeFactory {
 						at = new GLUFloatMat4(k, location, sizeBuf.get(), GL_FLOAT_MAT4, attributeName, p);
 						break;
 					case GL_SAMPLER_2D:
+					case GL_SAMPLER_2D_RECT:
 					case GL_SAMPLER_CUBE:
 						at = new GLUSampler(k, location, sizeBuf.get(), uniformType, attributeName, p);
 						break;
