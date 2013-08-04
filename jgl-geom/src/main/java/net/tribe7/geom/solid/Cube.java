@@ -1,12 +1,10 @@
 package net.tribe7.geom.solid;
 
 import static net.tribe7.geom.FaceWinding.*;
-
 import net.tribe7.geom.FaceWinding;
 import net.tribe7.geom.io.GeometryBuffer;
 import net.tribe7.geom.solid.model.*;
 import net.tribe7.math.vector.Vector4;
-
 import static net.tribe7.common.base.Preconditions.*;
 
 /**
@@ -21,7 +19,8 @@ import static net.tribe7.common.base.Preconditions.*;
  *(G)-----(C)
  * </pre>
  */
-public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound {
+public class Cube implements Drawable, IndexDrawable, IndexEdgeDrawable,
+	Textured, NormalMapped, TangentMapped, SphereBound {
 
 	private double x, y, z;
 
@@ -117,6 +116,20 @@ public class Cube implements Drawable, IndexDrawable, Textured, NormalMapped, Ta
 				31, 35, 32, 30  // -z
 		};
 		return new GeometryBuffer<Integer>(4, a);
+	}
+
+	@Override
+	public GeometryBuffer<Integer> getEdgeIndices() {
+
+		Integer [] edgeIndices = new Integer [] {
+				 0,  1,  5,  2, //+x
+				19, 22, 23, 18, //-x
+				 6,  7, 10, 11, //+y
+				26, 29, 24, 25, //-y
+				12, 13, 16, 17, //+z
+				31, 35, 32, 30  //-z
+			};
+		return new GeometryBuffer<Integer>(4, edgeIndices);
 	}
 
 	@Override

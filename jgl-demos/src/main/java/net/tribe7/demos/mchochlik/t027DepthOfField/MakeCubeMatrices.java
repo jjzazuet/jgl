@@ -18,9 +18,9 @@ public class MakeCubeMatrices {
 
 		for(int i=0; i!=count; ++i) {
 
-			float x = r.nextFloat()/RAND_MAX;
-			float y = r.nextFloat()/RAND_MAX;
-			float z = r.nextFloat()/RAND_MAX;
+			float x = r.nextFloat();
+			float y = r.nextFloat();
+			float z = r.nextFloat();
 			float sx = r.nextInt() % 2 == 0 ? -1.0f: 1.0f;
 			float sy = r.nextInt() % 2 == 0 ? -1.0f: 1.0f;
 			float sz = r.nextInt() % 2 == 0 ? -1.0f: 1.0f;
@@ -30,14 +30,14 @@ public class MakeCubeMatrices {
 					sy*(1.0f + Math.pow(y, 1.5f) * max_dist),
 					sz*(1.0f + Math.pow(z, 0.7f) * max_dist));
 
-			mt.getRotationZ().setRightAngles(r.nextFloat()/RAND_MAX);
-			mt.getRotationY().setRightAngles(r.nextFloat()/RAND_MAX);
-			mt.getRotationX().setRightAngles(r.nextFloat()/RAND_MAX);
+			mt.getRotationZ().setRightAngles(r.nextInt()/RAND_MAX);
+			mt.getRotationY().setRightAngles(r.nextInt()/RAND_MAX);
+			mt.getRotationX().setRightAngles(r.nextInt()/RAND_MAX);
 
 			BufferedMatrix4 offset = new BufferedMatrix4();
 
 			copy(mt.getModelMatrix(), offset);
-			offsets.set(i, offset);
+			offsets.add(i, offset);
 		}
 
 		return offsets;

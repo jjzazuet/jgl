@@ -14,6 +14,7 @@ target/**/*
 *.trc
 *.txt
 *.dmp
+*.mdmp
 *.phd
 *.bak
 *.log

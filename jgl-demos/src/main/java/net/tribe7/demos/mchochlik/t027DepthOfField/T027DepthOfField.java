@@ -24,11 +24,11 @@ import net.tribe7.time.util.ExecutionState;
 @WebstartDemo(imageUrl = "http://oglplus.org/oglplus/html/027_depth_of_field.png")
 public class T027DepthOfField extends GL3EventListener {
 
-	private int sampleQuality = 512;
+	private int sampleQuality = 128;
 	private Cube cube = new Cube();
 	private List<BufferedMatrix4> cubeMatrices = new MakeCubeMatrices().apply(100, 10.0f);
 
-	private Vector3 cameraTarget = new Vector3();
+	private Vector3 cameraTarget = new Vector3(), ambientColor = new Vector3(), diffuseColor = new Vector3();
 	private Angle fov = new Angle(), azimuth = new Angle(), elevation = new Angle();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
@@ -65,16 +65,18 @@ public class T027DepthOfField extends GL3EventListener {
 
 		GLBuffer screenVertices = buffer(screenVerts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
 
+		fbo.setBindTarget(GL_DRAW_FRAMEBUFFER);
+		fbo.bind();
+		fbo.initAttachments();
+		fbo.unbind();
+
 		dofProg.bind(); {
-			fbo.setBindTarget(GL_DRAW_FRAMEBUFFER);
-			fbo.bind();
-			fbo.initAttachments();
-			fbo.unbind();
 			dofProg.getStageAttribute("Position").set(screenVao, screenVertices, false, 0).enable();
-			dofProg.getInt("SampleMult").set(8);
+			dofProg.getInt("SampleMult").set(sampleQuality);
 			dofProg.getSampler("ColorTex").set(fbo.getColorAttachment());
-			dofProg.getSampler("DepthTex").set(fbo.getDepthAttachment());
 			fbo.getColorAttachment().bind();
+			dofProg.getSampler("DepthTex").set(fbo.getDepthAttachment());
+			fbo.getDepthAttachment().bind();
 		} dofProg.unbind();
 
 		gl.glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
@@ -90,23 +92,68 @@ public class T027DepthOfField extends GL3EventListener {
 
 		fbo.bind(); {
 			getDrawHelper().glClearColor().glClearDepth();
+			mainProg.bind(); {
+				cubeVao.bind(); {
+					for (BufferedMatrix4 m : cubeMatrices) {
+
+						mainProg.getMat4("ModelMatrix").set(m);
+
+						ambientColor.set(0.7f, 0.6f, 0.2f);
+						diffuseColor.set(1.0f, 0.8f, 0.3f);
+						mainProg.getVec3("AmbientColor").set(ambientColor);
+						mainProg.getVec3("DiffuseColor").set(diffuseColor);
+						gl.glDrawArrays(GL_TRIANGLES, 0, 36);
+
+						ambientColor.set(0.7f, 0.6f, 0.2f);
+						diffuseColor.set(1.0f, 0.8f, 0.3f);
+						mainProg.getVec3("AmbientColor").set(ambientColor);
+						mainProg.getVec3("DiffuseColor").set(diffuseColor);
+						gl.glDrawArrays(GL_LINE_LOOP, 0, 36);
+					}
+				} cubeVao.unbind();
+			} mainProg.unbind();
 		} fbo.unbind();
-	}
+
+		getDrawHelper().glClearColor().glClearDepth();
+
+		dofProg.bind(); {
+			screenVao.bind(); {
+				gl.glEnable(GL_BLEND);
+				gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+				gl.glDisable(GL_BLEND);
+			} screenVao.unbind();
+		} dofProg.unbind();	}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
 		double time = currentState.getElapsedTimeSeconds();
+
 		orbit(cameraMatrix, cameraTarget, 20.5, 
 				azimuth.setFullCircles(time / 20.0), 
 				elevation.setDegrees(sineWave(time / 25.0) * 30));
+
+		mainProg.bind(); {
+			mainProg.getMat4("CameraMatrix").set(cameraMatrix);
+		} mainProg.unbind();
+
+		dofProg.bind(); {
+			dofProg.getFloat("FocusDepth").set((float) (0.6 + sineWave(time / 9.0) * .3));
+		} dofProg.unbind();
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 
-		getDrawHelper().glViewPort((int) newViewport.width, (int) newViewport.height);
+		int width = (int) newViewport.width;
+		int height = (int) newViewport.height;
+		getDrawHelper().glViewPort(width, height);
 		perspectiveX(projMatrix, fov.setDegrees(65), newViewport.aspectRatio, 4, 50);
+
+		dofProg.bind(); {
+			dofProg.getInt("ViewportWidth").set(width);
+			dofProg.getInt("ViewportHeight").set(height);
+		} dofProg.unbind();
 
 		mainProg.bind(); {
 			mainProg.getMat4("ProjectionMatrix").set(projMatrix);
