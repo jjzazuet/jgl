@@ -1,4 +1,4 @@
-package net.tribe7.demos.mchochlik.t028StencilShadow;
+package net.tribe7.demos.mchochlik.t026StencilShadow;
 
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
@@ -21,7 +21,7 @@ import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
-public class T028StencilShadow extends GL3EventListener {
+public class T026StencilShadow extends GL3EventListener {
 
 	private Torus torus = new Torus(1.0, 0.7, 72, 48);
 	private ModelTransform modelTransform = new ModelTransform();
@@ -56,12 +56,12 @@ public class T028StencilShadow extends GL3EventListener {
 	protected void doInit(GL3 gl) throws Exception {
 
 		objectProg = loadProgram(
-				"/net/tribe7/demos/mchochlik/t028StencilShadow/object.vs", 
-				"/net/tribe7/demos/mchochlik/t028StencilShadow/object.fs", gl);
+				"/net/tribe7/demos/mchochlik/t026StencilShadow/object.vs", 
+				"/net/tribe7/demos/mchochlik/t026StencilShadow/object.fs", gl);
 		shadowProg = loadProgram(
-				"/net/tribe7/demos/mchochlik/t028StencilShadow/shadow.vs", 
-				"/net/tribe7/demos/mchochlik/t028StencilShadow/shadow.gs", 
-				"/net/tribe7/demos/mchochlik/t028StencilShadow/shadow.fs", gl);
+				"/net/tribe7/demos/mchochlik/t026StencilShadow/shadow.vs", 
+				"/net/tribe7/demos/mchochlik/t026StencilShadow/shadow.gs", 
+				"/net/tribe7/demos/mchochlik/t026StencilShadow/shadow.fs", gl);
 
 		setIdentity(identity);
 		initResource(gl, torusVao, planeVao);
@@ -76,8 +76,8 @@ public class T028StencilShadow extends GL3EventListener {
 
 		objectProg.bind(); {
 			objectProg.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
-			objectProg.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 			objectProg.getStageAttribute("Position").set(planeVao, planeVertices, false, 0).enable();
+			objectProg.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 			objectProg.getStageAttribute("Normal").set(planeVao, planeNormals, false, 0).enable();
 			objectProg.getVec3("LightPos").set(lightPosition);
 		} objectProg.unbind();
@@ -132,6 +132,7 @@ public class T028StencilShadow extends GL3EventListener {
 			} torusVao.unbind();
 		} objectProg.unbind();
 
+		// TODO bug
 		gl.glColorMask(false, false, false, false);
 		gl.glDepthMask(false);
 		gl.glEnable(GL_STENCIL_TEST);
@@ -148,13 +149,14 @@ public class T028StencilShadow extends GL3EventListener {
 				gl.glCullFace(GL_FRONT);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 				gl.glCullFace(GL_BACK);
-				gl.glColorMask(true, true, true, true);
-				gl.glDepthMask(true);
-				getDrawHelper().glClearDepth();
-				gl.glStencilFunc(GL_EQUAL, 0, ~0);
-				gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 			} torusVao.unbind();
 		} shadowProg.unbind();
+
+		gl.glColorMask(true, true, true, true);
+		gl.glDepthMask(true);
+		getDrawHelper().glClearDepth();
+		gl.glStencilFunc(GL_EQUAL, 0, ~0);
+		gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 		objectProg.bind(); {
 			objectProg.getFloat("LightMult").set(2.5f);
