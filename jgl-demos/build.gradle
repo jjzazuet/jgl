@@ -130,6 +130,6 @@ task copyWebContent(type: Copy, dependsOn: [generateJnlp]) {
 	into("${webstartDir}")
 }
 
-task generateWebStartFiles (dependsOn: [copyWebContent]) << {
-	println("Generating all webstart files in: " + webstartSignedLibPath)
+task webstart(dependsOn: [copyWebContent]) << {
+	println("Generating all webstart files in: " + webstartDir)
 }
