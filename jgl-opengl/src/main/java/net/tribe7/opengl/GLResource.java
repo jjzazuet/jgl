@@ -30,5 +30,7 @@ public class GLResource {
 	}
 
 	@Override
-	public int hashCode() { return glResourceHandle; }
+	public int hashCode() { 
+		return getClass().getCanonicalName().hashCode() + glResourceHandle; 
+	}
 }

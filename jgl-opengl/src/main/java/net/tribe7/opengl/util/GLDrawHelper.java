@@ -62,6 +62,12 @@ public class GLDrawHelper extends GLContextBoundResource {
 		return this;
 	}
 
+	public GLDrawHelper glClearStencil() {
+		getGl().glClear(GL_STENCIL_BUFFER_BIT);
+		checkError();
+		return this;
+	}
+
 	@Override
 	protected void doInit() {}
 	@Override
