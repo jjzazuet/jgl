@@ -3,6 +3,9 @@ uniform mat4 ProjectionMatrix, CameraMatrix, SingleModelMatrix;
 uniform uint SingleModel;
 layout (std140) uniform ModelBlock {
 	mat4 ModelMatrices[128];
+	mat4 baz;
+	vec2 foo;
+	vec3 bar[2];
 };
 
 const vec3 LightPos = vec3(0.0, 0.0, 0.0);
