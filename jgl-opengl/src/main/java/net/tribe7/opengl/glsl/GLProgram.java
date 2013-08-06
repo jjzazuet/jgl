@@ -1,11 +1,10 @@
 package net.tribe7.opengl.glsl;
 
-import static net.tribe7.opengl.util.GLAttributeFactory.*;
+import static net.tribe7.opengl.glsl.attribute.GLAttributeFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 
-import java.nio.IntBuffer;
 import java.util.*;
 
 import net.tribe7.opengl.GLContextBoundResource;
@@ -40,13 +39,9 @@ public class GLProgram extends GLContextBoundResource {
 			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
 		}
 
-		IntBuffer lengthBuf = IntBuffer.allocate(1);
-		IntBuffer sizeBuf = IntBuffer.allocate(1);
-		IntBuffer typeBuf = IntBuffer.allocate(1);
-
-		getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, lengthBuf, sizeBuf, typeBuf, this);
-		stageAttributes = getAttributeMap(GL_ACTIVE_ATTRIBUTES, lengthBuf, sizeBuf, typeBuf, this);
-		uniforms = getAttributeMap(GL_ACTIVE_UNIFORMS, lengthBuf, sizeBuf, typeBuf, this);
+		getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this);
+		stageAttributes = getAttributeMap(GL_ACTIVE_ATTRIBUTES, this);
+		uniforms = getAttributeMap(GL_ACTIVE_UNIFORMS, this);
 	}
 
 	public GLVertexAttribute getStageAttribute(String name) {
