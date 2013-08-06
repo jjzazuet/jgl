@@ -32,7 +32,7 @@ public class T027DepthOfField extends GL3EventListener {
 	private Angle fov = new Angle(), azimuth = new Angle(), elevation = new Angle();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	
+
 	private GLProgram mainProg, dofProg;
 	private GLTextureFrameBuffer fbo = new GLTextureFrameBuffer();
 	private GLVertexArray cubeVao = new GLVertexArray(), screenVao = new GLVertexArray();

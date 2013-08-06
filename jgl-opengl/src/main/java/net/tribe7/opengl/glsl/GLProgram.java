@@ -19,7 +19,8 @@ public class GLProgram extends GLContextBoundResource {
 
 	public GLProgram attachShader(GLShader s) {
 		checkNotNull(s);
-		checkArgument(!shaders.contains(s), resourceMsg("Shader is already attached"));		
+		checkState(!isInitialized(), resourceMsg("Program already initialized."));
+		checkArgument(!shaders.contains(s), resourceMsg("Shader is already attached"));
 		shaders.add(s);
 		return this;
 	}
@@ -43,6 +44,7 @@ public class GLProgram extends GLContextBoundResource {
 		IntBuffer sizeBuf = IntBuffer.allocate(1);
 		IntBuffer typeBuf = IntBuffer.allocate(1);
 
+		getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, lengthBuf, sizeBuf, typeBuf, this);
 		stageAttributes = getAttributeMap(GL_ACTIVE_ATTRIBUTES, lengthBuf, sizeBuf, typeBuf, this);
 		uniforms = getAttributeMap(GL_ACTIVE_UNIFORMS, lengthBuf, sizeBuf, typeBuf, this);
 	}

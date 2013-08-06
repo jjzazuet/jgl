@@ -5,8 +5,7 @@ import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
 
-import net.tribe7.demos.mchochlik.t026StencilShadow.T026StencilShadow;
-import net.tribe7.demos.mchochlik.t027DepthOfField.T027DepthOfField;
+import net.tribe7.demos.mchochlik.t031MotionBlur.T031MotionBlur;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;
 
@@ -21,7 +20,6 @@ public class GLTestShell {
 	private GLScheduledEventListener target;
 
 	public GLTestShell() {
-
 		try { JNILibLoaderBase.setLoadingAction(new GLBootstrap()); }
 		catch (Exception e) { propagate(e); }
 		profile = GLProfile.get(GLProfile.GL3);
@@ -30,7 +28,7 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T026StencilShadow();
+		GLScheduledEventListener target = new T031MotionBlur();
 		setTarget(target);
 	}
 
