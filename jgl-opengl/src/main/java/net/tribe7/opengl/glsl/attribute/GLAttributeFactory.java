@@ -15,17 +15,17 @@ public class GLAttributeFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(GLUniformAttribute.class);
 
-	public static final Map<String, GLAttribute> getAttributeMap(int type, GLProgram p) {
+	public static final Map<String, GLProgramInterface> getAttributeMap(int type, GLProgram p) {
 
 		checkArgument(isValidActiveAttributeType(type));
 		int objectCount = getGlslParam(p, type);
-		Map<String, GLAttribute> programAttributes = new HashMap<String, GLAttribute>();
-		GLAttribute at = null;
+		Map<String, GLProgramInterface> programAttributes = new HashMap<String, GLProgramInterface>();
+		GLProgramInterface at = null;
 
 		for (int k = 0; k < objectCount; k++) {
 			switch (type) {
-				case GL_ACTIVE_UNIFORMS: at = newUniformAttribute(k, p); break;
-				case GL_ACTIVE_UNIFORM_BLOCKS: newUniformAttributeBlock(k, p);  break;
+				case GL_ACTIVE_UNIFORMS: at = newUniformAttribute(k, false, p); break;
+				case GL_ACTIVE_UNIFORM_BLOCKS: at = newUniformAttributeBlock(k, p);  break;
 				case GL_ACTIVE_ATTRIBUTES: at = newStageAttribute(k, p); break;
 			}
 			if (at != null) {

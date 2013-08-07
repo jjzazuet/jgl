@@ -15,7 +15,7 @@ public class GLUniformAttributeFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(GLUniformAttributeFactory.class);
 
-	protected static GLUniformAttribute<?> newUniformAttribute(int index, GLProgram p) {
+	protected static GLUniformAttribute<?> newUniformAttribute(int index, boolean ignoreLocation, GLProgram p) {
 
 		GLUniformAttribute<?> at = null;
 		GLAttributeBuffers ab = new GLAttributeBuffers(index, getGlslParam(p, GL_ACTIVE_UNIFORM_MAX_LENGTH));
@@ -25,7 +25,7 @@ public class GLUniformAttributeFactory {
 		int location = p.getGl().glGetUniformLocation(p.getGlResourceHandle(), ab.getNameValue());
 		p.checkError();
 
-		if (location < ZERO) {
+		if (location < ZERO && !ignoreLocation) {
 			log.warn(format("Invalid uniform attribute location [%s: %s]", ab.getNameValue(), location));
 		} else {
 			at = newInstance(index, ab.getLengthValue(), location, ab.getSizeValue(), ab.getTypeValue(), ab.getNameValue(), p);

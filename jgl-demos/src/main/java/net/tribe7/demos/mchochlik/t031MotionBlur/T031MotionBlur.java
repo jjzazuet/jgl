@@ -3,6 +3,7 @@ package net.tribe7.demos.mchochlik.t031MotionBlur;
 import javax.media.opengl.GL3;
 
 import net.tribe7.opengl.GL3EventListener;
+import net.tribe7.opengl.glsl.attribute.GLUniformBlock;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
@@ -13,6 +14,8 @@ public class T031MotionBlur extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 		initResource(gl, drawProg);
+		GLUniformBlock ub = drawProg.getUniformBlock("ModelBlock");
+		System.out.println();
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.tribe7.opengl.glsl.attribute;
 
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.opengl.glsl.attribute.GLAttributeBuffers.*;
+import static net.tribe7.opengl.glsl.attribute.GLUniformAttributeFactory.*;
 import static net.tribe7.common.base.Preconditions.*;
 
 import java.nio.*;
@@ -33,9 +34,9 @@ public class GLUniformBlockFactory {
 		return paramData;
 	}
 
-	protected static GLAttribute newUniformAttributeBlock(int index, GLProgram p) {
+	protected static GLUniformBlock newUniformAttributeBlock(int index, GLProgram p) {
 
-		GLAttribute at = null;
+		GLUniformBlock ub = null;
 		GLAttributeBuffers ab = new GLAttributeBuffers(index, getUniformBlockParameter(p, index, GL_UNIFORM_BLOCK_NAME_LENGTH, ONE)[0]);
 
 		p.getGl().glGetActiveUniformBlockName(p.getGlResourceHandle(), 
@@ -44,17 +45,25 @@ public class GLUniformBlockFactory {
 
 		int blockSize = getUniformBlockParameter(p, index, GL_UNIFORM_BLOCK_DATA_SIZE, ONE)[0];
 		int uniformCount = getUniformBlockParameter(p, index, GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, ONE)[0];
-		int [] uniformIndices = getUniformBlockParameter(p, index, GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, uniformCount);
 
-		int [] uniformTypes = getUniformBlockIndexParameter(p, GL_UNIFORM_TYPE, uniformIndices);
-		int [] uniformSizes =  getUniformBlockIndexParameter(p, GL_UNIFORM_SIZE, uniformIndices);
-		int [] uniformNameLengths = getUniformBlockIndexParameter(p, GL_UNIFORM_NAME_LENGTH, uniformIndices);
+		int [] uniformIndices = getUniformBlockParameter(p, index, GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, uniformCount);
 		int [] uniformOffsets = getUniformBlockIndexParameter(p, GL_UNIFORM_OFFSET, uniformIndices);
 		int [] uniformArrayStrides = getUniformBlockIndexParameter(p, GL_UNIFORM_ARRAY_STRIDE, uniformIndices);
 		int [] uniformMatrixStrides = getUniformBlockIndexParameter(p, GL_UNIFORM_MATRIX_STRIDE, uniformIndices);
 		int [] uniformMatrixOrder = getUniformBlockIndexParameter(p, GL_UNIFORM_IS_ROW_MAJOR, uniformIndices);
 
-		/* TODO complete UBO support */
-		return at;
+		ub = new GLUniformBlock(index, blockSize, ab.getNameValue());
+
+		for (int k = 0; k < uniformCount; k++) {
+
+			GLUniformAttribute<?> a = newUniformAttribute(uniformIndices[k], true, p);
+			GLUniformBlockAttribute blockAttribute = 
+					new GLUniformBlockAttribute(
+							uniformOffsets[k], uniformArrayStrides[k], 
+							uniformMatrixStrides[k], uniformMatrixOrder[k], a);
+
+			ub.getAttributes().put(a.getName(), blockAttribute);
+		}
+		return ub;
 	}	
 }

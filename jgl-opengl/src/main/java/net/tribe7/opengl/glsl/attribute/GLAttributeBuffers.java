@@ -61,4 +61,12 @@ public class GLAttributeBuffers {
 	public IntBuffer getSize() { return size; }
 	public IntBuffer getType() { return type; }
 	public ByteBuffer getName() { return name; }
+
+	@Override
+	public String toString() {
+		return String.format("%s[index: %s, length: %s, size: %s, type: %s, name: %s]",
+				getClass().getSimpleName(), getAttributeIndex(), 
+				getLength(), getSize(), 
+				getType(), getName());
+	}
 }

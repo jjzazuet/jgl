@@ -13,8 +13,9 @@ import net.tribe7.opengl.glsl.attribute.*;
 public class GLProgram extends GLContextBoundResource {
 
 	private List<GLShader> shaders = new ArrayList<GLShader>();
-	private Map<String, GLAttribute> uniforms = new HashMap<String, GLAttribute>();
-	private Map<String, GLAttribute> stageAttributes = new HashMap<String, GLAttribute>();
+	private Map<String, GLProgramInterface> uniforms = new HashMap<String, GLProgramInterface>();
+	private Map<String, GLProgramInterface> stageAttributes = new HashMap<String, GLProgramInterface>();
+	private Map<String, GLProgramInterface> uniformBlocks = new HashMap<String, GLProgramInterface>();
 
 	public GLProgram attachShader(GLShader s) {
 		checkNotNull(s);
@@ -39,22 +40,28 @@ public class GLProgram extends GLContextBoundResource {
 			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
 		}
 
-		getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this);
+		uniformBlocks = getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this);
 		stageAttributes = getAttributeMap(GL_ACTIVE_ATTRIBUTES, this);
 		uniforms = getAttributeMap(GL_ACTIVE_UNIFORMS, this);
 	}
 
 	public GLVertexAttribute getStageAttribute(String name) {
+		checkNotNull(name);
 		checkInitialized();
-		checkArgument(stageAttributes.get(name) != null);
-		return (GLVertexAttribute) stageAttributes.get(name); 
+		return (GLVertexAttribute) checkNotNull(stageAttributes.get(name)); 
 	}
-	
+
+	public GLUniformBlock getUniformBlock(String name) {
+		checkNotNull(name);
+		checkInitialized();
+		return (GLUniformBlock) checkNotNull(uniformBlocks.get(name));
+	}
+
 	public GLUInt getInt(String name) {
 		checkNameAccess(name);
 		return (GLUInt) uniforms.get(name);
 	}
-	
+
 	public GLUFloat getFloat(String name) {
 		checkNameAccess(name);
 		return (GLUFloat) uniforms.get(name);
