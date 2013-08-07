@@ -29,8 +29,8 @@ public class T002Rect extends GL3EventListener {
 		p.bind(); {
 			GLBuffer verts = buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
 			GLBuffer colors = buffer(rectangle_colors, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-			p.getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
-			p.getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
+			p.getInterface().getStageAttribute("Position").set(rectVao, verts, false, 0).enable();
+			p.getInterface().getStageAttribute("Color").set(rectVao, colors, false, 0).enable();		
 		} p.unbind();
 
 		gl.glClearColor(0, 0, 0, 1);

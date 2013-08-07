@@ -50,13 +50,13 @@ public class T017PhongTorus extends GL3EventListener {
 		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-		p.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
-		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
+		p.getInterface().getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
 
-		GLUFloatVec3 lightPos = p.getVec3("LightPos");
+		GLUFloatVec3 lightPos = p.getInterface().getVec3("LightPos");
 		
 		lightPos.set(0, 2.0f,-1.0f, 0.0f);
 		lightPos.set(1, 0.0f, 3.0f, 0.0f);

@@ -28,12 +28,12 @@ public class T005Manderblot extends GL3EventListener {
 
 		rectVao.init(gl);
 		p.bind(); {
-			GLUFloatVec4 clrs = p.getVec4("clrs");
+			GLUFloatVec4 clrs = p.getInterface().getVec4("clrs");
 
-			p.getStageAttribute("Position").set(rectVao, 
+			p.getInterface().getStageAttribute("Position").set(rectVao, 
 					buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 					false, 0).enable();
-			p.getStageAttribute("Coord").set(rectVao, 
+			p.getInterface().getStageAttribute("Coord").set(rectVao, 
 					buffer(rectangle_coords, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 					false, 0).enable();
 			clrs.set(0, color_map[0]);

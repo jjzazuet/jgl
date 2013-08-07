@@ -60,15 +60,15 @@ public class T022ParallaxMapping extends GL3EventListener {
 		GLBuffer cubeTangents = buffer(cube.getTangents(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-		p.getStageAttribute("Tangent").set(cubeVao, cubeTangents, false, 0).enable();
-		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+		p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+		p.getInterface().getStageAttribute("Tangent").set(cubeVao, cubeTangents, false, 0).enable();
+		p.getInterface().getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 
-		uLightPos = p.getVec3("LightPos");
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uModelMatrix = p.getMat4("ModelMatrix");
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uLightPos = p.getInterface().getVec3("LightPos");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
 
 		SphereBumpMap bumpMap = new SphereBumpMap(512, 512, 2, 2);
 
@@ -84,9 +84,9 @@ public class T022ParallaxMapping extends GL3EventListener {
 			bumpTexture.applyParameters();
 		} bumpTexture.unbind();
 
-		p.getSampler("BumpTex").set(bumpTexture);
-		p.getInt("BumpTexWidth").set(bumpTexture.getImage().getMetadata().getWidth());
-		p.getInt("BumpTexHeight").set(bumpTexture.getImage().getMetadata().getHeight());
+		p.getInterface().getSampler("BumpTex").set(bumpTexture);
+		p.getInterface().getInt("BumpTexWidth").set(bumpTexture.getImage().getMetadata().getWidth());
+		p.getInterface().getInt("BumpTexHeight").set(bumpTexture.getImage().getMetadata().getHeight());
 
 		gl.glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 		gl.glClearDepth(1.0f);

@@ -1,6 +1,9 @@
 package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.common.base.Preconditions.*;
+
+import java.nio.ByteBuffer;
+
 import net.tribe7.opengl.GLTexture;
 import net.tribe7.opengl.glsl.GLProgram;
 
@@ -22,5 +25,15 @@ public class GLUSampler extends GLUniformAttribute<GLTexture> {
 		getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
 		getProgram().checkError();
 		value.unbind();
+	}
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, GLTexture ... data) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int getUnitByteSize() {
+		throw new UnsupportedOperationException();
 	}
 }

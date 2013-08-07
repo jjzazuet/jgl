@@ -50,12 +50,12 @@ public class T013SpiralSphere extends GL3EventListener {
 		
 		sphereVao.init(gl);
 		p.bind();
-		p.getStageAttribute("Position").set(sphereVao, sphereVertices, false, 0).enable();
-		p.getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(sphereVao, sphereVertices, false, 0).enable();
+		p.getInterface().getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
 
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uModelMatrix = p.getMat4("ModelMatrix");
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
 		
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);

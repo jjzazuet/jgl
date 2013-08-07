@@ -3,6 +3,7 @@ package net.tribe7.opengl.glsl.attribute;
 import static net.tribe7.math.Preconditions.checkNoNulls;
 import static net.tribe7.math.matrix.Matrix2Ops.storeColMaj;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.tribe7.math.matrix.Matrix2;
@@ -29,5 +30,15 @@ public class GLUFloatMat2 extends GLUniformAttribute<BufferedMatrix2> {
 	@Override
 	protected void doSet(int index, BufferedMatrix2 value) {
 		colMaj(index, value.getBackingBuffer(), value);
+	}
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, BufferedMatrix2 ... data) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public int getUnitByteSize() {
+		return (FOUR * TWO) * TWO;
 	}
 }

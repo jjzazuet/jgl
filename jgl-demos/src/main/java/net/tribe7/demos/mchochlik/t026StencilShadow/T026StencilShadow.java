@@ -75,16 +75,16 @@ public class T026StencilShadow extends GL3EventListener {
 		GLBuffer planeNormals = buffer(planeNorms, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		objectProg.bind(); {
-			objectProg.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
-			objectProg.getStageAttribute("Position").set(planeVao, planeVertices, false, 0).enable();
-			objectProg.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
-			objectProg.getStageAttribute("Normal").set(planeVao, planeNormals, false, 0).enable();
-			objectProg.getVec3("LightPos").set(lightPosition);
+			objectProg.getInterface().getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
+			objectProg.getInterface().getStageAttribute("Position").set(planeVao, planeVertices, false, 0).enable();
+			objectProg.getInterface().getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
+			objectProg.getInterface().getStageAttribute("Normal").set(planeVao, planeNormals, false, 0).enable();
+			objectProg.getInterface().getVec3("LightPos").set(lightPosition);
 		} objectProg.unbind();
 
 		shadowProg.bind(); {
-			shadowProg.getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
-			shadowProg.getVec3("LightPos").set(lightPosition);
+			shadowProg.getInterface().getStageAttribute("Position").set(torusVao, torusVertices, false, 0).enable();
+			shadowProg.getInterface().getVec3("LightPos").set(lightPosition);
 		} shadowProg.unbind();
 
 		gl.glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
@@ -120,14 +120,14 @@ public class T026StencilShadow extends GL3EventListener {
 		gl.glDisable(GL_STENCIL_TEST);
 
 		objectProg.bind(); {
-			objectProg.getMat4("CameraMatrix").set(cameraMatrix);
-			objectProg.getFloat("LightMult").set(0.2f);
+			objectProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			objectProg.getInterface().getFloat("LightMult").set(0.2f);
 			planeVao.bind(); {
-				objectProg.getMat4("ModelMatrix").set(identity);
+				objectProg.getInterface().getMat4("ModelMatrix").set(identity);
 				gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			} planeVao.unbind();
 			torusVao.bind(); {
-				objectProg.getMat4("ModelMatrix").set(modelMatrix);
+				objectProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 			} torusVao.unbind();
 		} objectProg.unbind();
@@ -141,8 +141,8 @@ public class T026StencilShadow extends GL3EventListener {
 		gl.glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
 
 		shadowProg.bind(); {
-			shadowProg.getMat4("CameraMatrix").set(cameraMatrix);
-			shadowProg.getMat4("ModelMatrix").set(modelMatrix);
+			shadowProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			shadowProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
 			torusVao.bind(); {
 				gl.glCullFace(GL_BACK);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
@@ -159,15 +159,15 @@ public class T026StencilShadow extends GL3EventListener {
 		gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 		objectProg.bind(); {
-			objectProg.getFloat("LightMult").set(2.5f);
+			objectProg.getInterface().getFloat("LightMult").set(2.5f);
 			planeVao.bind(); {
-				objectProg.getMat4("ModelMatrix").set(identity);
-				objectProg.getVec3("Color").set(0.8f, 0.7f, 0.4f);
+				objectProg.getInterface().getMat4("ModelMatrix").set(identity);
+				objectProg.getInterface().getVec3("Color").set(0.8f, 0.7f, 0.4f);
 				gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			} planeVao.unbind();
 			torusVao.bind(); {
-				objectProg.getMat4("ModelMatrix").set(modelMatrix);
-				objectProg.getVec3("Color").set(0.9f, 0.8f, 0.1f);
+				objectProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
+				objectProg.getInterface().getVec3("Color").set(0.9f, 0.8f, 0.1f);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 			} torusVao.unbind();
 		} objectProg.unbind();
@@ -184,10 +184,10 @@ public class T026StencilShadow extends GL3EventListener {
 		getDrawHelper().glViewPort(width, height);
 		perspectiveX(projectionMatrix, fov, newViewport.aspectRatio, 1, 30);
 		objectProg.bind();
-		objectProg.getMat4("ProjectionMatrix").set(projectionMatrix);
+		objectProg.getInterface().getMat4("ProjectionMatrix").set(projectionMatrix);
 		objectProg.unbind();
 		shadowProg.bind();
-		shadowProg.getMat4("ProjectionMatrix").set(projectionMatrix);
+		shadowProg.getInterface().getMat4("ProjectionMatrix").set(projectionMatrix);
 		shadowProg.unbind();
 	}
 }

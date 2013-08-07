@@ -86,16 +86,16 @@ public class T030CubeMapping extends GL3EventListener {
 			GLBuffer sphereTexCoords = buffer(sphere.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 			sphereIndices = buffer(sphere.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
-			sphereProjectionMatrix = sphereProg.getMat4("ProjectionMatrix");
-			sphereCameraMatrix = sphereProg.getMat4("CameraMatrix");
-			sphereLightPos = sphereProg.getVec4("LightPos");
-			sphereTime = sphereProg.getFloat("Time");
+			sphereProjectionMatrix = sphereProg.getInterface().getMat4("ProjectionMatrix");
+			sphereCameraMatrix = sphereProg.getInterface().getMat4("CameraMatrix");
+			sphereLightPos = sphereProg.getInterface().getVec4("LightPos");
+			sphereTime = sphereProg.getInterface().getFloat("Time");
 
-			sphereProg.getStageAttribute("Position").set(sphereVao, sphereVertices, false, 0).enable();
-			sphereProg.getStageAttribute("Normal").set(sphereVao, sphereNormals, false, 0).enable();
-			sphereProg.getStageAttribute("Tangent").set(sphereVao, sphereTangents, false, 0).enable();
-			sphereProg.getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
-			sphereProg.getSampler("CubeTex").set(fbo.getCubeColorAttachment());
+			sphereProg.getInterface().getStageAttribute("Position").set(sphereVao, sphereVertices, false, 0).enable();
+			sphereProg.getInterface().getStageAttribute("Normal").set(sphereVao, sphereNormals, false, 0).enable();
+			sphereProg.getInterface().getStageAttribute("Tangent").set(sphereVao, sphereTangents, false, 0).enable();
+			sphereProg.getInterface().getStageAttribute("TexCoord").set(sphereVao, sphereTexCoords, false, 0).enable();
+			sphereProg.getInterface().getSampler("CubeTex").set(fbo.getCubeColorAttachment());
 			fbo.getCubeColorAttachment().bind();
 		} sphereProg.unbind();
 
@@ -104,20 +104,20 @@ public class T030CubeMapping extends GL3EventListener {
 
 		cubeMapProg.bind(); {
 			perspectiveX(projMatrix, fov.setDegrees(90), 1.0, 1, 20);
-			cubeMapProg.getStageAttribute("Position").set(cubeVao, cubeVerticesGl, false, 0).enable();
-			cubeMapProg.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			cubeMapProg.getMat4("ProjectionMatrix").set(projMatrix);
-			cmLightPos = cubeMapProg.getVec4("LightPos");
-			cmOffset = cubeMapProg.getVec3("Offset");
+			cubeMapProg.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerticesGl, false, 0).enable();
+			cubeMapProg.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			cubeMapProg.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
+			cmLightPos = cubeMapProg.getInterface().getVec4("LightPos");
+			cmOffset = cubeMapProg.getInterface().getVec3("Offset");
 		} cubeMapProg.unbind();
 
 		cubeProg.bind(); {
-			cubeProg.getStageAttribute("Position").set(cubeVao, cubeVerticesGl, false, 0).enable();
-			cubeProg.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			cubeProjectionMatrix = cubeProg.getMat4("ProjectionMatrix");
-			cubeCameraMatrix = cubeProg.getMat4("CameraMatrix");
-			cubeLightPos = cubeProg.getVec4("LightPos");
-			cubeOffset = cubeProg.getVec3("Offset");
+			cubeProg.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerticesGl, false, 0).enable();
+			cubeProg.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			cubeProjectionMatrix = cubeProg.getInterface().getMat4("ProjectionMatrix");
+			cubeCameraMatrix = cubeProg.getInterface().getMat4("CameraMatrix");
+			cubeLightPos = cubeProg.getInterface().getVec4("LightPos");
+			cubeOffset = cubeProg.getInterface().getVec3("Offset");
 		} cubeProg.unbind();
 
 		gl.glEnable(GL_DEPTH_TEST);

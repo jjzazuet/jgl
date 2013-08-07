@@ -45,13 +45,13 @@ public class T012CheckerCube extends GL3EventListener {
 
 		cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		cameraMatrixAttr = p.getMat4("CameraMatrix");
-		projectionMatrixAttr = p.getMat4("ProjectionMatrix");
+		cameraMatrixAttr = p.getInterface().getMat4("CameraMatrix");
+		projectionMatrixAttr = p.getInterface().getMat4("ProjectionMatrix");
 
 		cubeVao.init(gl);
 		p.bind();
-		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
-		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
+		p.getInterface().getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);

@@ -44,12 +44,12 @@ public class T014MultiCubeGs extends GL3EventListener {
 				"/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.gs",
 				"/net/tribe7/demos/mchochlik/t014MultiCubeGs/multiCube.fs", gl);
 
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
 
 		cubeVao.init(gl);
 		p.bind();
-		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 
 		gl.glClearColor(0.9f, 0.9f, 0.9f, 0.0f);
 		gl.glClearDepth(1.0f);

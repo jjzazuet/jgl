@@ -3,6 +3,7 @@ package net.tribe7.opengl.glsl.attribute;
 import static net.tribe7.math.Preconditions.checkNoNulls;
 import static net.tribe7.math.matrix.Matrix4Ops.storeColMaj;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 
 import net.tribe7.math.matrix.ColumnMajorOrder;
@@ -31,5 +32,15 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 	@ColumnMajorOrder
 	public void doSet(int index, BufferedMatrix4 value) {
 		colMaj(index, value);
+	}
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, BufferedMatrix4 ... data) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public int getUnitByteSize() {
+		return (FOUR * FOUR) * FOUR;
 	}
 }

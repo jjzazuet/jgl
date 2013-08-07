@@ -14,6 +14,14 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
+	public static final int TWO = 2;
+	public static final int THREE = 3;	
+	public static final int FOUR = 4;
+	public static final int EIGHT = 8;
+	public static final int SIXTEEN = 16;
+	public static final int THIRTYTWO = 32;
+	public static final int SIXTYFOUR = 64;
+	
 	public static final String VARIABLE_INDEX_FORMAT = "%s[%s]";
 	
 	private Map<Integer, Integer> indexLocations = new HashMap<Integer, Integer>();
@@ -30,8 +38,20 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 		doSet(index, value);
 	}
 
-	public void set(T value) { set(ZERO, value); }
+	public abstract int getUnitByteSize();
+
 	protected abstract void doSet(int index, T value);
+	public void set(T value) { set(ZERO, value); }
+
+	protected abstract void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data);
+	public void serialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data) {
+		checkNotNull(target);
+		checkNotNull(md);
+		checkNotNull(data);
+		checkArgument(data.length >= ONE);
+		checkArgument(data.length <= getSize());
+		doSerialize(target, md, data);
+	}
 
 	protected FloatBuffer bufferData(float ... data) {
 		checkNotNull(data);

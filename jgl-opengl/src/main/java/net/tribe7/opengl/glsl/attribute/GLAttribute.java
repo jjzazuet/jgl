@@ -3,7 +3,7 @@ package net.tribe7.opengl.glsl.attribute;
 import static net.tribe7.common.base.Preconditions.*;
 import net.tribe7.opengl.glsl.GLProgram;
 
-public abstract class GLAttribute extends GLProgramInterface {
+public abstract class GLAttribute extends GLProgramVariable {
 
 	private final int size, glType, location;
 	private final GLProgram program;

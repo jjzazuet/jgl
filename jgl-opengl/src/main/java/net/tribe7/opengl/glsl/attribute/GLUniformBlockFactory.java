@@ -57,12 +57,12 @@ public class GLUniformBlockFactory {
 		for (int k = 0; k < uniformCount; k++) {
 
 			GLUniformAttribute<?> a = newUniformAttribute(uniformIndices[k], true, p);
-			GLUniformBlockAttribute blockAttribute = 
-					new GLUniformBlockAttribute(
+			GLUniformBlockAttributeMetadata blockAttribute = 
+					new GLUniformBlockAttributeMetadata(
 							uniformOffsets[k], uniformArrayStrides[k], 
-							uniformMatrixStrides[k], uniformMatrixOrder[k], a);
-
-			ub.getAttributes().put(a.getName(), blockAttribute);
+							uniformMatrixStrides[k], uniformMatrixOrder[k], a.getName());
+			ub.getInterface().getUniforms().put(a.getName(), a);
+			ub.getBlockMetadata().put(a.getName(), blockAttribute);
 		}
 		return ub;
 	}	

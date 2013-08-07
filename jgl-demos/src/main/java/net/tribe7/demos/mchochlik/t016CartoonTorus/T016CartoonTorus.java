@@ -50,16 +50,16 @@ public class T016CartoonTorus extends GL3EventListener {
 		torusVao.init(gl);
 		
 		GLBuffer torusVerts = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		p.getStageAttribute("Position").set(torusVao, torusVerts, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(torusVao, torusVerts, false, 0).enable();
 		
 		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();		
-		p.getVec3("LightPos").set(new Vector3(4.0f, 4.0f, -8.0f));
+		p.getInterface().getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();		
+		p.getInterface().getVec3("LightPos").set(new Vector3(4.0f, 4.0f, -8.0f));
 
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uModelMatrix = p.getMat4("ModelMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
 		
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);

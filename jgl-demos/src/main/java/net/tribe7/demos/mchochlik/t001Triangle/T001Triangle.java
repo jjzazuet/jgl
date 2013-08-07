@@ -28,7 +28,7 @@ public class T001Triangle extends GL3EventListener {
 		triangleVao.init(gl);
 		p.bind(); {
 			GLBuffer triangleBuffer = buffer(triangleVertices, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-			p.getStageAttribute("Position").set(triangleVao, triangleBuffer, false, 0).enable();
+			p.getInterface().getStageAttribute("Position").set(triangleVao, triangleBuffer, false, 0).enable();
 		} p.unbind();
 
 		gl.glClearColor(0, 0, 0, 1);

@@ -22,6 +22,7 @@ public class GLVertexAttribute extends GLAttribute {
 
 		checkNotNull(vao);
 		checkNotNull(paramData);
+		getProgram().checkBound();
 
 		GLVertexAttributeBinding vaoBinding = getBindings().get(vao);
 
@@ -31,7 +32,7 @@ public class GLVertexAttribute extends GLAttribute {
 
 			GLBufferMetadata md = checkNotNull(paramData.getBufferMetadata());
 			checkElementIndex(bufferComponentIndex, md.getComponentCount());
-			getProgram().checkBound(); // TODO add some kind of raw type checking e.g. float(3) = vec3
+			// TODO add some kind of raw type checking e.g. float(3) = vec3
 
 			vao.bind(); {
 				int glIndex = getLocation();

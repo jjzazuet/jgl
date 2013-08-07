@@ -42,11 +42,11 @@ public class T010RgbCube extends GL3EventListener {
 		p.bind(); {
 			cubeVerts = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 			cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-			projectionMatrixAttr = p.getMat4("ProjectionMatrix");
-			p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
-			p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			projectionMatrixAttr = p.getInterface().getMat4("ProjectionMatrix");
+			p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
+			p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 			lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
-			p.getMat4("CameraMatrix").set(cameraMatrix);
+			p.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
 		}
 
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);

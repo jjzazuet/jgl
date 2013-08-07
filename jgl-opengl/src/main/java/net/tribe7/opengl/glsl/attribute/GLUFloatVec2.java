@@ -1,6 +1,9 @@
 package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.common.base.Preconditions.*;
+
+import java.nio.ByteBuffer;
+
 import net.tribe7.math.vector.Vector2;
 import net.tribe7.opengl.glsl.GLProgram;
 
@@ -24,5 +27,15 @@ public class GLUFloatVec2 extends GLUniformAttribute<Vector2> {
 	@Override
 	public void doSet(int index, Vector2 value) {
 		set(index, value.x, value.y);
+	}
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Vector2 ... data) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public int getUnitByteSize() {
+		return FOUR * TWO;
 	}
 }

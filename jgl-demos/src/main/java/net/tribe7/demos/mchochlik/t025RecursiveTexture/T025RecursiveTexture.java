@@ -81,15 +81,15 @@ public class T025RecursiveTexture extends GL3EventListener {
 			GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 			GLBuffer cubeTexCoords = buffer(cube.getTexCoords(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-			p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-			p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
-			p.getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
+			p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+			p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			p.getInterface().getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+			p.getInterface().getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
 
-			uProjectionMatrix = p.getMat4("ProjectionMatrix");
-			uCameraMatrix = p.getMat4("CameraMatrix");
-			uModelMatrix = p.getMat4("ModelMatrix");
-			uTexUnit = p.getSampler("TexUnit");
+			uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+			uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+			uModelMatrix = p.getInterface().getMat4("ModelMatrix");
+			uTexUnit = p.getInterface().getSampler("TexUnit");
 		}
 
 		gl.glEnable(GL_DEPTH_TEST);

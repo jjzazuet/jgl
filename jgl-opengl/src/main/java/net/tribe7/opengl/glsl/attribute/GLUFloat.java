@@ -1,6 +1,9 @@
 package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.common.base.Preconditions.*;
+
+import java.nio.ByteBuffer;
+
 import net.tribe7.opengl.glsl.GLProgram;
 
 public class GLUFloat extends GLUniformAttribute<Float> {
@@ -19,7 +22,13 @@ public class GLUFloat extends GLUniformAttribute<Float> {
 	}
 
 	@Override
-	protected void doSet(int index, Float value) {
-		setArray(index, value);
+	protected void doSet(int index, Float value) { setArray(index, value); }
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Float ... data) {
+		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public int getUnitByteSize() { return FOUR; }
 }

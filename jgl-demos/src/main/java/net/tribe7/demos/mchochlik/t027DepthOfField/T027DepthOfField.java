@@ -58,9 +58,9 @@ public class T027DepthOfField extends GL3EventListener {
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		mainProg.bind(); {
-			mainProg.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-			mainProg.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			mainProg.getVec3("LightPos").set(30.0, 50.0, 20.0);
+			mainProg.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+			mainProg.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+			mainProg.getInterface().getVec3("LightPos").set(30.0, 50.0, 20.0);
 		} mainProg.unbind();
 
 		GLBuffer screenVertices = buffer(screenVerts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2);
@@ -71,11 +71,11 @@ public class T027DepthOfField extends GL3EventListener {
 		fbo.unbind();
 
 		dofProg.bind(); {
-			dofProg.getStageAttribute("Position").set(screenVao, screenVertices, false, 0).enable();
-			dofProg.getInt("SampleMult").set(sampleQuality);
-			dofProg.getSampler("ColorTex").set(fbo.getColorAttachment());
+			dofProg.getInterface().getStageAttribute("Position").set(screenVao, screenVertices, false, 0).enable();
+			dofProg.getInterface().getInt("SampleMult").set(sampleQuality);
+			dofProg.getInterface().getSampler("ColorTex").set(fbo.getColorAttachment());
 			fbo.getColorAttachment().bind();
-			dofProg.getSampler("DepthTex").set(fbo.getDepthAttachment());
+			dofProg.getInterface().getSampler("DepthTex").set(fbo.getDepthAttachment());
 			fbo.getDepthAttachment().bind();
 		} dofProg.unbind();
 
@@ -96,18 +96,18 @@ public class T027DepthOfField extends GL3EventListener {
 				cubeVao.bind(); {
 					for (BufferedMatrix4 m : cubeMatrices) {
 
-						mainProg.getMat4("ModelMatrix").set(m);
+						mainProg.getInterface().getMat4("ModelMatrix").set(m);
 
 						ambientColor.set(0.7f, 0.6f, 0.2f);
 						diffuseColor.set(1.0f, 0.8f, 0.3f);
-						mainProg.getVec3("AmbientColor").set(ambientColor);
-						mainProg.getVec3("DiffuseColor").set(diffuseColor);
+						mainProg.getInterface().getVec3("AmbientColor").set(ambientColor);
+						mainProg.getInterface().getVec3("DiffuseColor").set(diffuseColor);
 						gl.glDrawArrays(GL_TRIANGLES, 0, 36);
 
 						ambientColor.set(0.7f, 0.6f, 0.2f);
 						diffuseColor.set(1.0f, 0.8f, 0.3f);
-						mainProg.getVec3("AmbientColor").set(ambientColor);
-						mainProg.getVec3("DiffuseColor").set(diffuseColor);
+						mainProg.getInterface().getVec3("AmbientColor").set(ambientColor);
+						mainProg.getInterface().getVec3("DiffuseColor").set(diffuseColor);
 						gl.glDrawArrays(GL_LINE_LOOP, 0, 36);
 					}
 				} cubeVao.unbind();
@@ -134,11 +134,11 @@ public class T027DepthOfField extends GL3EventListener {
 				elevation.setDegrees(sineWave(time / 25.0) * 30));
 
 		mainProg.bind(); {
-			mainProg.getMat4("CameraMatrix").set(cameraMatrix);
+			mainProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
 		} mainProg.unbind();
 
 		dofProg.bind(); {
-			dofProg.getFloat("FocusDepth").set((float) (0.6 + sineWave(time / 9.0) * .3));
+			dofProg.getInterface().getFloat("FocusDepth").set((float) (0.6 + sineWave(time / 9.0) * .3));
 		} dofProg.unbind();
 	}
 
@@ -151,12 +151,12 @@ public class T027DepthOfField extends GL3EventListener {
 		perspectiveX(projMatrix, fov.setDegrees(65), newViewport.aspectRatio, 4, 50);
 
 		dofProg.bind(); {
-			dofProg.getInt("ViewportWidth").set(width);
-			dofProg.getInt("ViewportHeight").set(height);
+			dofProg.getInterface().getInt("ViewportWidth").set(width);
+			dofProg.getInterface().getInt("ViewportHeight").set(height);
 		} dofProg.unbind();
 
 		mainProg.bind(); {
-			mainProg.getMat4("ProjectionMatrix").set(projMatrix);
+			mainProg.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
 		} mainProg.unbind();
 	}
 }

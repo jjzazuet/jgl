@@ -51,17 +51,17 @@ public class T016MetallicTorus extends GL3EventListener {
 		p.bind();
 
 		GLBuffer torusPositions = buffer(torus.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		p.getStageAttribute("Position").set(torusVao, torusPositions, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(torusVao, torusPositions, false, 0).enable();
 
 		GLBuffer torusNormals = buffer(torus.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
-		p.getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
+		p.getInterface().getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 
 		torusIndices = buffer(torus.getIndices(), gl, GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uModelMatrix = p.getMat4("ModelMatrix");
-		uColorCount = p.getInt("ColorCount");
-		uColor = p.getVec4("Color");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
+		uColorCount = p.getInterface().getInt("ColorCount");
+		uColor = p.getInterface().getVec4("Color");
 
 		uColorCount.set(8);
 		uColor.set(0, new float [] {1.0f, 1.0f, 0.9f, 1.00f});

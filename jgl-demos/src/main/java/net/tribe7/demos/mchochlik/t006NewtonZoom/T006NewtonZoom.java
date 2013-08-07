@@ -38,12 +38,12 @@ public class T006NewtonZoom extends GL3EventListener {
 
 		rectVao.init(gl);
 		p.bind(); {
-			zoomMatrix = p.getMat2("ZoomMatrix");
-			p.getStageAttribute("Position").set(rectVao, 
+			zoomMatrix = p.getInterface().getMat2("ZoomMatrix");
+			p.getInterface().getStageAttribute("Position").set(rectVao, 
 					buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 					false, 0).enable();
-			p.getVec3("Color1").set(0.2f, 0.02f, 0.05f);
-			p.getVec3("Color2").set(1.0f, 0.95f, 0.98f);
+			p.getInterface().getVec3("Color1").set(0.2f, 0.02f, 0.05f);
+			p.getInterface().getVec3("Color2").set(1.0f, 0.95f, 0.98f);
 		}
 		gl.glClearDepth(1);
 	}

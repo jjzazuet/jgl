@@ -53,16 +53,16 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 		cubeVertices = buffer(cube.getVertices(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-		p.getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
-		p.getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
+		p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
 
-		p.getVec3("LightPos").set(-3.0f, -2.0f, -3.0f);
-		p.getInt("InstCount").set(instructionCount);
+		p.getInterface().getVec3("LightPos").set(-3.0f, -2.0f, -3.0f);
+		p.getInterface().getInt("InstCount").set(instructionCount);
 
-		uFrontFacing = p.getInt("FrontFacing");
-		uModelMatrix = p.getMat4("ModelMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
+		uFrontFacing = p.getInterface().getInt("FrontFacing");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
 
 		gl.glClearColor(0.5f, 0.6f, 0.5f, 0.0f);
 		gl.glClearDepth(1.0f);

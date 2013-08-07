@@ -70,8 +70,8 @@ public class T015Graph extends GL3EventListener {
 
 		graphVao.init(gl);
 		p.bind();
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
 
 		float [] positions = new float[NODE_COUNT * 3];
 		LinkedList<Integer> edges = new LinkedList<Integer>();
@@ -83,7 +83,7 @@ public class T015Graph extends GL3EventListener {
 		}
 
 		positionsBuffer = buffer(positions, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 3);
-		p.getStageAttribute("Position").set(graphVao, positionsBuffer, false, 0).enable();
+		p.getInterface().getStageAttribute("Position").set(graphVao, positionsBuffer, false, 0).enable();
 
 		for (int i = 0; i < NODE_COUNT; ++i) {
 

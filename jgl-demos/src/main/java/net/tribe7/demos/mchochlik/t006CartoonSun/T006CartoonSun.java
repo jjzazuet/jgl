@@ -32,15 +32,15 @@ public class T006CartoonSun extends GL3EventListener {
 
 		rectVao.init(gl);
 		p.bind(); {
-			time = p.getFloat("Time");
-			sunPos = p.getVec2("SunPos");
-			p.getStageAttribute("Position").set(rectVao, 
+			time = p.getInterface().getFloat("Time");
+			sunPos = p.getInterface().getVec2("SunPos");
+			p.getInterface().getStageAttribute("Position").set(rectVao, 
 					buffer(rectangle_verts, gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW, 2), 
 					false, 0).enable();
-			p.getVec3("Sun1").set(0.95f, 0.85f, 0.60f);
-			p.getVec3("Sun2").set(0.90f, 0.80f, 0.20f);
-			p.getVec3("Sky1").set(0.90f, 0.80f, 0.50f);
-			p.getVec3("Sky2").set(0.80f, 0.60f, 0.40f);
+			p.getInterface().getVec3("Sun1").set(0.95f, 0.85f, 0.60f);
+			p.getInterface().getVec3("Sun2").set(0.90f, 0.80f, 0.20f);
+			p.getInterface().getVec3("Sky1").set(0.90f, 0.80f, 0.50f);
+			p.getInterface().getVec3("Sky2").set(0.80f, 0.60f, 0.40f);
 		}
 		gl.glClearDepth(1);
 	}

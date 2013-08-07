@@ -52,11 +52,11 @@ public class T013StripedCubes extends GL3EventListener {
 
 		cubeVao.init(gl);
 		p.bind();
-		p.getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
-		p.getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
-		uProjectionMatrix = p.getMat4("ProjectionMatrix");
-		uCameraMatrix = p.getMat4("CameraMatrix");
-		uModelMatrix = p.getMat4("ModelMatrix");
+		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
+		p.getInterface().getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
+		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
+		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
+		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
 
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);

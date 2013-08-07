@@ -3,6 +3,9 @@ package net.tribe7.opengl.glsl.attribute;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
+
+import java.nio.ByteBuffer;
+
 import net.tribe7.opengl.glsl.GLProgram;
 
 public class GLUInt extends GLUniformAttribute<Integer> {
@@ -33,4 +36,12 @@ public class GLUInt extends GLUniformAttribute<Integer> {
 	public void doSet(int index, Integer value) {
 		setArray(index, value);
 	}
+
+	@Override
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Integer ... data) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public int getUnitByteSize() { return FOUR; }
 }

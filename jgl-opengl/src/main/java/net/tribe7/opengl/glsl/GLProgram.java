@@ -6,16 +6,12 @@ import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 
 import java.util.*;
-
 import net.tribe7.opengl.GLContextBoundResource;
-import net.tribe7.opengl.glsl.attribute.*;
 
 public class GLProgram extends GLContextBoundResource {
 
-	private List<GLShader> shaders = new ArrayList<GLShader>();
-	private Map<String, GLProgramInterface> uniforms = new HashMap<String, GLProgramInterface>();
-	private Map<String, GLProgramInterface> stageAttributes = new HashMap<String, GLProgramInterface>();
-	private Map<String, GLProgramInterface> uniformBlocks = new HashMap<String, GLProgramInterface>();
+	private final List<GLShader> shaders = new ArrayList<GLShader>();
+	private GLProgramInterface Interface = new GLProgramInterface();
 
 	public GLProgram attachShader(GLShader s) {
 		checkNotNull(s);
@@ -36,70 +32,10 @@ public class GLProgram extends GLContextBoundResource {
 		getGl().glLinkProgram(getGlResourceHandle());
 		int linkStatus = getGlslParam(this, GL_LINK_STATUS);
 
-		if (linkStatus == GL_FALSE) {
-			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
-		}
-
-		uniformBlocks = getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this);
-		stageAttributes = getAttributeMap(GL_ACTIVE_ATTRIBUTES, this);
-		uniforms = getAttributeMap(GL_ACTIVE_UNIFORMS, this);
-	}
-
-	public GLVertexAttribute getStageAttribute(String name) {
-		checkNotNull(name);
-		checkInitialized();
-		return (GLVertexAttribute) checkNotNull(stageAttributes.get(name)); 
-	}
-
-	public GLUniformBlock getUniformBlock(String name) {
-		checkNotNull(name);
-		checkInitialized();
-		return (GLUniformBlock) checkNotNull(uniformBlocks.get(name));
-	}
-
-	public GLUInt getInt(String name) {
-		checkNameAccess(name);
-		return (GLUInt) uniforms.get(name);
-	}
-
-	public GLUFloat getFloat(String name) {
-		checkNameAccess(name);
-		return (GLUFloat) uniforms.get(name);
-	}
-
-	public GLUFloatVec2 getVec2(String name) {
-		checkNameAccess(name);
-		return (GLUFloatVec2) uniforms.get(name);
-	}
-
-	public GLUFloatVec3 getVec3(String name) {
-		checkNameAccess(name);
-		return (GLUFloatVec3) uniforms.get(name);
-	}
-
-	public GLUFloatVec4 getVec4(String name) {
-		checkNameAccess(name);
-		return (GLUFloatVec4) uniforms.get(name);
-	}
-
-	public GLUFloatMat2 getMat2(String name) {
-		checkNameAccess(name);
-		return (GLUFloatMat2) uniforms.get(name);
-	}
-
-	public GLUFloatMat4 getMat4(String name) {
-		checkNameAccess(name);
-		return (GLUFloatMat4) uniforms.get(name);
-	}
-
-	public GLUSampler getSampler(String name) {
-		checkNameAccess(name);
-		return (GLUSampler) uniforms.get(name);
-	}
-
-	protected void checkNameAccess(String name) {
-		checkInitialized();
-		checkNotNull(uniforms.get(name));
+		checkState(linkStatus != GL_FALSE, resourceMsg(getGlslLog(this)));
+		getInterface().getUniformBlocks().putAll(getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this));
+		getInterface().getUniforms().putAll(getAttributeMap(GL_ACTIVE_UNIFORMS, this));
+		getInterface().getStageAttributes().putAll(getAttributeMap(GL_ACTIVE_ATTRIBUTES, this));
 	}
 
 	@Override
@@ -123,4 +59,6 @@ public class GLProgram extends GLContextBoundResource {
 		for (GLShader s : shaders) { s.destroy(); }
 		getGl().glDeleteProgram(getGlResourceHandle());
 	}
+
+	public GLProgramInterface getInterface() { return Interface; }
 }
