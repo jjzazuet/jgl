@@ -1,8 +1,10 @@
 package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.common.base.Preconditions.*;
+
 import java.nio.ByteBuffer;
 import java.util.*;
+
 import net.tribe7.opengl.glsl.GLUniformInterface;
 
 public class GLUniformBlock extends GLProgramVariable {
@@ -12,12 +14,14 @@ public class GLUniformBlock extends GLProgramVariable {
 			new LinkedHashMap<String, GLUniformBlockAttributeMetadata>();
 	private final GLUniformInterface Interface = new GLUniformInterface();
 	private final ByteBuffer backingBuffer;
+	private final byte [] internalBuffer;
 
 	public GLUniformBlock(int index, int blockSize, String name) {
 		super(index, name);
 		checkArgument(blockSize > ZERO);
 		this.blockSize = blockSize;
-		this.backingBuffer = ByteBuffer.allocateDirect(blockSize);
+		this.internalBuffer = new byte [blockSize];
+		this.backingBuffer = ByteBuffer.wrap(internalBuffer);
 	}
 
 	public <T> void serialize(GLUniformAttribute<T> a, T ... data) {

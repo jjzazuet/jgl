@@ -68,8 +68,8 @@ public class T006NewtonZoom extends GL3EventListener {
 		scale(x, scale);
 		scale(y, scale);
 
-		m.m00 = x.x; m.m10 = x.y;
-		m.m01 = y.x; m.m11 = y.y;
+		m.m(0,0, x.x); m.m(1,0, x.y);
+		m.m(0,1, y.x); m.m(1,1, y.y);
 		zoomMatrix.set(m);
 	}
 

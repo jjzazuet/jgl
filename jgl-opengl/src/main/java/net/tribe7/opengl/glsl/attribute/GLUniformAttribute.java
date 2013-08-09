@@ -1,27 +1,26 @@
 package net.tribe7.opengl.glsl.attribute;
 
+import static net.tribe7.opengl.glsl.attribute.GLUniformBlockAttributeMetadata.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
-
+import static net.tribe7.math.Preconditions.*;
 import java.nio.*;
 import java.util.*;
-
 import javax.media.opengl.GL3;
-
 import net.tribe7.opengl.glsl.GLProgram;
 
 public abstract class GLUniformAttribute<T> extends GLAttribute {
 
-	public static final int ZERO = 0;
-	public static final int ONE = 1;
-	public static final int TWO = 2;
-	public static final int THREE = 3;	
-	public static final int FOUR = 4;
-	public static final int EIGHT = 8;
-	public static final int SIXTEEN = 16;
+	public static final int ZERO      = 0;
+	public static final int ONE       = 1;
+	public static final int TWO       = 2;
+	public static final int THREE     = 3;	
+	public static final int FOUR      = 4;
+	public static final int EIGHT     = 8;
+	public static final int SIXTEEN   = 16;
 	public static final int THIRTYTWO = 32;
 	public static final int SIXTYFOUR = 64;
-	
+
 	public static final String VARIABLE_INDEX_FORMAT = "%s[%s]";
 	
 	private Map<Integer, Integer> indexLocations = new HashMap<Integer, Integer>();
@@ -45,11 +44,13 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 
 	protected abstract void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data);
 	public void serialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data) {
-		checkNotNull(target);
-		checkNotNull(md);
-		checkNotNull(data);
+		checkNoNulls(target, md);
+		checkNoNulls(data);
 		checkArgument(data.length >= ONE);
 		checkArgument(data.length <= getSize());
+		checkArgument(md.getMatrixOrder() == UNIFORM_BUFFER_COLUMN_MAJOR || md.getMatrixOrder() == UNIFORM_BUFFER_ROW_MAJOR);
+		target.position(md.getOffset());
+		checkArgument(target.remaining() >= getUnitByteSize());
 		doSerialize(target, md, data);
 	}
 

@@ -38,8 +38,10 @@ public class GLUInt extends GLUniformAttribute<Integer> {
 	}
 
 	@Override
-	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Integer ... data) {
+	protected void doSerialize(ByteBuffer target,
+			GLUniformBlockAttributeMetadata md, Integer... data) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

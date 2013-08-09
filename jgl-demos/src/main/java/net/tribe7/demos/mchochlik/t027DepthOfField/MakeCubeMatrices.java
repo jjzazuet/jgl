@@ -1,6 +1,6 @@
 package net.tribe7.demos.mchochlik.t027DepthOfField;
 
-import static net.tribe7.math.matrix.Matrix4Ops.*;
+import static net.tribe7.math.matrix.MatrixOps.*;
 
 import java.util.*;
 import net.tribe7.geom.transform.ModelTransform;

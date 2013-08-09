@@ -5,7 +5,12 @@ import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
 
+import net.tribe7.demos.mchochlik.t006CartoonSun.T006CartoonSun;
+import net.tribe7.demos.mchochlik.t006NewtonZoom.T006NewtonZoom;
+import net.tribe7.demos.mchochlik.t012CheckerCube.T012CheckerCube;
+import net.tribe7.demos.mchochlik.t013StripedCubes.T013StripedCubes;
 import net.tribe7.demos.mchochlik.t027DepthOfField.T027DepthOfField;
+import net.tribe7.demos.mchochlik.t030CubeMapping.T030CubeMapping;
 import net.tribe7.demos.mchochlik.t031MotionBlur.T031MotionBlur;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;

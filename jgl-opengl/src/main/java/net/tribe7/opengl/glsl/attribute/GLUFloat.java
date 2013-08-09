@@ -25,8 +25,19 @@ public class GLUFloat extends GLUniformAttribute<Float> {
 	protected void doSet(int index, Float value) { setArray(index, value); }
 
 	@Override
-	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Float ... data) {
-		// TODO Auto-generated method stub
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Float... data) {
+
+		int elementsSerialized = 0;
+
+		for(Float f : data) {
+			target.putFloat(f);
+			elementsSerialized++;
+			if (elementsSerialized < getSize()) {
+				for (int i = 0; i < md.getArrayStride(); i++) {
+					target.put((byte)ZERO);
+				}
+			}
+		}
 	}
 
 	@Override

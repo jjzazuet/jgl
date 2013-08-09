@@ -3,7 +3,7 @@ package net.tribe7.demos.mchochlik.t026StencilShadow;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static net.tribe7.opengl.GLBufferFactory.*;
 import static javax.media.opengl.GL.*;
-import static net.tribe7.math.matrix.Matrix4Ops.*;
+import static net.tribe7.math.matrix.MatrixOps.*;
 import static net.tribe7.math.matrix.Matrix4OpsPersp.*;
 import static net.tribe7.math.matrix.Matrix4OpsCam.*;
 import static net.tribe7.math.angle.AngleOps.*;

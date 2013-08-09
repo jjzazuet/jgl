@@ -4,6 +4,9 @@ import static net.tribe7.common.base.Preconditions.*;
 
 public class GLUniformBlockAttributeMetadata {
 
+	public static final int UNIFORM_BUFFER_COLUMN_MAJOR = 0;
+	public static final int UNIFORM_BUFFER_ROW_MAJOR = 1;
+
 	private final String name;
 	private final int offset;
 	private final int arrayStride;

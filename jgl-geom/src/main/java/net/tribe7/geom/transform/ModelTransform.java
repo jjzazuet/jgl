@@ -1,6 +1,6 @@
 package net.tribe7.geom.transform;
 
-import static net.tribe7.math.matrix.Matrix4Ops.*;
+import static net.tribe7.math.matrix.MatrixOps.*;
 import static net.tribe7.math.matrix.Matrix4OpsGeom.*;
 import static net.tribe7.math.vector.VectorOps.*;
 import static net.tribe7.math.quaternion.QuaternionOps.*;

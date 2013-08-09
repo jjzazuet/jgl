@@ -30,8 +30,9 @@ public class GLUFloatVec3 extends GLUniformAttribute<Vector3> {
 	}
 
 	@Override
-	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Vector3 ... data) {
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Vector3... data) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

@@ -9,8 +9,9 @@ public class BufferedMatrix2 extends Matrix2 {
 	private final FloatBuffer backingBuffer;
 
 	public BufferedMatrix2() {
-		backingBuffer = FloatBuffer.allocate(COMPONENT_SIZE);
+		backingBuffer = FloatBuffer.allocate(getComponentSize());
 	}
+
 	public FloatBuffer getBackingBuffer() {
 		return backingBuffer;
 	}
