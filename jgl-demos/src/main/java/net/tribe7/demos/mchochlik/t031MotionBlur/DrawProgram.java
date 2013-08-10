@@ -2,11 +2,19 @@ package net.tribe7.demos.mchochlik.t031MotionBlur;
 
 import static net.tribe7.common.base.Throwables.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
-
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.GLShader;
+import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
+import net.tribe7.opengl.glsl.attribute.GLUInt;
+import net.tribe7.opengl.glsl.attribute.GLUSampler;
+import net.tribe7.opengl.glsl.attribute.GLUniformBlock;
 
 public class DrawProgram extends GLProgram {
+
+	private GLUFloatMat4 projectionMatrix, cameraMatrix, modelMatrix;
+	private GLUInt singleModel;
+	private GLUSampler checkerTex;
+	private GLUniformBlock modelBlock;
 
 	@Override
 	protected void doInit() {
@@ -16,5 +24,19 @@ public class DrawProgram extends GLProgram {
 			attachShader(drawVs).attachShader(drawFs);
 		} catch (Exception e) { propagate(e); }
 		super.doInit();
+		projectionMatrix = getInterface().getMat4("ProjectionMatrix");
+		cameraMatrix = getInterface().getMat4("CameraMatrix");
+		modelMatrix = getInterface().getMat4("SingleModelMatrix");
+		singleModel = getInterface().getInt("SingleModel");
+		checkerTex = getInterface().getSampler("CheckerTex");
+		modelBlock = getInterface().getUniformBlock("ModelBlock");
 	}
+
+	public GLUFloatMat4 getProjectionMatrix() { return projectionMatrix; }
+	public GLUFloatMat4 getCameraMatrix() { return cameraMatrix; }
+	public GLUFloatMat4 getModelMatrix() { return modelMatrix; }
+
+	public GLUInt getSingleModel() { return singleModel; }
+	public GLUSampler getCheckerTex() { return checkerTex; }
+	public GLUniformBlock getModelBlock() { return modelBlock; }
 }

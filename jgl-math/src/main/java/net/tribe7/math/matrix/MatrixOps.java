@@ -7,6 +7,17 @@ import java.nio.FloatBuffer;
 
 public class MatrixOps {
 
+	public static final Matrix transpose(Matrix src) {
+		checkNotNull(src);
+		Matrix dst = new Matrix(src.getRowCount(), src.getColumnCount());
+		for (int x = 0; x < src.getColumnCount(); x++) {
+			for (int y = 0; y < src.getRowCount(); y++) {
+				dst.m(y, x, src.m(x, y));
+			}
+		}
+		return dst;
+	}
+
 	public static final void copy(Matrix src, Matrix dst) {
 		checkNoNulls(src, dst);
 		dst.checkDimensions(src);

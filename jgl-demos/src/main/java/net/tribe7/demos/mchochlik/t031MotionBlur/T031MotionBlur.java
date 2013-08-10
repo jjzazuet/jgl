@@ -1,34 +1,25 @@
 package net.tribe7.demos.mchochlik.t031MotionBlur;
 
 import javax.media.opengl.GL3;
-
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.opengl.GL3EventListener;
-import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
-import net.tribe7.opengl.glsl.attribute.GLUniformBlock;
+import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
 
 public class T031MotionBlur extends GL3EventListener {
 
-	private DrawProgram drawProg = new DrawProgram();
+	private final DrawProgram drawProg = new DrawProgram();
+	private final BlurProgram blurProg = new BlurProgram();
+	private final MatrixInstances instances = new MatrixInstances(256);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		initResource(gl, drawProg);
+		initResource(gl, drawProg, blurProg);
 
-		GLUniformBlock ub = drawProg.getInterface().getUniformBlock("ModelBlock");
-		GLUFloatMat4 modelMatrices = ub.getInterface().getMat4("baz");
-		BufferedMatrix4 m = new BufferedMatrix4();
+		GLUFloatMat4 modelMatrices = drawProg.getModelBlock().getInterface().getMat4("ModelMatrices");
 
-		m.m(0,0, 1); m.m(1,0, 5); m.m(2,0, 9);  m.m(3,0, 13);
-		m.m(0,1, 2); m.m(1,1, 6); m.m(2,1, 10); m.m(3,1, 14);
-		m.m(0,2, 3); m.m(1,2, 7); m.m(2,2, 11); m.m(3,2, 15);
-		m.m(0,3, 4); m.m(1,3, 8); m.m(2,3, 12); m.m(3,3, 16);
-
-		ub.serialize(modelMatrices, m);
-		System.out.println();
+		//ub.serialize(modelMatrices, m);
 	}
 
 	@Override

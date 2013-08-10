@@ -54,6 +54,14 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 		doSerialize(target, md, data);
 	}
 
+	protected void fillBytes(ByteBuffer b, int howMany, byte value) {
+		checkNotNull(b);
+		checkArgument(b.remaining() >= howMany);
+		for (int i = 0; i < howMany; i++) {
+			b.put(value);
+		}
+	}
+
 	protected FloatBuffer bufferData(float ... data) {
 		checkNotNull(data);
 		checkArgument(data.length <= getSize());

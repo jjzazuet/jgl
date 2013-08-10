@@ -33,9 +33,7 @@ public class GLUFloat extends GLUniformAttribute<Float> {
 			target.putFloat(f);
 			elementsSerialized++;
 			if (elementsSerialized < getSize()) {
-				for (int i = 0; i < md.getArrayStride(); i++) {
-					target.put((byte)ZERO);
-				}
+				fillBytes(target, md.getArrayStride(), (byte) ONE);
 			}
 		}
 	}

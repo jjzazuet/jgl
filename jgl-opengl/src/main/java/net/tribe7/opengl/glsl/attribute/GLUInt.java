@@ -5,7 +5,6 @@ import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
 
 import java.nio.ByteBuffer;
-
 import net.tribe7.opengl.glsl.GLProgram;
 
 public class GLUInt extends GLUniformAttribute<Integer> {
@@ -38,10 +37,17 @@ public class GLUInt extends GLUniformAttribute<Integer> {
 	}
 
 	@Override
-	protected void doSerialize(ByteBuffer target,
-			GLUniformBlockAttributeMetadata md, Integer... data) {
-		// TODO Auto-generated method stub
-		
+	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Integer... data) {
+
+		int elementsSerialized = 0;
+
+		for (Integer i : data) {
+			target.putInt(i);
+			elementsSerialized++;
+			if (elementsSerialized < getSize()) {
+				fillBytes(target, md.getArrayStride(), (byte) ONE);
+			}
+		}
 	}
 
 	@Override

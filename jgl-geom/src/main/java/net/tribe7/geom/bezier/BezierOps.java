@@ -15,9 +15,9 @@ public class BezierOps {
 			Vector3 p2, Vector3 p3, Vector3 dst) {
 
 		t = wrap(t);
-		
+
 		checkNoNulls(p0, p1, p2, p3, dst);
-		
+
 		double u = 1 - t;
 		double tt = t * t;
 		double uu = u * u;
@@ -25,11 +25,11 @@ public class BezierOps {
 		double ttt = tt * t;
 
 		dst.set(p0.x * uuu,  p0.y * uuu,  p0.z * uuu);
-		
+
 		dst.x += 3 * uu * t * p1.x;
 		dst.y += 3 * uu * t * p1.y;
 		dst.z += 3 * uu * t * p1.z;
-		
+
 		dst.x += 3 * u * tt * p2.x;
 		dst.y += 3 * u * tt * p2.y;
 		dst.z += 3 * u * tt * p2.z;
@@ -49,7 +49,7 @@ public class BezierOps {
 	public static List<Vector3> bezierCubicControlPointLoop(List<Vector3> points) {
 
 		int i = 0, n = points.size(), size = n * 3 + 1;
-		double r = 1.0 / 3.0;
+		double r = 1.0 / 3.0; // TODO possibly externalize this value
 
 		checkState(n != 0);
 

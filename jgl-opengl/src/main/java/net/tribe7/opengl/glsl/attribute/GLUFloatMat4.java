@@ -46,9 +46,7 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 						elementsSerialized++; 
 					}
 					if (elementsSerialized < getSize()) {
-						for (int k = ZERO; k < md.getMatrixStride(); k++) {
-							target.put((byte) ONE);
-						}
+						fillBytes(target, md.getMatrixStride(), (byte) ONE);
 					}
 				}
 			} else if (md.getMatrixOrder() == UNIFORM_BUFFER_ROW_MAJOR) {
@@ -60,9 +58,7 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 						elementsSerialized++; 
 					}
 					if (elementsSerialized < getSize()) {
-						for (int k = ZERO; k < md.getMatrixStride(); k++) {
-							target.put((byte) ONE);
-						}
+						fillBytes(target, md.getMatrixStride(), (byte) ONE);
 					}
 				}
 			}
@@ -73,7 +69,5 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 	}
 
 	@Override
-	public int getUnitByteSize() {
-		return SIXTEEN * FOUR;
-	}
+	public int getUnitByteSize() { return SIXTEEN * FOUR; }
 }
