@@ -33,38 +33,23 @@ public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
 
 	@Override
 	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, BufferedMatrix4... data) {
-
-		int elementsSerialized = 0;
-
 		for (BufferedMatrix4 m : data) {
 			if (md.getMatrixOrder() == UNIFORM_BUFFER_COLUMN_MAJOR) {
 				for (int i = ZERO; i < m.getColumnCount(); i++) {
 					for (int j = ZERO; j < m.getRowCount(); j++) {
 						target.putFloat((float) m.m(i, j));
 					}
-					if (i+1 == m.getColumnCount()) { 
-						elementsSerialized++; 
-					}
-					if (elementsSerialized < getSize()) {
-						fillBytes(target, md.getMatrixStride(), (byte) ONE);
-					}
+					fillBytes(target, md.getMatrixStride() - SIXTEEN, (byte) ONE);
 				}
 			} else if (md.getMatrixOrder() == UNIFORM_BUFFER_ROW_MAJOR) {
 				for (int j = ZERO; j < m.getRowCount(); j++) {
 					for (int i = ZERO; i < m.getColumnCount(); i++) {
 						target.putFloat((float) m.m(i, j));
 					}
-					if (j+1 == m.getRowCount()) { 
-						elementsSerialized++; 
-					}
-					if (elementsSerialized < getSize()) {
-						fillBytes(target, md.getMatrixStride(), (byte) ONE);
-					}
+					fillBytes(target, md.getMatrixStride() - SIXTEEN, (byte) ONE);
 				}
 			}
-			for (int i = ZERO; i < md.getArrayStride(); i++) {
-				target.put((byte) ZERO);
-			}
+			fillBytes(target, md.getArrayStride() - getUnitByteSize(), (byte) ONE);
 		}
 	}
 

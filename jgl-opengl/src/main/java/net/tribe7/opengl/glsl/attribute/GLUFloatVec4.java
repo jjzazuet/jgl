@@ -37,20 +37,12 @@ public class GLUFloatVec4 extends GLUniformAttribute<Vector4> {
 
 	@Override
 	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Vector4... data) {
-
-		int elementsSerialized = 0;
-
 		for (Vector4 v : data) {
 			target.putFloat((float) v.x).putFloat((float) v.y).putFloat((float) v.z).putFloat((float) v.w);
-			elementsSerialized++;
-			if (elementsSerialized < getSize()) {
-				fillBytes(target, md.getArrayStride(), (byte) ONE);
-			}
+			fillBytes(target, md.getArrayStride() - getUnitByteSize(), (byte) ONE);
 		}
 	}
 
 	@Override
-	public int getUnitByteSize() {
-		return FOUR * FOUR;
-	}
+	public int getUnitByteSize() { return FOUR * FOUR; }
 }

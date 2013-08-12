@@ -38,15 +38,9 @@ public class GLUInt extends GLUniformAttribute<Integer> {
 
 	@Override
 	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, Integer... data) {
-
-		int elementsSerialized = 0;
-
 		for (Integer i : data) {
 			target.putInt(i);
-			elementsSerialized++;
-			if (elementsSerialized < getSize()) {
-				fillBytes(target, md.getArrayStride(), (byte) ONE);
-			}
+			fillBytes(target, md.getArrayStride() - getUnitByteSize(), (byte) ONE);
 		}
 	}
 

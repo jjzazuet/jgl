@@ -2,9 +2,8 @@ package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.math.Preconditions.checkNoNulls;
 import static net.tribe7.math.matrix.MatrixOps.storeColMaj;
-
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
+import static net.tribe7.opengl.glsl.attribute.GLUniformBlockAttributeMetadata.*;
+import java.nio.*;
 
 import net.tribe7.math.matrix.Matrix2;
 import net.tribe7.math.matrix.io.BufferedMatrix2;
@@ -34,12 +33,26 @@ public class GLUFloatMat2 extends GLUniformAttribute<BufferedMatrix2> {
 
 	@Override
 	protected void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, BufferedMatrix2... data) {
-		// TODO Auto-generated method stub
-		
+		for (BufferedMatrix2 m : data) {
+			if (md.getMatrixOrder() == UNIFORM_BUFFER_COLUMN_MAJOR) {
+				for (int i = ZERO; i < m.getColumnCount(); i++) {
+					for (int j = ZERO; j < m.getRowCount(); j++) {
+						target.putFloat((float) m.m(i, j));
+					}
+					fillBytes(target, md.getMatrixStride() - EIGHT, (byte) ONE);
+				}
+			} else if (md.getMatrixOrder() == UNIFORM_BUFFER_ROW_MAJOR) {
+				for (int j = ZERO; j < m.getRowCount(); j++) {
+					for (int i = ZERO; i < m.getColumnCount(); i++) {
+						target.putFloat((float) m.m(i, j));
+					}
+					fillBytes(target, md.getMatrixStride() - EIGHT, (byte) ONE);
+				}
+			}
+			fillBytes(target, md.getArrayStride() - getUnitByteSize(), (byte) ONE);
+		}
 	}
 
 	@Override
-	public int getUnitByteSize() {
-		return FOUR * FOUR;
-	}
+	public int getUnitByteSize() { return FOUR * FOUR; }
 }
