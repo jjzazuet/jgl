@@ -34,17 +34,24 @@ public class BezierOpTest {
 	@Test
 	public void bezierCurveTest() {
 
-		List<Vector3> controlPoints = bezierCubicControlPointLoop(points);
-		
+		List<Vector3> controlPoints = bezierCubicControlPointLoop(points, (double) 1/3);
+
 		BezierCurve4 c0 = new BezierCurve4(
 				controlPoints.get(0),
 				controlPoints.get(1),
 				controlPoints.get(2),
 				controlPoints.get(3));
-		
-		System.out.print(c0.pointAt(0.0));
-		System.out.print(c0.pointAt(0.5));
-		System.out.print(c0.pointAt(1));
+
+		Vector3 p = new Vector3();
+
+		c0.pointAt(0.0, p);
+		System.out.print(p);
+
+		c0.pointAt(0.5, p);
+		System.out.print(p);
+
+		c0.pointAt(1, p);	
+		System.out.print(p);
 	}
 	
 	@Test
@@ -52,11 +59,12 @@ public class BezierOpTest {
 
 		double iterations = 8;
 		double deltaStep = 0.25;
-		
-		BezierCubicLoop loop = new BezierCubicLoop(fourPoints);
-		
+
+		BezierCubicLoop loop = new BezierCubicLoop(_fourPoints);
+		Vector3 point = new Vector3();
+
 		for (double d = 0; d <= iterations; d += deltaStep) {
-			Vector3 point = loop.pointAt(d);
+			loop.pointAt(d, point);
 			System.out.printf("[%.3f], %s", d, point);
 		}
 	}

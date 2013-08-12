@@ -1,6 +1,8 @@
 package net.tribe7.demos.mchochlik.t031MotionBlur;
 
 import javax.media.opengl.GL3;
+
+import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.opengl.GL3EventListener;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -10,16 +12,14 @@ public class T031MotionBlur extends GL3EventListener {
 
 	private final DrawProgram drawProg = new DrawProgram();
 	private final BlurProgram blurProg = new BlurProgram();
-	private final MatrixInstances instances = new MatrixInstances(256);
+	private final MatrixInstances instances = new MatrixInstances(128);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
 		initResource(gl, drawProg, blurProg);
-
 		GLUFloatMat4 modelMatrices = drawProg.getModelBlock().getInterface().getMat4("ModelMatrices");
-
-		//ub.serialize(modelMatrices, m);
+		drawProg.getModelBlock().serialize(modelMatrices, instances.getMatrixData().toArray(new BufferedMatrix4 []{}));
 	}
 
 	@Override

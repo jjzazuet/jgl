@@ -13,18 +13,18 @@ import net.tribe7.math.vector.Vector3;
 public class BezierCubicLoop {
 
 	private List<BezierCurve4> pathCurves;
-	
-	public BezierCubicLoop(Vector3 ... targetLoopPoints) {
+
+	public BezierCubicLoop(double r, Vector3 ... targetLoopPoints) {
 		checkNotNull(targetLoopPoints);
 		checkArgument(targetLoopPoints.length > 0);
-		setPoints(Arrays.asList(targetLoopPoints));
+		setPoints(Arrays.asList(targetLoopPoints), r);
 	}
 
-	public BezierCubicLoop(List<Vector3> targetLoopPoints) {
-		setPoints(targetLoopPoints);
+	public BezierCubicLoop(Vector3 ... targetLoopPoints) {
+		this((double)1/3, targetLoopPoints);
 	}
 
-	public Vector3 pointAt(double t) {
+	public void pointAt(double t, Vector3 dst) {
 
 		t = wrap(t);
 
@@ -37,15 +37,15 @@ public class BezierCubicLoop {
 			targetCurve = 0;
 		}
 
-		return pathCurves.get(targetCurve).pointAt(curveLocalOffset);
+		pathCurves.get(targetCurve).pointAt(curveLocalOffset, dst);
 	}
 
-	public void setPoints(List<Vector3> points) {
+	public void setPoints(List<Vector3> points, double r) {
 
 		checkNotNull(points);
 		checkArgument(!points.isEmpty());
 
-		List<Vector3> rawControlPoints = bezierCubicControlPointLoop(points);
+		List<Vector3> rawControlPoints = bezierCubicControlPointLoop(points, r);
 		int loopPoints = (points.size() * (DEGREE - 1)) + 1;
 
 		checkArgument(rawControlPoints.size() == loopPoints);

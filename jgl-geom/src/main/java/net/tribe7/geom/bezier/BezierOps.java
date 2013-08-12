@@ -46,13 +46,10 @@ public class BezierOps {
 	 * @param points the points of the desired Bezier path.
 	 * @return a list of control points that define a bezier looped path.
 	 */
-	public static List<Vector3> bezierCubicControlPointLoop(List<Vector3> points) {
+	public static List<Vector3> bezierCubicControlPointLoop(List<Vector3> points, double r) {
 
 		int i = 0, n = points.size(), size = n * 3 + 1;
-		double r = 1.0 / 3.0; // TODO possibly externalize this value
-
 		checkState(n != 0);
-
 		List<Vector3> result = new ArrayList<Vector3>(size);
 
 		for (int k = 0; k < size; k++) {

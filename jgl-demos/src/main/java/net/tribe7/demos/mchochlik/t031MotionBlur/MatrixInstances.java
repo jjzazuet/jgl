@@ -17,6 +17,7 @@ public class MatrixInstances {
 	private final int count;
 	private final BezierCubicLoop pathPositions, pathNormals;
 	private final List<BufferedMatrix4> matrixData = new ArrayList<BufferedMatrix4>();
+	private final Vector3 positionPoint = new Vector3(), normalPoint = new Vector3();
 
 	private static final Vector3 [] positionData = new Vector3 [] {
 		new Vector3( 10.0f,  0.0f, 70.0f),
@@ -61,27 +62,40 @@ public class MatrixInstances {
 	public MatrixInstances(int n) {
 
 		count = 2 * n;
-		pathPositions = new BezierCubicLoop(positionData);
+		pathPositions = new BezierCubicLoop(.25, positionData);
 
 		for (Vector3 v : normalData) { normalize(v);}
 
-		pathNormals = new BezierCubicLoop(normalData);
+		pathNormals = new BezierCubicLoop(.25, normalData);
 		double step = 1.0/n;
+
+		Vector3 pos = new Vector3();
+		Vector3 tgt = new Vector3();
+		Vector3 iPlus1 = new Vector3();
+		Vector3 iMinus1 = new Vector3();
 
 		for(int i=0; i!=n; ++i) {
 
-			Vector3 pos = pathPositions.pointAt(i*step);
-			Vector3 tgt = new Vector3();
+			pathPositions.pointAt(i*step, pos);
 
-			sub(pathPositions.pointAt((i+1)*step), pathPositions.pointAt((i-1)*step), tgt);
+			double t0 = (i+1)*step;
+			double t1 = (i-1)*step;
+
+			pathPositions.pointAt(t0, iPlus1);
+			pathPositions.pointAt(t1, iMinus1);
+
+			sub(iPlus1, iMinus1, tgt);
 			normalize(tgt);
 
-			Vector3 tmp = pathNormals.pointAt(i*step);
+			Vector3 tmp = new Vector3();
 			Vector3 nml = new Vector3();
 
+			pathNormals.pointAt(i*step, tmp);
+
 			if (dot(tmp, tgt) != 0.0) {
-				scale(tgt, dot(tmp, tgt));
-				sub(tmp, tgt, nml);
+				Vector3 tgtDot = new Vector3();
+				scale(tgt, tgtDot, dot(tmp, tgt));
+				sub(tmp, tgtDot, nml);
 			} else {
 				nml.set(tmp);
 			}
@@ -111,11 +125,13 @@ public class MatrixInstances {
 	}
 
 	Vector3 position(double t) {
-		return pathPositions.pointAt(t);
+		pathPositions.pointAt(t, positionPoint);
+		return positionPoint;
 	}
 
 	Vector3 normal(double t) {
-		return pathNormals.pointAt(t);
+		pathNormals.pointAt(t, normalPoint);
+		return normalPoint;
 	}
 
 	BufferedMatrix4 makeMatrix(double t, double dt) {
@@ -128,11 +144,11 @@ public class MatrixInstances {
 
 		Vector3 tmp = normal(t+dt);
 		float dtt = (float) dot(tmp, tgt);
-
 		Vector3 nml = new Vector3();
 
 		if (dtt != 0.0) {
-			scale(tgt, nml, dtt);
+			Vector3 tgtDtt = new Vector3();
+			scale(tgtDtt, dtt);
 			sub(tmp, nml, nml);
 		} else {
 			nml.set(tmp);
@@ -158,4 +174,5 @@ public class MatrixInstances {
 	}
 
 	public int getCount() { return count; }
+	public List<BufferedMatrix4> getMatrixData() { return matrixData; }
 }

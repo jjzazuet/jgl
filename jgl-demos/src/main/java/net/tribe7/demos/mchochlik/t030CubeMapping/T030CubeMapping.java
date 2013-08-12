@@ -56,7 +56,7 @@ public class T030CubeMapping extends GL3EventListener {
 	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private Angle fov = new Angle(), azimuth = new Angle(), elevation = new Angle();
-	private Vector3 cameraTarget = new Vector3();
+	private Vector3 cameraTarget = new Vector3(), lightPoint = new Vector3();
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -173,7 +173,8 @@ public class T030CubeMapping extends GL3EventListener {
 
 		double time = currentState.getElapsedTimeSeconds();
 
-		lightPos.set(lightPath.pointAt(time/10.0));
+		lightPath.pointAt(time/10.0, lightPoint);
+		lightPos.set(lightPoint);
 		lightPos.setW(1.0);
 		perspectiveX(projMatrix, fov.setDegrees(70), (double) width/height, 1, 20);
 		orbit(camMatrix, cameraTarget, 4.0, 

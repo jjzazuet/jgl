@@ -57,6 +57,7 @@ public class T015Graph extends GL3EventListener {
 
 	private BufferedMatrix4 projMat = new BufferedMatrix4();
 	private BufferedMatrix4 camMat = new BufferedMatrix4();
+	private Vector3 cameraPoint = new Vector3(), cameraTarget = new Vector3();
 
 	private double nrand() {
 		return 2 * (Math.random() - 0.5);
@@ -169,7 +170,9 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
-		lookAt(camMat, cameraPath.pointAt(time / 9), cameraTargetPath.pointAt(time / 7));
+		cameraPath.pointAt(time / 9, cameraPoint);
+		cameraTargetPath.pointAt(time / 7, cameraTarget);
+		lookAt(camMat, cameraPoint, cameraTarget);
 		uCameraMatrix.set(camMat);
 	}
 
