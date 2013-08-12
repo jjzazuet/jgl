@@ -24,7 +24,7 @@ public class GLUSampler extends GLUniformAttribute<GLTexture> {
 		value.bind();
 		getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
 		getProgram().checkError();
-		value.unbind();
+		value.unbind(); // TODO possibly remove this as textures need to remain bound in order to work :P
 	}
 
 	@Override
