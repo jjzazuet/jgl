@@ -27,35 +27,52 @@ public abstract class GLFrameBuffer extends GLContextBoundResource {
 		}
 	}
 
-	protected void setAttachment(int attachmentTarget, GLTexture t) {
+	protected void attach(int attachmentTarget, GLTexture t) {
 		checkBound();
+		checkNotNull(t);
 		checkArgument(attachmentTarget >= GL_COLOR_ATTACHMENT0);
-		getGl().glFramebufferTexture(getBindTarget(), attachmentTarget,
-				t.getGlResourceHandle(), ZERO);
-		checkError();
+		checkArgument(!t.isInitialized());
+
+		t.init(getGl());
+		t.bind(); {
+			t.applyParameters();
+			t.loadData();
+			getGl().glFramebufferTexture(getBindTarget(), attachmentTarget,
+					t.getGlResourceHandle(), ZERO);
+			checkError();
+		} t.unbind();
 	}
 
-	protected void setRenderBuffer(GLRenderBuffer rb) {
+	protected void attach(GLRenderBuffer rb) {
 
 		checkBound();
-		checkArgument(rb.isStorageReady());
-		rb.checkBound();
+		checkNotNull(rb);
+		checkArgument(!rb.isInitialized());
 
 		int depthStencilInternalFormat = rb.getBufferFormat().getInternalFormat();
-		checkState(isValidDepthStencilFormat(depthStencilInternalFormat));
 
-		switch (depthStencilInternalFormat) {
-		case GL_DEPTH_COMPONENT:
-			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
-			checkError();
-			break;
-		case GL_DEPTH_STENCIL:
-			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
-			checkError();
-			getGl().glFramebufferRenderbuffer(getBindTarget(), GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
-			checkError();
-			break;
-		}
+		checkState(isValidDepthStencilFormat(depthStencilInternalFormat));
+		rb.init(getGl());
+		rb.bind(); {
+
+			rb.initStorage();
+
+			switch (depthStencilInternalFormat) {
+				case GL_DEPTH_COMPONENT:
+					getGl().glFramebufferRenderbuffer(getBindTarget(), 
+							GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+					checkError();
+					break;
+				case GL_DEPTH_STENCIL:
+					getGl().glFramebufferRenderbuffer(getBindTarget(), 
+							GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+					checkError();
+					getGl().glFramebufferRenderbuffer(getBindTarget(), 
+							GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rb.getGlResourceHandle());
+					checkError();
+					break;
+			}
+		} rb.unbind();
 	}
 
 	@Override
@@ -92,9 +109,5 @@ public abstract class GLFrameBuffer extends GLContextBoundResource {
 
 	public boolean isValidDepthStencilFormat(int format) {
 		return format == GL_DEPTH_COMPONENT || format == GL_DEPTH_STENCIL;
-	}
-
-	public boolean isValidDepthStencilAttachment(int target) {
-		return target == GL_DEPTH_ATTACHMENT || target == GL_STENCIL_ATTACHMENT;
 	}
 }

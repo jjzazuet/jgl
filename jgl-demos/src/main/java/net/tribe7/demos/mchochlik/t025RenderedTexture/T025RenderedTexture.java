@@ -86,7 +86,6 @@ public class T025RenderedTexture extends GL3EventListener {
 			cubeProgram.getInterface().getStageAttribute("TexCoord").set(cubeVao, cubeTexCoords, false, 0).enable();
 			cubeProgram.getInterface().getVec3("LightPos").set(4.0f, 4.0f, -8.0f);
 			cubeProgram.getInterface().getSampler("TexUnit").set(fbo.getColorAttachment());
-			fbo.getColorAttachment().bind();
 		} cubeProgram.unbind();
 
 		torusProgram.bind(); {
@@ -112,30 +111,34 @@ public class T025RenderedTexture extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 
-		fbo.bind();
-		torusProgram.bind(); {
-			getDrawHelper().glViewPort(texSide, texSide);
-			gl.glClearDepth(1.0f);
-			gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
-			getDrawHelper().glClearColor().glClearDepth();
-			torusVao.bind();
-			getDrawHelper().glFrontFace(torus.getFaceWinding());
-			getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
-			torusVao.unbind();
-		} torusProgram.unbind();
-		fbo.unbind();
+		fbo.getColorAttachment().bind(); {
 
-		cubeProgram.bind(); {
-			getDrawHelper().glViewPort(width, height);
-			gl.glClearDepth(1.0f);
-			gl.glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
-			getDrawHelper().glClearColor().glClearDepth();
-			cubeVao.bind();
-			getDrawHelper().glFrontFace(cube.getFaceWinding());
-			gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
-			cubeVao.unbind();
-		} cubeProgram.unbind();
-	}
+			fbo.bind();
+			torusProgram.bind(); {
+				getDrawHelper().glViewPort(texSide, texSide);
+				gl.glClearDepth(1.0f);
+				gl.glClearColor(0.4f, 0.9f, 0.4f, 1.0f);
+				getDrawHelper().glClearColor().glClearDepth();
+				torusVao.bind();
+				getDrawHelper().glFrontFace(torus.getFaceWinding());
+				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+				torusVao.unbind();
+			} torusProgram.unbind();
+			fbo.unbind();
+
+			cubeProgram.bind(); {
+				getDrawHelper().glViewPort(width, height);
+				gl.glClearDepth(1.0f);
+				gl.glClearColor(0.8f, 0.8f, 0.8f, 0.0f);
+				getDrawHelper().glClearColor().glClearDepth();
+				cubeVao.bind();
+				getDrawHelper().glFrontFace(cube.getFaceWinding());
+				gl.glDrawArrays(GL_TRIANGLES, 0, cubeVertices.getRawBuffer().capacity());
+				cubeVao.unbind();
+			} cubeProgram.unbind();
+
+		} fbo.getColorAttachment().unbind();
+}
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {

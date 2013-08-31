@@ -14,21 +14,9 @@ public class GLFrameBufferCompact extends GLFrameBuffer {
 
 	@Override
 	protected void doInitAttachments() {
-
 		getDepthStencilBuffer().getBufferFormat().checkSize(getColorAttachment().getImage().getMetadata());
-
-		colorAttachment.init(getGl());
-		colorAttachment.bind(); {
-			colorAttachment.loadData();
-			colorAttachment.applyParameters();
-			setAttachment(GL_COLOR_ATTACHMENT0, colorAttachment);
-		} colorAttachment.unbind();
-
-		depthStencilBuffer.init(getGl());
-		depthStencilBuffer.bind(); {
-			depthStencilBuffer.initStorage();
-			setRenderBuffer(getDepthStencilBuffer());
-		} depthStencilBuffer.unbind();
+		attach(GL_COLOR_ATTACHMENT0, colorAttachment);
+		attach(getDepthStencilBuffer());
 	}
 
 	public GLTexture2D getColorAttachment() { return colorAttachment; }

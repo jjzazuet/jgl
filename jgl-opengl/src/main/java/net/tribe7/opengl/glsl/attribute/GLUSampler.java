@@ -17,14 +17,12 @@ public class GLUSampler extends GLUniformAttribute<GLTexture> {
 	protected void doSet(int index, GLTexture value) {
 		checkElementIndex(index, getSize());
 		checkNotNull(value);
-		checkArgument(!value.isBound());
 		getProgram().checkBound();
-		getProgram().getGl().glActiveTexture(value.getTextureUnitEnum());
-		getProgram().checkError();
-		value.bind();
-		getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
-		getProgram().checkError();
-		value.unbind(); // TODO possibly remove this as textures need to remain bound in order to work :P
+		value.activate();
+		value.bind(); {
+			getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
+			getProgram().checkError();
+		} value.unbind();
 	}
 
 	@Override

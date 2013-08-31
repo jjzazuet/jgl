@@ -39,20 +39,15 @@ public class CubeMapFramebuffer extends GLFrameBuffer {
 		}
 
 		for (GLTextureCubeMap cm : attachments) {
-			cm.init(getGl());
-			cm.bind(); {
-				cm.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				cm.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				cm.getParameters().put(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				cm.getParameters().put(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-				cm.getParameters().put(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-				cm.applyParameters();
-				cm.loadData();
-			} cm.unbind();
+			cm.getParameters().put(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			cm.getParameters().put(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			cm.getParameters().put(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			cm.getParameters().put(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			cm.getParameters().put(GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		}
 
-		setAttachment(GL_COLOR_ATTACHMENT0, getCubeColorAttachment());
-		setAttachment(GL_DEPTH_ATTACHMENT, getCubeDepthAttachment());
+		attach(GL_COLOR_ATTACHMENT0, getCubeColorAttachment());
+		attach(GL_DEPTH_ATTACHMENT, getCubeDepthAttachment());
 	}
 
 	public GLTextureCubeMap getCubeColorAttachment() { return cubeColorAttachment; }

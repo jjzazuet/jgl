@@ -23,6 +23,12 @@ public abstract class GLTexture extends GLContextBoundResource {
 	public abstract int getTextureTarget();
 	public abstract void doLoadData();
 
+	public void activate() {
+		checkState(!isBound());
+		getGl().glActiveTexture(getTextureUnitEnum());
+		checkError();
+	}
+
 	@Override
 	protected void doInit() {
 
@@ -104,15 +110,15 @@ public abstract class GLTexture extends GLContextBoundResource {
 		return GL_TEXTURE0 + textureUnit; 
 	}
 
-	public Map<Integer, Number> getParameters() { return parameters; }
-
-	protected void logActiveTexture() {
+	protected void logActiveTexture() { // TODO possibly remove this
 		if (log.isDebugEnabled()) {
 			IntBuffer ib = IntBuffer.wrap(new int[1]);
 			getGl().glGetIntegerv(GL_TEXTURE_BINDING_2D, ib);
 			log.debug(format("%s [%s]", resourceMsg("Bound texture"), ib.get()));
 		}
 	}
+
+	public Map<Integer, Number> getParameters() { return parameters; }
 
 	protected boolean isDataLoaded() { return dataLoaded; }
 	protected void setDataLoaded(boolean dataLoaded) { this.dataLoaded = dataLoaded; }

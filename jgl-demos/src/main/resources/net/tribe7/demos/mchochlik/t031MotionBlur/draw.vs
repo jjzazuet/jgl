@@ -3,8 +3,6 @@ uniform mat4 ProjectionMatrix, CameraMatrix, SingleModelMatrix;
 uniform uint SingleModel;
 
 layout (std140) uniform ModelBlock {
-	int foo;
-	vec3 bar;
 	mat4 ModelMatrices[512];
 };
 
