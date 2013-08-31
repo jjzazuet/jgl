@@ -23,7 +23,7 @@ public abstract class GLTexture extends GLContextBoundResource {
 	public abstract int getTextureTarget();
 	public abstract void doLoadData();
 
-	public void activate() {
+	public void setActive() {
 		checkState(!isBound());
 		getGl().glActiveTexture(getTextureUnitEnum());
 		checkError();

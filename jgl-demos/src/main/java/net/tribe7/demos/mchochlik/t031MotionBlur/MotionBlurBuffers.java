@@ -29,11 +29,22 @@ public class MotionBlurBuffers extends GLFrameBuffer {
 			t.getParameters().put(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		}
 
+		color1.init(getGl());
+		color1.applyParameters();
 		rbo.getBufferFormat().setWidth(WIDTH);
 		rbo.getBufferFormat().setHeight(HEIGHT);
 		rbo.getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
 
 		attach(GL_COLOR_ATTACHMENT0, color0);
 		attach(rbo);
+	}
+
+	public void accumulate() {
+		color1.setActive();
+		getGl().glCopyTexImage2D(
+				color1.getTextureTarget(), 0, 
+				color1.getImage().getMetadata().getInternalFormat(), 
+				0, 0, WIDTH, HEIGHT, 0);
+		checkError();
 	}
 }

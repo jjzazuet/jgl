@@ -18,7 +18,7 @@ public class GLUSampler extends GLUniformAttribute<GLTexture> {
 		checkElementIndex(index, getSize());
 		checkNotNull(value);
 		getProgram().checkBound();
-		value.activate();
+		value.setActive();
 		value.bind(); {
 			getProgram().getGl().glUniform1i(getIndexLocation(index), value.getTextureUnit());
 			getProgram().checkError();
