@@ -1,11 +1,12 @@
 package net.tribe7.opengl.glsl.attribute;
 
+import static javax.media.opengl.GL3.*;
+import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.common.base.Preconditions.*;
 
-import java.nio.ByteBuffer;
 import java.util.*;
-
-import net.tribe7.opengl.glsl.GLUniformInterface;
+import net.tribe7.opengl.GLBuffer;
+import net.tribe7.opengl.glsl.*;
 
 public class GLUniformBlock extends GLProgramVariable {
 
@@ -13,34 +14,52 @@ public class GLUniformBlock extends GLProgramVariable {
 	private final Map<String, GLUniformBlockAttributeMetadata> blockMetadata = 
 			new LinkedHashMap<String, GLUniformBlockAttributeMetadata>();
 	private final GLUniformInterface Interface = new GLUniformInterface();
-	private final ByteBuffer backingBuffer;
-	private final byte [] internalBuffer;
 
-	public GLUniformBlock(int index, int blockSize, String name) {
-		super(index, name);
+	public GLUniformBlock(int index, int blockSize, String name, GLProgram p) {
+		super(index, name, p);
 		checkArgument(blockSize > ZERO);
 		this.blockSize = blockSize;
-		this.internalBuffer = new byte [blockSize];
-		this.backingBuffer = ByteBuffer.wrap(internalBuffer);
 	}
 
-	public <T> void serialize(GLUniformAttribute<T> a, T ... data) {
-		checkNotNull(a);
-		checkNotNull(data);
-		checkArgument(data.length > ZERO);
-		a.serialize(getBackingBuffer(), checkNotNull(getBlockMetadata().get(a.getName())), data);
+	public void bindTo(GLUniformBuffer b) {
+
+		checkNotNull(b);
+		checkNotNull(b.getBackingBuffer());
+		checkArgument(b.getInternalBuffer().length == getBlockSize());
+		getProgram().checkBound();
+
+		GLBuffer gb = b.getDataBufffer();
+
+		if (gb == null) {
+			gb = buffer(b.getInternalBuffer(), getProgram().getGl(), GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, ONE);
+			b.setDataBufffer(gb);
+		}
+
+		gb.bind();
+		gb.getGl().glBindBufferBase(gb.getGlBufferType(), getIndex(), gb.getGlResourceHandle());
+		gb.checkError();
+		gb.unbind();
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s[name: %s, blockSize: %s, buffer: %s, metadata: %s, uniforms: %s]", 
-				getClass().getSimpleName(), getName(), 
-				getBlockSize(), getBackingBuffer(),
-				getBlockMetadata(), getInterface());
+		return String.format("%s[name: %s, blockSize: %s, metadata: %s, uniforms: %s]", 
+				getClass().getSimpleName(), getName(),
+				getBlockSize(), getBlockMetadata(), getInterface());
+	}
+
+	public GLUniformBlockAttributeMetadata getBlockMetadata(String uniform) {
+		checkNotNull(uniform);
+		return checkNotNull(getBlockMetadata().get(uniform));
+	}
+
+	public void setBlockMetadata(String uniform, GLUniformBlockAttributeMetadata md) {
+		checkNotNull(uniform);
+		checkArgument(getInterface().getUniforms().containsKey(uniform));
+		getBlockMetadata().put(uniform, md);
 	}
 
 	public int getBlockSize() { return blockSize; }
-	public ByteBuffer getBackingBuffer() { return backingBuffer; }
 	public GLUniformInterface getInterface() { return Interface; }
-	public Map<String, GLUniformBlockAttributeMetadata> getBlockMetadata() { return blockMetadata; }
+	private Map<String, GLUniformBlockAttributeMetadata> getBlockMetadata() { return blockMetadata; }
 }

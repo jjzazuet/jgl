@@ -22,28 +22,29 @@ public class T031MotionBlur extends GL3EventListener {
 		initResource(gl, drawProg, blurProg);
 		GLUniformBlock ub = drawProg.getModelBlock();
 		GLUFloatMat4 modelMatrices = ub.getInterface().getMat4("ModelMatrices");
+		GLUniformBuffer b = new GLUniformBuffer(ub.getBlockSize());
 
-		ub.serialize(modelMatrices, instances.getMatrixData().toArray(new BufferedMatrix4 []{}));
+		drawProg.bind(); {
+			b.serialize(
+					modelMatrices,
+					ub.getBlockMetadata("ModelMatrices"),
+					instances.getMatrixData().toArray(new BufferedMatrix4 []{}));
+			ub.bindTo(b);
+		} drawProg.unbind();
 	}
 
 	@Override
-	protected void doRender(GL3 gl, ExecutionState currentState)
-			throws Exception {
+	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	protected void doUpdate(GL3 gl, ExecutionState currentState)
-			throws Exception {
+	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		// TODO Auto-generated method stub
-
 	}
-
 }

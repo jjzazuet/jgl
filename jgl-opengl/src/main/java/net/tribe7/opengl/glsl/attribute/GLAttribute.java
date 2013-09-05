@@ -6,15 +6,13 @@ import net.tribe7.opengl.glsl.GLProgram;
 public abstract class GLAttribute extends GLProgramVariable {
 
 	private final int size, glType, location;
-	private final GLProgram program;
 
 	public GLAttribute(int index, int location, int size, int glType, String name, GLProgram p) {
 
-		super(index, name);
+		super(index, name, p);
 		checkArgument(index >= ZERO);
 		checkArgument(size >= ZERO);
 
-		this.program = checkNotNull(p);
 		this.location = location;
 		this.size = size;
 		this.glType = glType;
@@ -56,5 +54,4 @@ public abstract class GLAttribute extends GLProgramVariable {
 	public int getSize() { return size; }
 	public int getGlType() { return glType; }
 	public int getLocation() { return location; }
-	public GLProgram getProgram() { return program; }
 }

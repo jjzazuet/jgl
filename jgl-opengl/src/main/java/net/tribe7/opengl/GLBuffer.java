@@ -10,7 +10,7 @@ public class GLBuffer extends GLContextBoundResource {
 
 	protected final int glUsageHint;
 	protected final int glBufferType;
-	
+
 	protected Buffer rawBuffer;
 	protected final GLBufferMetadata bufferMetadata;
 	

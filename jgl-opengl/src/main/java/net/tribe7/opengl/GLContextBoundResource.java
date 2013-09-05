@@ -15,11 +15,11 @@ public abstract class GLContextBoundResource extends GLResource {
 	protected abstract void doBind();
 	protected abstract void doUnbind();
 	protected abstract void doDestroy();
-	
+
 	public void init(final GL3 gl) {
-		
+
 		this.gl = checkNotNull(gl);
-		
+
 		if (!isInitialized()) {	
 			doInit();
 			checkError();
@@ -31,7 +31,7 @@ public abstract class GLContextBoundResource extends GLResource {
 			log.debug(resourceMsg("GL resource already initialized."));
 		}
 	}
-	
+
 	public void bind() {
 		checkInitialized();
 		checkState(!isBound(), multipleBindError());
@@ -39,7 +39,7 @@ public abstract class GLContextBoundResource extends GLResource {
 		checkError();
 		bound = true;
 	}
-	
+
 	public void unbind() {
 		checkState(isBound(), multipleBindError());
 		doUnbind();

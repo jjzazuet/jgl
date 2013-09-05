@@ -52,18 +52,17 @@ public class GLUniformBlockFactory {
 		int [] uniformMatrixStrides = getUniformBlockIndexParameter(p, GL_UNIFORM_MATRIX_STRIDE, uniformIndices);
 		int [] uniformMatrixOrder = getUniformBlockIndexParameter(p, GL_UNIFORM_IS_ROW_MAJOR, uniformIndices);
 
-		ub = new GLUniformBlock(index, blockSize, ab.getNameValue());
+		ub = new GLUniformBlock(index, blockSize, ab.getNameValue(), p);
 
 		for (int k = 0; k < uniformCount; k++) {
-
 			GLUniformAttribute<?> a = newUniformAttribute(uniformIndices[k], true, p);
 			GLUniformBlockAttributeMetadata blockAttribute = 
 					new GLUniformBlockAttributeMetadata(
 							uniformOffsets[k], uniformArrayStrides[k], 
 							uniformMatrixStrides[k], uniformMatrixOrder[k], a.getName());
 			ub.getInterface().getUniforms().put(a.getName(), a);
-			ub.getBlockMetadata().put(a.getName(), blockAttribute);
+			ub.setBlockMetadata(a.getName(), blockAttribute);
 		}
 		return ub;
-	}	
+	}
 }
