@@ -12,6 +12,7 @@ public class T031MotionBlur extends GL3EventListener {
 
 	private final DrawProgram drawProg = new DrawProgram();
 	private final BlurProgram blurProg = new BlurProgram();
+	private final MotionBlurBuffers mBuffers = new MotionBlurBuffers();
 	private final MatrixInstances instances = new MatrixInstances(256);
 
 	// private final Cube cube = new Cube();
@@ -19,10 +20,14 @@ public class T031MotionBlur extends GL3EventListener {
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
-		initResource(gl, drawProg, blurProg);
+		initResource(gl, drawProg, blurProg, mBuffers);
 		GLUniformBlock ub = drawProg.getModelBlock();
 		GLUFloatMat4 modelMatrices = ub.getInterface().getMat4("ModelMatrices");
 		GLUniformBuffer b = new GLUniformBuffer(ub.getBlockSize());
+
+		mBuffers.bind(); {
+			mBuffers.initAttachments();
+		} mBuffers.unbind();
 
 		drawProg.bind(); {
 			b.serialize(

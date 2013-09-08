@@ -14,7 +14,8 @@ import net.tribe7.geom.solid.model.TangentMapped;
 import net.tribe7.geom.solid.model.Textured;
 import net.tribe7.math.vector.Vector4;
 
-public class Sphere implements Drawable, IndexDrawable, Textured, NormalMapped, TangentMapped, SphereBound, IndexRestartable {
+public class Sphere implements Drawable, IndexDrawable, Textured, 
+	NormalMapped, TangentMapped, SphereBound, IndexRestartable {
 
 	private double radius;
 	private int sections, rings;

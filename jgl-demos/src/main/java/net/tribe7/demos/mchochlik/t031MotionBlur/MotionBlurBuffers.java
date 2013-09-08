@@ -14,6 +14,10 @@ public class MotionBlurBuffers extends GLFrameBuffer {
 	private final GLRenderBuffer rbo = new GLRenderBuffer();
 	private final GLTexture2D [] colorTargets = new GLTexture2D [] { color0, color1 };
 
+	public MotionBlurBuffers() {
+		setBindTarget(GL_DRAW_FRAMEBUFFER);
+	}
+
 	@Override
 	protected void doInitAttachments() {
 
@@ -30,7 +34,9 @@ public class MotionBlurBuffers extends GLFrameBuffer {
 		}
 
 		color1.init(getGl());
+		color1.bind();
 		color1.applyParameters();
+		color1.unbind();
 		rbo.getBufferFormat().setWidth(WIDTH);
 		rbo.getBufferFormat().setHeight(HEIGHT);
 		rbo.getBufferFormat().setInternalFormat(GL_DEPTH_COMPONENT);
