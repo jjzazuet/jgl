@@ -9,7 +9,7 @@ import net.tribe7.math.matrix.*;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.opengl.glsl.GLProgram;
 
-public class GLUFloatMat4 extends GLUniformAttribute<BufferedMatrix4> {
+public class GLUFloatMat4 extends GLSerializableUniform<BufferedMatrix4> {
 
 	public GLUFloatMat4(int index, int location, int size, int glType, String name, GLProgram p) {
 		super(index, location, size, glType, name, p);

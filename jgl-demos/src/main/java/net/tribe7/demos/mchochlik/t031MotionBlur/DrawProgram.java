@@ -8,9 +8,11 @@ import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.glsl.attribute.GLUInt;
 import net.tribe7.opengl.glsl.attribute.GLUSampler;
 import net.tribe7.opengl.glsl.attribute.GLUniformBlock;
+import net.tribe7.opengl.glsl.attribute.GLVertexAttribute;
 
 public class DrawProgram extends GLProgram {
 
+	private GLVertexAttribute position, normal, texCoord;
 	private GLUFloatMat4 projectionMatrix, cameraMatrix, modelMatrix;
 	private GLUInt singleModel;
 	private GLUSampler checkerTex;
@@ -24,6 +26,9 @@ public class DrawProgram extends GLProgram {
 			attachShader(drawVs).attachShader(drawFs);
 		} catch (Exception e) { propagate(e); }
 		super.doInit();
+		position = getInterface().getStageAttribute("Position");
+		normal = getInterface().getStageAttribute("Normal");
+		texCoord = getInterface().getStageAttribute("TexCoord");
 		projectionMatrix = getInterface().getMat4("ProjectionMatrix");
 		cameraMatrix = getInterface().getMat4("CameraMatrix");
 		modelMatrix = getInterface().getMat4("SingleModelMatrix");
@@ -31,6 +36,10 @@ public class DrawProgram extends GLProgram {
 		checkerTex = getInterface().getSampler("CheckerTex");
 		modelBlock = getInterface().getUniformBlock("ModelBlock");
 	}
+
+	public GLVertexAttribute getPosition() { return position; }
+	public GLVertexAttribute getNormal() { return normal; }
+	public GLVertexAttribute getTexCoord() { return texCoord; }
 
 	public GLUFloatMat4 getProjectionMatrix() { return projectionMatrix; }
 	public GLUFloatMat4 getCameraMatrix() { return cameraMatrix; }

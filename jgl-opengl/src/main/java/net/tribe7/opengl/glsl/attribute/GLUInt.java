@@ -7,7 +7,7 @@ import static net.tribe7.common.base.Preconditions.*;
 import java.nio.ByteBuffer;
 import net.tribe7.opengl.glsl.GLProgram;
 
-public class GLUInt extends GLUniformAttribute<Integer> {
+public class GLUInt extends GLSerializableUniform<Integer> {
 
 	public GLUInt(int index, int location, int size, int glType, String name, GLProgram p) {
 		super(index, location, size, glType, name, p);

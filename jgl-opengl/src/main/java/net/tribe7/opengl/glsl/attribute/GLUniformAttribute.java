@@ -1,9 +1,7 @@
 package net.tribe7.opengl.glsl.attribute;
 
-import static net.tribe7.opengl.glsl.attribute.GLUniformBlockAttributeMetadata.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
-import static net.tribe7.math.Preconditions.*;
 import java.nio.*;
 import java.util.*;
 import javax.media.opengl.GL3;
@@ -41,26 +39,6 @@ public abstract class GLUniformAttribute<T> extends GLAttribute {
 
 	protected abstract void doSet(int index, T value);
 	public void set(T value) { set(ZERO, value); }
-
-	protected abstract void doSerialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data);
-	public void serialize(ByteBuffer target, GLUniformBlockAttributeMetadata md, T ... data) {
-		checkNoNulls(target, md);
-		checkNoNulls(data);
-		checkArgument(data.length >= ONE);
-		checkArgument(data.length <= getSize());
-		checkArgument(md.getMatrixOrder() == UNIFORM_BUFFER_COLUMN_MAJOR || md.getMatrixOrder() == UNIFORM_BUFFER_ROW_MAJOR);
-		target.position(md.getOffset());
-		checkArgument(target.remaining() >= getUnitByteSize());
-		doSerialize(target, md, data);
-	}
-
-	protected void fillBytes(ByteBuffer b, int howMany, byte value) {
-		checkNotNull(b);
-		checkArgument(b.remaining() >= howMany);
-		for (int i = 0; i < howMany; i++) {
-			b.put(value);
-		}
-	}
 
 	protected FloatBuffer bufferData(float ... data) {
 		checkNotNull(data);

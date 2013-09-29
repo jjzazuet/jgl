@@ -6,9 +6,7 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 
 import java.nio.*;
-
 import javax.media.opengl.GL3;
-
 import net.tribe7.geom.io.GeometryBuffer;
 
 public class GLBufferFactory {

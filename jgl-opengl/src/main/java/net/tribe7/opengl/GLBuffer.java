@@ -1,10 +1,9 @@
 package net.tribe7.opengl;
 
+import static net.tribe7.opengl.GLConstants.GL_BUFFER_USAGE_HINT;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
-
-import java.nio.Buffer;
-import java.nio.IntBuffer;
+import java.nio.*;
 
 public class GLBuffer extends GLContextBoundResource {
 
@@ -15,6 +14,7 @@ public class GLBuffer extends GLContextBoundResource {
 	protected final GLBufferMetadata bufferMetadata;
 	
 	protected GLBuffer(int glBufferType, int glUsageHint, GLBufferMetadata componentMetadata) {
+		checkArgument(GL_BUFFER_USAGE_HINT.contains(glUsageHint));
 		this.glBufferType = glBufferType;
 		this.glUsageHint = glUsageHint;
 		this.bufferMetadata = checkNotNull(componentMetadata);

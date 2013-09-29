@@ -5,6 +5,7 @@ import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
 
+import net.tribe7.demos.mchochlik.t030CubeMapping.T030CubeMapping;
 import net.tribe7.demos.mchochlik.t031MotionBlur.T031MotionBlur;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.util.GLBootstrap;

@@ -26,13 +26,11 @@ public class Cube implements Drawable, IndexDrawable, IndexEdgeDrawable,
 
 	public Cube() { this(1, 1, 1); }
 	public Cube(double size) { this(size, size, size); }
-	
+
 	public Cube(double w, double h, double d) {
-		
 		checkArgument(w > 0);
 		checkArgument(h > 0);
 		checkArgument(d > 0);
-		
 		x = w; y = h; z = d;
 	}
 
@@ -42,7 +40,7 @@ public class Cube implements Drawable, IndexDrawable, IndexEdgeDrawable,
 		float hX = (float) (x / 2);
 		float hY = (float) (y / 2);
 		float hZ = (float) (z / 2);
-		
+
 		float [][] c = new float [][] {
 				{+hX, +hY, -hZ},
 				{+hX, +hY, +hZ},
@@ -55,7 +53,7 @@ public class Cube implements Drawable, IndexDrawable, IndexEdgeDrawable,
 		};
 		
 		int A=0, B=1, C=2, D=3, E=4, F=5, G=6, H=7;
-		
+
 		Float [] positions = new Float [] {
 
 				c[A][0], c[A][1], c[A][2],

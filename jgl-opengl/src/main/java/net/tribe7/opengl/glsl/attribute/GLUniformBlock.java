@@ -21,7 +21,7 @@ public class GLUniformBlock extends GLProgramVariable {
 		this.blockSize = blockSize;
 	}
 
-	public void bindTo(GLUniformBuffer b) {
+	public void bindTo(GLUniformBuffer b, int glDrawMode) {
 
 		checkNotNull(b);
 		checkNotNull(b.getBackingBuffer());
@@ -31,7 +31,7 @@ public class GLUniformBlock extends GLProgramVariable {
 		GLBuffer gb = b.getDataBufffer();
 
 		if (gb == null) {
-			gb = buffer(b.getInternalBuffer(), getProgram().getGl(), GL_UNIFORM_BUFFER, GL_DYNAMIC_DRAW, ONE);
+			gb = buffer(b.getInternalBuffer(), getProgram().getGl(), GL_UNIFORM_BUFFER, glDrawMode, ONE);
 			b.setDataBufffer(gb);
 		}
 

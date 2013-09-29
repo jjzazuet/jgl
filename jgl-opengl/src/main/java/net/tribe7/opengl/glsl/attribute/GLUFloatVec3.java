@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.glsl.GLProgram;
 
-public class GLUFloatVec3 extends GLUniformAttribute<Vector3> {
+public class GLUFloatVec3 extends GLSerializableUniform<Vector3> {
 
 	public GLUFloatVec3(int index, int location, int size, int glType, String name, GLProgram p) {
 		super(index, location, size, glType, name, p);

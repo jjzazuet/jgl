@@ -7,6 +7,7 @@ import net.tribe7.opengl.glsl.attribute.*;
 
 public class BlurProgram extends GLProgram {
 
+	private GLVertexAttribute position, texCoord;
 	private GLUFloatVec2 screenSize;
 	private GLUSampler currentFrame, previousFrames;
 	private GLUFloat splitter;
@@ -19,11 +20,16 @@ public class BlurProgram extends GLProgram {
 			attachShader(drawVs).attachShader(drawFs);
 		} catch (Exception e) { propagate(e); }
 		super.doInit();
+		position = getInterface().getStageAttribute("Position");
+		texCoord = getInterface().getStageAttribute("TexCoord");
 		screenSize = getInterface().getVec2("ScreenSize");
 		currentFrame = getInterface().getSampler("CurrentFrame");
 		previousFrames = getInterface().getSampler("PreviousFrames");
 		splitter = getInterface().getFloat("Splitter");
 	}
+
+	public GLVertexAttribute getPosition() { return position; }
+	public GLVertexAttribute getTexCoord() { return texCoord; }
 
 	public GLUFloatVec2 getScreenSize() { return screenSize; }
 	public GLUSampler getCurrentFrame() { return currentFrame; }

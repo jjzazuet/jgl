@@ -47,10 +47,15 @@ public class MotionBlurBuffers extends GLFrameBuffer {
 
 	public void accumulate() {
 		color1.setActive();
-		getGl().glCopyTexImage2D(
-				color1.getTextureTarget(), 0, 
-				color1.getImage().getMetadata().getInternalFormat(), 
-				0, 0, WIDTH, HEIGHT, 0);
-		checkError();
+		color1.bind(); {
+			getGl().glCopyTexImage2D(
+					color1.getTextureTarget(), 0, 
+					color1.getImage().getMetadata().getInternalFormat(), 
+					0, 0, WIDTH, HEIGHT, 0);
+			checkError();
+		} color1.unbind();
 	}
+
+	public GLTexture2D getColor0() { return color0; }
+	public GLTexture2D getColor1() { return color1; }
 }

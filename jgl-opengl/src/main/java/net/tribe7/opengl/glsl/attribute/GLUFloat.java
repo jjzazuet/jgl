@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 
 import net.tribe7.opengl.glsl.GLProgram;
 
-public class GLUFloat extends GLUniformAttribute<Float> {
+public class GLUFloat extends GLSerializableUniform<Float> {
 
 	public GLUFloat(int index, int location, int size, int glType, String name, GLProgram p) {
 		super(index, location, size, glType, name, p);

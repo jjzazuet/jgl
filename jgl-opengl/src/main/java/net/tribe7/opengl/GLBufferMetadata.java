@@ -26,9 +26,7 @@ public class GLBufferMetadata {
 	}
 
 	public int getTotalComponentUnitSize() {
-		
 		int unitSum = 0;
-		
 		for (int k = 0; k < componentUnitSizes.length; k++) {
 			unitSum += getComponentUnitSize(k);
 		}
@@ -43,29 +41,25 @@ public class GLBufferMetadata {
 	}
 	
 	public int getTotalComponentByteSize() {
-		
 		int byteSum = 0;
-		
 		for (int k = 0; k < componentUnitSizes.length; k++) {
 			byteSum += getComponentByteSize(k);
 		}
 		return byteSum;
-	}	
+	}
 
 	public int getComponentByteSize(int componentIndex) {
 		return getByteSizeof(glPrimitiveType) * getComponentUnitSize(componentIndex); 
 	}
-	
+
 	public int getComponentByteOffset(int componentIndex) {
-		
 		int byteOffset = 0;
-		
 		for (int k = 0; k < componentIndex; k++) {
 			byteOffset += getComponentByteSize(k);
 		}
 		return byteOffset;
 	}
-	
+
 	public int getByteSizeof(int glType) {
 		switch (glType) {
 			case GL_BYTE:           return GL_BYTE_SIZE;

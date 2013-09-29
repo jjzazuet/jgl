@@ -18,7 +18,7 @@ public class GLUniformBuffer {
 		this.backingBuffer = ByteBuffer.wrap(internalBuffer);
 	}
 
-	public <T> void serialize(GLUniformAttribute<T> a, GLUniformBlockAttributeMetadata md, T ... data) {
+	public <T> void serialize(GLSerializableUniform<T> a, GLUniformBlockAttributeMetadata md, T ... data) {
 		checkNoNulls(a, md, data);
 		checkNoNulls(data);
 		checkArgument(data.length > ZERO);

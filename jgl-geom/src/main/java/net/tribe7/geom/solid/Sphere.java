@@ -25,7 +25,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured,
 		this.sections = sections;
 		this.rings = rings;
 	}
-	
+
 	public Sphere() { this(1, 18, 12); }
 
 	@Override
@@ -48,7 +48,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured,
 		Integer [] indices = new Integer [n];
 		int k = 0;
 		int offs = 0;
-		
+
 		for(int r = 0; r!= (getRings() + 1); ++r) {
 			for(int s = 0; s != (getSections() + 1); ++s) {
 				indices[k++] = offs + s;
@@ -57,7 +57,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured,
 			indices[k++] = n;
 			offs += getSections() + 1;
 		}
-		
+
 		checkState(k == indices.length);
 		return new GeometryBuffer<Integer>(3, indices);
 	}
@@ -69,7 +69,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured,
 		int k = 0;
 		double rStep = (1 * PI) / ((double) (getRings() + 1));
 		double sStep = (2 * PI) / ((double) getSections());
-		
+
 		for (int r = 0; r != (getRings() + 2); ++r) {
 
 			double r_lat = cos(r * rStep);
@@ -93,7 +93,7 @@ public class Sphere implements Drawable, IndexDrawable, Textured,
 		int k = 0;
 		double r_step = 1.0 / ((double) (getRings() + 1));
 		double s_step = 1.0 / ((double) getSections());
-		
+
 		for(int r=0; r!= (getRings() + 2); ++r) {
 			
 			double r_lat = 1.0 - r*r_step;

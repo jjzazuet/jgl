@@ -77,4 +77,15 @@ public class GLConstants {
 	public static final Set<Integer> GL_FRAMEBUFFER_TARGET = new HashSet<Integer>(
 			Arrays.asList(new Integer[] { GL_DRAW_FRAMEBUFFER,
 					GL_READ_FRAMEBUFFER, GL_FRAMEBUFFER }));
+
+	public static final Set<Integer> GL_BUFFER_USAGE_HINT = new HashSet<Integer>(
+			Arrays.asList(new Integer[] { GL_STREAM_DRAW, GL_STREAM_READ,
+					GL_STREAM_COPY, GL_STATIC_DRAW, GL_STATIC_READ,
+					GL_STATIC_COPY, GL_DYNAMIC_DRAW, GL_DYNAMIC_READ,
+					GL_DYNAMIC_COPY }));
+
+	public static final Set<Integer> GL_BIND_BUFFER_BASE_TARGET = new HashSet<Integer>(
+			Arrays.asList(new Integer[] { GL_ATOMIC_COUNTER_BUFFER,
+					GL_TRANSFORM_FEEDBACK_BUFFER, GL_UNIFORM_BUFFER,
+					GL_SHADER_STORAGE_BUFFER }));
 }
