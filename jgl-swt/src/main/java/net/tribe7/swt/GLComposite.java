@@ -29,7 +29,7 @@ public class GLComposite extends Composite implements Listener, Runnable {
 		checkNotNull(target);
 		setLayout(new FillLayout());
 
-		canvas = new GLCanvas(this, SWT.None, caps, null, null);
+		canvas = new GLCanvas(this, SWT.None, caps, null);
 		canvas.addGLEventListener(target);
 		canvas.addListener(Paint, this);
 		addListener(Dispose, this);

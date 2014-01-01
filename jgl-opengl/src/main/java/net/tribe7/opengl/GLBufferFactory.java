@@ -4,6 +4,7 @@ import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
+import static com.jogamp.common.nio.Buffers.*;
 
 import java.nio.*;
 import javax.media.opengl.GL3;
@@ -73,34 +74,34 @@ public class GLBufferFactory {
 	
 			case GL_FLOAT:
 				float[] floatData = (float[]) dataArray;
-				targetBuffer = FloatBuffer.wrap(floatData);
+				targetBuffer = newDirectFloatBuffer(floatData);
 				glSizeIptr = floatData.length;
 				break;
 	
 			case GL_DOUBLE:
 				double[] doubleData = (double[]) dataArray;
-				targetBuffer = DoubleBuffer.wrap(doubleData);
+				targetBuffer = newDirectDoubleBuffer(doubleData);
 				glSizeIptr = doubleData.length;
 				break;
 	
 			case GL_INT:
 			case GL_UNSIGNED_INT:
 				int[] intData = (int[]) dataArray;
-				targetBuffer = IntBuffer.wrap(intData);
+				targetBuffer = newDirectIntBuffer(intData);
 				glSizeIptr = intData.length;
 				break;
 	
 			case GL_BYTE:
 			case GL_UNSIGNED_BYTE:
 				byte[] byteData = (byte[]) dataArray;
-				targetBuffer = ByteBuffer.wrap(byteData);
+				targetBuffer = newDirectByteBuffer(byteData);
 				glSizeIptr = byteData.length;
 				break;
 	
 			case GL_SHORT:
 			case GL_UNSIGNED_SHORT:
 				short[] shortData = (short[]) dataArray;
-				targetBuffer = ShortBuffer.wrap(shortData);
+				targetBuffer = newDirectShortBuffer(shortData);
 				glSizeIptr = shortData.length;
 				break;
 		}

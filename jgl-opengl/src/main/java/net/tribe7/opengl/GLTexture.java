@@ -5,14 +5,13 @@ import static javax.media.opengl.GL.GL_TEXTURE0;
 import static javax.media.opengl.GL.GL_TEXTURE_BINDING_2D;
 import static javax.media.opengl.GL2ES2.GL_MAX_TEXTURE_IMAGE_UNITS;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 import static net.tribe7.opengl.GLConstants.*;
 import static net.tribe7.opengl.util.GLBufferUtils.intBuffer;
 
 import java.nio.IntBuffer;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
 
 public abstract class GLTexture extends GLContextBoundResource {
 
@@ -30,19 +29,20 @@ public abstract class GLTexture extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doInit() {
+	protected int doInit() {
 
 		IntBuffer i1 = IntBuffer.allocate(ONE);
-		getGl().glGenTextures(ONE, i1);
-		checkError();
-		setGlResourceHandle(i1.get());
 
-		i1.clear();
 		getGl().glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, i1);
 		checkError();
 		int maxTextureUnits = i1.get();
 		int textureUnit = new Random().nextInt(maxTextureUnits - ZERO + 1) + ZERO;
 		setTextureUnit(textureUnit);
+
+		i1.clear();
+		getGl().glGenTextures(ONE, i1);
+		checkError();
+		return i1.get();
 	}
 
 	@Override

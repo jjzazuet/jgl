@@ -37,7 +37,7 @@ subprojects {
 
 	dependencies {	
 		testCompile 'junit:junit:4.8.2'
-		compile 'net.tribe7.seeds:seeds-base:14.0.1'
+		compile 'net.tribe7.seeds:seeds-base:15.0'
 	}
 
 	eclipse {

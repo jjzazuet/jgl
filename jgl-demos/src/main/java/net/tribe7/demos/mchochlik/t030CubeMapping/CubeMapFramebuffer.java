@@ -1,6 +1,7 @@
 package net.tribe7.demos.mchochlik.t030CubeMapping;
 
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import net.tribe7.opengl.*;

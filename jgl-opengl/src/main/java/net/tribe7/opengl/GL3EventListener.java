@@ -38,7 +38,7 @@ public abstract class GL3EventListener extends GLScheduledEventListener {
 		}
 
 		log.info(format("GL implementation: [%s]", gad.getGL().getClass().getCanonicalName()));
-		getDrawHelper().init(gl);
+		getDrawHelper().setGl(gl);
 		doInit(gl);
 	}
 

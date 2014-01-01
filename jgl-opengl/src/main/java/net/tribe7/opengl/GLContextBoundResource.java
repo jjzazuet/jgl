@@ -1,27 +1,23 @@
 package net.tribe7.opengl;
 
 import static net.tribe7.common.base.Preconditions.*;
-import static java.lang.String.format;
 import javax.media.opengl.GL3;
 
-public abstract class GLContextBoundResource extends GLResource {
+public abstract class GLContextBoundResource extends GLContextResource {
 
-	private GL3 gl = null;
 	private boolean bound = false;
 	private boolean initialized = false;
 	private boolean destroyed = false;
 
-	protected abstract void doInit();
+	protected abstract int doInit();
+	protected abstract void doDestroy();
 	protected abstract void doBind();
 	protected abstract void doUnbind();
-	protected abstract void doDestroy();
 
 	public void init(final GL3 gl) {
-
-		this.gl = checkNotNull(gl);
-
-		if (!isInitialized()) {	
-			doInit();
+		if (!isInitialized()) {
+			setGl(gl);
+			setGlResourceHandle(doInit());
 			checkError();
 			initialized = true;
 			if (log.isDebugEnabled()) {
@@ -73,8 +69,6 @@ public abstract class GLContextBoundResource extends GLResource {
 		checkState(bound, resourceMsg("Unbound GL resource"));
 	}
 
-	public void checkError() { getError().apply(gl); }
-
 	@Override
 	public String toString() {
 		return String.format("%s[rh: %s, bound: %s, init: %s]", 
@@ -84,11 +78,4 @@ public abstract class GLContextBoundResource extends GLResource {
 	private String multipleBindError() {
 		return resourceMsg("Multiple bind/unbind request");
 	}
-
-	public String resourceMsg(String msg) {
-		return format("%s: [%s, %s]", 
-				msg, getClass().getSimpleName(), getGlResourceHandle());
-	}
-
-	public GL3 getGl() { return gl; }
 }

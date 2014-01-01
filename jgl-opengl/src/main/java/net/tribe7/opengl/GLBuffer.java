@@ -3,6 +3,7 @@ package net.tribe7.opengl;
 import static net.tribe7.opengl.GLConstants.GL_BUFFER_USAGE_HINT;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 import java.nio.*;
 
 public class GLBuffer extends GLContextBoundResource {
@@ -21,10 +22,10 @@ public class GLBuffer extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doInit() { 
+	protected int doInit() { 
 		IntBuffer b = IntBuffer.allocate(ONE);
 		getGl().glGenBuffers(ONE, b);
-		setGlResourceHandle(b.get());
+		return b.get();
 	}
 
 	@Override

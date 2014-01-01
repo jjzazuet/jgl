@@ -1,20 +1,25 @@
 package net.tribe7.opengl.util;
 
+import static net.tribe7.math.Preconditions.*;
 import static net.tribe7.common.base.Preconditions.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
+
+import sun.nio.ch.DirectBuffer; // TODO this may not run on Linux :(
 import net.tribe7.geom.*;
 import net.tribe7.opengl.*;
 
-public class GLDrawHelper extends GLContextBoundResource {
+public class GLDrawHelper extends GLContextResource {
 
 	public void glIndexedDraw(int glMode, GLBuffer buffer) {
 		checkNotNull(buffer);
+		checkArgument(buffer.getRawBuffer().isDirect(), "Non direct buffer: %s", buffer);
+		DirectBuffer db = (DirectBuffer) buffer.getRawBuffer();
 		buffer.getRawBuffer().clear();
 		buffer.getGl().glDrawElements(glMode, 
 				buffer.getRawBuffer().capacity(), 
 				buffer.getBufferMetadata().getGlPrimitiveType(), 
-				buffer.getRawBuffer());
+				db.address());
 		buffer.checkError();
 	}
 
@@ -67,13 +72,4 @@ public class GLDrawHelper extends GLContextBoundResource {
 		checkError();
 		return this;
 	}
-
-	@Override
-	protected void doInit() {}
-	@Override
-	protected void doBind() { throw new UnsupportedOperationException(); }
-	@Override
-	protected void doUnbind() { throw new UnsupportedOperationException(); }
-	@Override
-	protected void doDestroy() { throw new UnsupportedOperationException(); }
 }

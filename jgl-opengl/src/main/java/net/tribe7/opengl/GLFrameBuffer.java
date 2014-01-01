@@ -3,6 +3,7 @@ package net.tribe7.opengl;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 import static net.tribe7.opengl.GLConstants.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 
@@ -76,10 +77,10 @@ public abstract class GLFrameBuffer extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doInit() {
+	protected int doInit() {
 		IntBuffer ib = IntBuffer.allocate(ONE);
 		getGl().glGenFramebuffers(ONE, ib);
-		setGlResourceHandle(ib.get());
+		return ib.get();
 	}
 
 	@Override

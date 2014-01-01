@@ -14,7 +14,7 @@ buildscript {
 dependencies {
 	compile project(':jgl-opengl')
 	testCompile project(':jgl-swt')
-	compile 'net.tribe7.seeds:seeds-primitives:14.0.1'
+	compile 'net.tribe7.seeds:seeds-primitives:15.0'
 }
 
 task copyJars(type: Copy, dependsOn: [jar]) {	
@@ -76,12 +76,12 @@ task generateJnlp(dependsOn: [jarSign]) {
 		destDir.mkdirs()	
 		adb.scanArchives(mainJarUrl)
 		def demoList = adb.annotationIndex['net.tribe7.demos.WebstartDemo']
-	
+
 		demoList.each {
-	
+
 			def root = new XmlParser().parse(jnlpTemplateFile)
 			def jnlpFileName = "${it}.jnlp"
-	
+
 			root.@href = jnlpFileName
 	
 			def information = root.information[0]
@@ -115,11 +115,11 @@ task generateJnlp(dependsOn: [jarSign]) {
 			def jnlpFile = new File(ext.destDir, jnlpFileName)
 			new XmlNodePrinter(new PrintWriter(jnlpFile)).print(root)
 		}
-	
+
 		def demoJson = new File(ext.destDir.parentFile, "${project.name}.json")
 		def data = demoList.sort().collect {[id: it]}
 		def json = new JsonBuilder(data)
-	
+
 		demoJson.write(json.toString())
 	}
 }

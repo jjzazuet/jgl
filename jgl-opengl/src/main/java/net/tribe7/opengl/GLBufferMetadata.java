@@ -3,6 +3,7 @@ package net.tribe7.opengl;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 
 public class GLBufferMetadata {
 
@@ -75,7 +76,7 @@ public class GLBufferMetadata {
 	}
 
 	protected boolean isValidPrimitiveType(int glType) {
-		return getByteSizeof(glType) != -1;
+		return getByteSizeof(glType) != MINUS_ONE;
 	}
 
 	public int[] getComponentSizes() { return componentUnitSizes; }

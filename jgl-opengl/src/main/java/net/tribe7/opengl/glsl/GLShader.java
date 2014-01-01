@@ -3,16 +3,14 @@ package net.tribe7.opengl.glsl;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
 import static net.tribe7.opengl.util.GLIOUtils.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
-import static net.tribe7.common.base.Throwables.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 
 import java.io.File;
 import java.net.*;
 import java.nio.*;
-import java.nio.charset.*;
-
 import net.tribe7.opengl.GLContextBoundResource;
 import net.tribe7.common.base.Charsets;
 
@@ -43,30 +41,20 @@ public class GLShader extends GLContextBoundResource {
 		shaderSourceText = srcText;
 	}
 
-	private void compile() throws CharacterCodingException {
-		
+	@Override
+	protected int doInit() { 
 		IntBuffer b = intBuffer(getSource().length());
 		String [] lines = new String [] {getSource()};
 
+		setGlResourceHandle(getGl().glCreateShader(getType().getGlType()));
 		getGl().glShaderSource(getGlResourceHandle(), lines.length, lines, b);
 		checkError();
 		getGl().glCompileShader(getGlResourceHandle());
 		checkError();
-		int compileStatus = getGlslParam(this, GL_COMPILE_STATUS);
-		
-		if (compileStatus == GL_FALSE) {
-			throw new IllegalStateException(resourceMsg(getGlslLog(this)));
-		}
-	}
 
-	@Override
-	protected void doInit() { 
-		try {
-			int rh = getGl().glCreateShader(getType().getGlType());
-			checkError();
-			setGlResourceHandle(rh);
-			compile();
-		} catch (Exception e) { propagate(e); }
+		int compileStatus = getGlslParam(this, GL_COMPILE_STATUS);
+		checkState(compileStatus != GL_FALSE, resourceMsg(getGlslLog(this)));
+		return getGlResourceHandle();
 	}
 
 	public String getSource() {

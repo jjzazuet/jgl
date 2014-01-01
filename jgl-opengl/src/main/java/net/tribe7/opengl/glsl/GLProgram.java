@@ -4,6 +4,7 @@ import static net.tribe7.opengl.glsl.attribute.GLAttributeFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.common.base.Preconditions.*;
+import static net.tribe7.math.Preconditions.*;
 
 import java.util.*;
 import net.tribe7.opengl.GLContextBoundResource;
@@ -21,7 +22,10 @@ public class GLProgram extends GLContextBoundResource {
 		return this;
 	}
 
-	private void link() {
+	@Override
+	protected int doInit() {
+
+		setGlResourceHandle(getGl().glCreateProgram());
 
 		for (GLShader s : shaders) { 
 			s.init(getGl());
@@ -36,13 +40,9 @@ public class GLProgram extends GLContextBoundResource {
 		getInterface().getUniformBlocks().putAll(getAttributeMap(GL_ACTIVE_UNIFORM_BLOCKS, this));
 		getInterface().getUniforms().putAll(getAttributeMap(GL_ACTIVE_UNIFORMS, this));
 		getInterface().getStageAttributes().putAll(getAttributeMap(GL_ACTIVE_ATTRIBUTES, this));
-	}
 
-	@Override
-	protected void doInit() { 
-		setGlResourceHandle(getGl().glCreateProgram());
-		link();
-	}
+		return getGlResourceHandle();
+}
 
 	@Override
 	protected void doBind() { 

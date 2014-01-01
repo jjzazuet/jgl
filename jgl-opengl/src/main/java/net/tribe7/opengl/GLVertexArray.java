@@ -1,16 +1,16 @@
 package net.tribe7.opengl;
 
 import static net.tribe7.opengl.util.GLBufferUtils.*;
-
+import static net.tribe7.math.Preconditions.*;
 import java.nio.IntBuffer;
 
 public class GLVertexArray extends GLContextBoundResource {
 	
 	@Override
-	protected void doInit() {
+	protected int doInit() {
 		IntBuffer b = IntBuffer.allocate(ONE);
 		getGl().glGenVertexArrays(ONE, b);
-		setGlResourceHandle(b.get());
+		return b.get();
 	}
 
 	@Override

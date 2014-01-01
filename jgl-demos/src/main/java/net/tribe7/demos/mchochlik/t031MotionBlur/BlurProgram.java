@@ -13,19 +13,21 @@ public class BlurProgram extends GLProgram {
 	private GLUFloat splitter;
 
 	@Override
-	protected void doInit() {
+	protected int doInit() {
 		try {
 			GLShader drawVs = loadVertexShader("/net/tribe7/demos/mchochlik/t031MotionBlur/blur.vs");
 			GLShader drawFs = loadFragmentShader("/net/tribe7/demos/mchochlik/t031MotionBlur/blur.fs");
 			attachShader(drawVs).attachShader(drawFs);
 		} catch (Exception e) { propagate(e); }
-		super.doInit();
+
+		int rh = super.doInit();
 		position = getInterface().getStageAttribute("Position");
 		texCoord = getInterface().getStageAttribute("TexCoord");
 		screenSize = getInterface().getVec2("ScreenSize");
 		currentFrame = getInterface().getSampler("CurrentFrame");
 		previousFrames = getInterface().getSampler("PreviousFrames");
 		splitter = getInterface().getFloat("Splitter");
+		return rh;
 	}
 
 	public GLVertexAttribute getPosition() { return position; }

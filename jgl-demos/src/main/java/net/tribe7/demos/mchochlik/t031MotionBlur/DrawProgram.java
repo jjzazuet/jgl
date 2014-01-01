@@ -19,13 +19,14 @@ public class DrawProgram extends GLProgram {
 	private GLUniformBlock modelBlock;
 
 	@Override
-	protected void doInit() {
+	protected int doInit() { // TODO make something more convenient :S. e.g. a File based GLProgram.
 		try {
 			GLShader drawVs = loadVertexShader("/net/tribe7/demos/mchochlik/t031MotionBlur/draw.vs");
 			GLShader drawFs = loadFragmentShader("/net/tribe7/demos/mchochlik/t031MotionBlur/draw.fs");
 			attachShader(drawVs).attachShader(drawFs);
 		} catch (Exception e) { propagate(e); }
-		super.doInit();
+
+		int rh = super.doInit();
 		position = getInterface().getStageAttribute("Position");
 		normal = getInterface().getStageAttribute("Normal");
 		texCoord = getInterface().getStageAttribute("TexCoord");
@@ -35,6 +36,7 @@ public class DrawProgram extends GLProgram {
 		singleModel = getInterface().getInt("SingleModel");
 		checkerTex = getInterface().getSampler("CheckerTex");
 		modelBlock = getInterface().getUniformBlock("ModelBlock");
+		return rh;
 	}
 
 	public GLVertexAttribute getPosition() { return position; }

@@ -60,7 +60,7 @@ public class T016CartoonTorus extends GL3EventListener {
 		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
 		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
 		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
-		
+
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -68,7 +68,6 @@ public class T016CartoonTorus extends GL3EventListener {
 		getDrawHelper().glFrontFace(torus.getFaceWinding());
 		gl.glCullFace(GL_BACK);
 		gl.glEnable(GL_LINE_SMOOTH);
-		// TODO bug: this command fails with Intel HD4000 cards...
 		gl.glLineWidth(4);
 	}
 

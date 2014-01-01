@@ -2,7 +2,7 @@ package net.tribe7.opengl;
 
 import static javax.media.opengl.GL.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
-
+import static net.tribe7.math.Preconditions.*;
 import java.nio.IntBuffer;
 
 public class GLRenderBuffer extends GLContextBoundResource {
@@ -21,10 +21,10 @@ public class GLRenderBuffer extends GLContextBoundResource {
 	}
 
 	@Override
-	protected void doInit() {
+	protected int doInit() {
 		IntBuffer ib = IntBuffer.allocate(ONE);
 		getGl().glGenRenderbuffers(ONE, ib);
-		setGlResourceHandle(ib.get());
+		return ib.get();
 	}
 
 	@Override
