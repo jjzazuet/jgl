@@ -1,6 +1,5 @@
 package net.tribe7.opengl;
 
-import static java.lang.String.format;
 import static javax.media.opengl.GL.GL_TEXTURE0;
 import static javax.media.opengl.GL.GL_TEXTURE_BINDING_2D;
 import static javax.media.opengl.GL2ES2.GL_MAX_TEXTURE_IMAGE_UNITS;
@@ -114,7 +113,7 @@ public abstract class GLTexture extends GLContextBoundResource {
 		if (log.isDebugEnabled()) {
 			IntBuffer ib = IntBuffer.wrap(new int[1]);
 			getGl().glGetIntegerv(GL_TEXTURE_BINDING_2D, ib);
-			log.debug(format("%s [%s]", resourceMsg("Bound texture"), ib.get()));
+			log.debug("{} [{}]", resourceMsg("Bound texture"), ib.get());
 		}
 	}
 

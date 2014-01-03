@@ -3,7 +3,6 @@ package net.tribe7.opengl;
 import static net.tribe7.time.Scheduler.*;
 import static net.tribe7.common.base.Throwables.*;
 import static net.tribe7.time.util.StateMethod.*;
-import static java.lang.String.format;
 
 import javax.media.opengl.*;
 import net.tribe7.opengl.util.*;
@@ -34,8 +33,8 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 
 		if (scheduler.getFrameTicksPerSecond() == MINUS_ONE) {
 			scheduler.setFrameTicksPerSecond(DEFAULT_FRAME_TICKS_PER_SECOND);
-			log.info(format("Target framerate not set. Using default: [%s]", 
-					scheduler.getFrameTicksPerSecond()));
+			log.info("Target framerate not set. Using default: [{}]", 
+					scheduler.getFrameTicksPerSecond());
 		}
 		scheduler.setStateListener(this);
 
@@ -60,8 +59,8 @@ public abstract class GLScheduledEventListener implements GLEventListener, Rende
 		if (log.isTraceEnabled()) {
 			debugTickCounter++;
 			if (debugTickCounter % 120 == 0) {
-				log.info(format("U:[%s]", getExecutionState().getLogicTimer().getFps()));
-				log.info(format("R:[%s]", getExecutionState().getRenderTimer().getFps()));
+				log.info("U:[{}]", getExecutionState().getLogicTimer().getFps());
+				log.info("R:[{}]", getExecutionState().getRenderTimer().getFps());
 			}
 		}
 

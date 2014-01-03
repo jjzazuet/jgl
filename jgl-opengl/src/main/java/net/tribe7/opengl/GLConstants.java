@@ -64,7 +64,7 @@ public class GLConstants {
 
 	public static final Set<Integer> GL_TEXTURE_PARAMETER = new HashSet<Integer>(
 			Arrays.asList(new Integer[] {
-					// GL_DEPTH_STENCIL_TEXTURE_MODE, TODO undefined constant?
+					GL_DEPTH_STENCIL_TEXTURE_MODE,
 					GL_TEXTURE_BASE_LEVEL, GL_TEXTURE_COMPARE_FUNC,
 					GL_TEXTURE_COMPARE_MODE, GL_TEXTURE_LOD_BIAS,
 					GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER,

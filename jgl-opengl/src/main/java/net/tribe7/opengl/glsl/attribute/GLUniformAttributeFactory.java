@@ -1,7 +1,6 @@
 package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.opengl.glsl.attribute.GLAttributeBuffers.*;
-import static java.lang.String.format;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
 import static net.tribe7.math.Preconditions.checkNoNulls;
@@ -26,7 +25,7 @@ public class GLUniformAttributeFactory {
 		p.checkError();
 
 		if (location < ZERO && !ignoreLocation) {
-			log.warn(format("Invalid uniform attribute location [%s: %s]", ab.getNameValue(), location));
+			log.warn("Invalid uniform attribute location [{}: {}]", ab.getNameValue(), location);
 		} else {
 			at = newInstance(index, ab.getLengthValue(), location, ab.getSizeValue(), ab.getTypeValue(), ab.getNameValue(), p);
 		}

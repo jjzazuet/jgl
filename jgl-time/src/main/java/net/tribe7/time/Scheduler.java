@@ -1,11 +1,8 @@
 package net.tribe7.time;
 
-import static java.lang.String.format;
 import static java.util.concurrent.TimeUnit.*;
 import static net.tribe7.common.base.Preconditions.*;
-
 import java.util.concurrent.TimeUnit;
-
 import net.tribe7.time.RenderStateListener;
 
 /**
@@ -48,7 +45,7 @@ public abstract class Scheduler {
 	}
 
 	protected final void validate() {
-		checkState(getFrameTicksPerSecond() > ZERO, format("Invalid target framerate: [%s]", getFrameTicksPerSecond()));
+		checkState(getFrameTicksPerSecond() > ZERO, "Invalid target framerate: [%s]", getFrameTicksPerSecond());
 		checkState(getFrameDeltaUs() > ZERO, "Target framerate delta not set.");
 		checkNotNull(getStateListener(), "Render state listener not set.");
 		doValidate();

@@ -24,7 +24,7 @@ public class T031MotionBlur extends GL3EventListener {
 
 	private final Cube cube = new Cube();
 	private final GLVertexArray cubeVao = new GLVertexArray();
-	private final GLVertexArray pointCubeVao = new GLVertexArray();
+	private final GLVertexArray arrowVao = new GLVertexArray();
 
 	private final Screen screen = new Screen();
 	private final GLVertexArray screenVao = new GLVertexArray();
@@ -37,7 +37,7 @@ public class T031MotionBlur extends GL3EventListener {
 		GLUFloatMat4 modelMatrices = ub.getInterface().getMat4("ModelMatrices");
 		GLUniformBuffer b = new GLUniformBuffer(ub.getBlockSize());
 
-		initResource(gl, screenVao, cubeVao, pointCubeVao, checkerTex);
+		initResource(gl, screenVao, cubeVao, arrowVao, checkerTex);
 
 		checkerTex.bind(); {
 			checkerTex.getImage().setFrom(checkerImage);
@@ -62,8 +62,8 @@ public class T031MotionBlur extends GL3EventListener {
 			drawProg.getPosition().set(cubeVao, cubeVertices, false, 0).enable();
 			drawProg.getNormal().set(cubeVao, cubeNormals, false, 0).enable();
 			drawProg.getTexCoord().set(cubeVao, cubeTexCoords, false, 0).enable();
-			drawProg.getPosition().set(pointCubeVao, cubeVertices, false, 0).enable();
-			drawProg.getNormal().set(pointCubeVao, cubeNormals, false, 0).enable();
+			drawProg.getPosition().set(arrowVao, cubeVertices, false, 0).enable();
+			drawProg.getNormal().set(arrowVao, cubeNormals, false, 0).enable();
 			drawProg.getCheckerTex().set(checkerTex);
 			b.serialize(
 					modelMatrices,

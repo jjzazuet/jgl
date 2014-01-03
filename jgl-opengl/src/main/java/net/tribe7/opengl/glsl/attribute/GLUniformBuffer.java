@@ -2,6 +2,7 @@ package net.tribe7.opengl.glsl.attribute;
 
 import static net.tribe7.math.Preconditions.*;
 import static net.tribe7.common.base.Preconditions.*;
+
 import java.nio.ByteBuffer;
 import net.tribe7.opengl.GLBuffer;
 

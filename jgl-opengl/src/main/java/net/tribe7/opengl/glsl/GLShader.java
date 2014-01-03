@@ -1,7 +1,7 @@
 package net.tribe7.opengl.glsl;
 
+import static net.tribe7.opengl.platform.GLIOUtils.*;
 import static net.tribe7.opengl.util.GLBufferUtils.*;
-import static net.tribe7.opengl.util.GLIOUtils.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL2.*;
@@ -11,6 +11,7 @@ import static net.tribe7.math.Preconditions.*;
 import java.io.File;
 import java.net.*;
 import java.nio.*;
+
 import net.tribe7.opengl.GLContextBoundResource;
 import net.tribe7.common.base.Charsets;
 

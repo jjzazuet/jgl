@@ -1,7 +1,6 @@
-package net.tribe7.opengl.util;
+package net.tribe7.opengl.platform;
 
-import static java.lang.String.format;
-import static net.tribe7.opengl.util.GLIOUtils.*;
+import static net.tribe7.opengl.platform.GLIOUtils.*;
 
 import java.io.File;
 import java.util.*;
@@ -9,7 +8,9 @@ import java.util.Map.Entry;
 import java.util.jar.*;
 
 import jogamp.common.os.PlatformPropsImpl;
+
 import org.slf4j.*;
+
 import com.jogamp.common.jvm.JNILibLoaderBase.LoaderAction;
 
 public class GLBootstrap implements LoaderAction {
@@ -28,8 +29,8 @@ public class GLBootstrap implements LoaderAction {
 
 		System.setProperty("jogamp.gluegen.UseTempJarCache", "false");
 
-		log.info(format("Initializing native JOGL jar dependencies for platform [%s]. Temp jar cache disabled.", 
-				PlatformPropsImpl.os_and_arch));
+		log.info("Initializing native JOGL jar dependencies for platform [{}]. Temp jar cache disabled.", 
+				PlatformPropsImpl.os_and_arch);
 
 		String nativeJarName = String.format("%s-%s", NATIVES, PlatformPropsImpl.os_and_arch);
 		String [] classpathEntries = System.getProperty(JAVA_CLASSPATH).split(System.getProperty(JAVA_SEPARATOR));
@@ -39,7 +40,7 @@ public class GLBootstrap implements LoaderAction {
 			if (jarPath.contains(nativeJarName)) {
 
 				if (log.isDebugEnabled()) {
-					log.debug(format("Applicable platform jar: [%s]", jarPath));
+					log.debug("Applicable platform jar: [{}]", jarPath);
 				}
 
 				JarFile jf = new JarFile(jarPath);
@@ -53,17 +54,17 @@ public class GLBootstrap implements LoaderAction {
 
 						if (!je.isDirectory() && !je.getName().contains(JAVA_META_INF)) {
 							if (log.isDebugEnabled()) {
-								log.debug(format("Mapping jar entry [%s] -> [%s]", je.getName(), jarPath));
+								log.debug("Mapping jar entry [{}] -> [{}]", je.getName(), jarPath);
 							}
 							if (log.isDebugEnabled() && platformNativeIndex.containsKey(je.getName())) {
-								log.debug(format("Duplicate jar entry: [%s]", je.getName()));
-								log.debug(format("Mapped at: [%s]", platformNativeIndex.get(je.getName())));
-								log.debug(format("Also at: [%s]", jarPath));
+								log.debug("Duplicate jar entry: [{}]", je.getName());
+								log.debug("Mapped at: [{}]", platformNativeIndex.get(je.getName()));
+								log.debug("Also at: [{}]", jarPath);
 							}
 							platformNativeIndex.put(je.getName(), jarPath);
 						}
 					}
-				} finally { jf.close(); }
+				} finally { closeJar(jf); }
 			}
 		}
 	}
@@ -74,33 +75,23 @@ public class GLBootstrap implements LoaderAction {
 			for (Entry<String, String> nativeEntry : platformNativeIndex.entrySet()) {
 				if (nativeEntry.getKey().contains(libname)) {
 					if (log.isDebugEnabled()) {
-						log.debug(format("Loading mapped entry: [%s] [%s] [%s]", 
-								libname, nativeEntry.getKey(), nativeEntry.getValue()));
+						log.debug("Loading mapped entry: [{}] [{}] [{}]", 
+								libname, nativeEntry.getKey(), nativeEntry.getValue());
 					}
-
-					JarFile jf = new JarFile(nativeEntry.getValue());
-					JarEntry je = jf.getJarEntry(nativeEntry.getKey());
-					File tempDir = new File(System.getProperty(JAVA_TMP_DIR));
-					File temp = new File(tempDir, format("%s.jni", libname));
-
-					try {
-						if (log.isDebugEnabled()) {
-							log.debug(format("Extracting to file [%s]", temp.getAbsolutePath()));
-						}
-						if (temp.createNewFile()) {
-							copyToFile(jf.getInputStream(je), temp);
-						}
-						System.load(temp.getAbsolutePath());
-						return true;
-					} finally { jf.close(); }
+					File nativeLibCopy = extractJarEntry(
+							nativeEntry.getValue(), 
+							nativeEntry.getKey(), 
+							System.getProperty(JAVA_TMP_DIR), String.format("%s.jni", libname));
+					System.load(nativeLibCopy.getAbsolutePath());
+					return true;
 				}
 			}
 		} catch (Exception e) {
-			log.error(format("Unable to load native library [%s]", libname), e);
+			log.error("Unable to load native library [{}] - {}", libname, e);
 		}
 
 		if (log.isDebugEnabled()) {
-			log.debug(format("No mapped library match for [%s]", libname));
+			log.debug("No mapped library match for [{}]", libname);
 		}
 		return false;
 	}
