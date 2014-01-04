@@ -8,14 +8,11 @@ import static net.tribe7.opengl.GLBufferFactory.*;
 import static net.tribe7.opengl.util.GLSLUtils.*;
 
 import javax.media.opengl.GL3;
-
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Sphere;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -28,15 +25,9 @@ public class T013SpiralSphere extends GL3EventListener {
 	private GLBuffer sphereIndices;
 	private GLProgram p;
 	private GLVertexArray sphereVao = new GLVertexArray();
-	private BufferedMatrix4 projMat = new BufferedMatrix4();
-	private BufferedMatrix4 cameraMat = new BufferedMatrix4();
-
 	private ModelTransform modelTransform = new ModelTransform();
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
-	
-	private Angle fov = new Angle();
-	private Vector3 eye = new Vector3(2.5, 3.5, 2.5);
-	private Vector3 target = new Vector3();
+	private GLPointCamera camera = new GLPointCamera(70);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -56,7 +47,8 @@ public class T013SpiralSphere extends GL3EventListener {
 		uCameraMatrix = p.getInterface().getMat4("CameraMatrix");
 		uModelMatrix = p.getInterface().getMat4("ModelMatrix");
 		uProjectionMatrix = p.getInterface().getMat4("ProjectionMatrix");
-		
+	
+		camera.getPosition().set(2.5,  3.5,  2.5);
 		gl.glClearColor(0.8f, 0.8f, 0.7f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glEnable(GL_DEPTH_TEST);
@@ -74,9 +66,9 @@ public class T013SpiralSphere extends GL3EventListener {
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 
 		double time = currentState.getElapsedTimeSeconds();
-		
-		lookAt(cameraMat, eye, target);
-		uCameraMatrix.set(cameraMat);
+
+		lookAt(camera.getPosition(), camera.getTarget(), camera.getMatrix());
+		uCameraMatrix.set(camera.getMatrix());
 		modelTransform.getTranslation().setY(Math.sqrt(1 + sineWave(time / 2.0)));
 		modelTransform.getRotationY().setDegrees(time * 180);
 		uModelMatrix.set(modelTransform.getModelMatrix());
@@ -85,7 +77,8 @@ public class T013SpiralSphere extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 70);
-		uProjectionMatrix.set(projMat);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 70);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

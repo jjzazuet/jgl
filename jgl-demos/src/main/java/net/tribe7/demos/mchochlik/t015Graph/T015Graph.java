@@ -16,10 +16,9 @@ import javax.media.opengl.GL3;
 
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.bezier.BezierCubicLoop;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -48,16 +47,11 @@ public class T015Graph extends GL3EventListener {
 			new Vector3(-10.0f,   0.0f, -10.0f)
 	);
 
-	private Angle fov = new Angle();
-
 	private GLProgram p;
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
 	private GLVertexArray graphVao = new GLVertexArray();
 	private GLBuffer positionsBuffer, edgeIndices;
-
-	private BufferedMatrix4 projMat = new BufferedMatrix4();
-	private BufferedMatrix4 camMat = new BufferedMatrix4();
-	private Vector3 cameraPoint = new Vector3(), cameraTarget = new Vector3();
+	private GLPointCamera camera = new GLPointCamera(70);
 
 	private double nrand() {
 		return 2 * (Math.random() - 0.5);
@@ -170,16 +164,17 @@ public class T015Graph extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
-		cameraPath.pointAt(time / 9, cameraPoint);
-		cameraTargetPath.pointAt(time / 7, cameraTarget);
-		lookAt(camMat, cameraPoint, cameraTarget);
-		uCameraMatrix.set(camMat);
+		cameraPath.pointAt(time / 9, camera.getPosition());
+		cameraTargetPath.pointAt(time / 7, camera.getTarget());
+		lookAt(camera.getPosition(), camera.getTarget(), camera.getMatrix());
+		uCameraMatrix.set(camera.getMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMat, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 200);
-		uProjectionMatrix.set(projMat);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 200);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

@@ -14,9 +14,9 @@ import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.geom.transform.ModelTransform;
 import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -27,24 +27,18 @@ import net.tribe7.time.util.ExecutionState;
 public class T022ParallaxMapping extends GL3EventListener {
 
 	private Cube cube = new Cube();
-	
+
 	private GLProgram p;
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVertices;
 	private GLTexture2D bumpTexture = new GLTexture2D();
 
-	private Angle fov = new Angle();
-	private Angle elevation = new Angle();
-	private Angle azimuth = new Angle();
-	private Angle lightAzimuth = new Angle();
-	
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
 	private GLUFloatVec3 uLightPos;
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private ModelTransform modelTransform = new ModelTransform();
-	private Vector3 camTarget = new Vector3();
+	private Angle lightAzimuth = new Angle();
 	private Vector3 lightPos = new Vector3();
+	private ModelTransform modelTransform = new ModelTransform();
+	private GLPointCamera camera = new GLPointCamera(54);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -116,10 +110,10 @@ public class T022ParallaxMapping extends GL3EventListener {
 		scale(lightPos, 2.0);
 		uLightPos.set(lightPos);
 
-		orbit(cameraMatrix, camTarget, 3.0, 
-				azimuth.setDegrees(-45), 
-				elevation.setDegrees(sineWave(time / 30.0) * 70));
-		uCameraMatrix.set(cameraMatrix);
+		orbit(camera.getMatrix(), camera.getTarget(), 3.0, 
+				camera.getAzimuth().setDegrees(-45), 
+				camera.getElevation().setDegrees(sineWave(time / 30.0) * 70));
+		uCameraMatrix.set(camera.getMatrix());
 
 		double circle = -time * 0.025;
 		modelTransform.getRotationX().setFullCircles(circle);
@@ -131,7 +125,7 @@ public class T022ParallaxMapping extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMatrix, fov.setDegrees(54), newViewport.aspectRatio, 1, 10);
-		uProjectionMatrix.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 1, 10);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

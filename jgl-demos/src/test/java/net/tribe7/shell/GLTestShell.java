@@ -4,11 +4,9 @@ import static net.tribe7.common.base.Preconditions.*;
 import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
-
 import net.tribe7.demos.mchochlik.t025RecursiveTexture.T025RecursiveTexture;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.platform.GLBootstrap;
-
 import com.jogamp.common.jvm.JNILibLoaderBase;
 
 public class GLTestShell {

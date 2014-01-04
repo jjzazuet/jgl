@@ -12,10 +12,8 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -30,16 +28,9 @@ public class T013StripedCubes extends GL3EventListener {
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 
-	private Angle fov = new Angle();
-	private Angle azimuth = new Angle();
-	private Angle elevation = new Angle();
-	private Vector3 origin = new Vector3();
-
-	private BufferedMatrix4 projMat = new BufferedMatrix4();
-	private BufferedMatrix4 camMat = new BufferedMatrix4();
-
 	private ModelTransform cube1Trans = new ModelTransform();
 	private ModelTransform cube2Trans = new ModelTransform();
+	private GLPointCamera camera = new GLPointCamera(60);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -65,13 +56,12 @@ public class T013StripedCubes extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-	
+
 		getDrawHelper().glClearColor().glClearDepth();
 
 		cubeVao.bind();
 		uModelMatrix.set(cube1Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
-
 		uModelMatrix.set(cube2Trans.getModelMatrix());
 		gl.glDrawArrays(GL_TRIANGLES, 0, cubeVerts.getRawBuffer().capacity());
 		cubeVao.unbind();
@@ -79,13 +69,13 @@ public class T013StripedCubes extends GL3EventListener {
 
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
-		
+
 		double time = currentState.getElapsedTimeSeconds();
 
-		azimuth.setDegrees(time * 15);
-		elevation.setDegrees(sineWave(time / 6.3) * 45);
-		orbit(camMat, origin, 3.5, azimuth, elevation);
-		uCameraMatrix.set(camMat);
+		camera.getAzimuth().setDegrees(time * 15);
+		camera.getElevation().setDegrees(sineWave(time / 6.3) * 45);
+		orbit(camera.getMatrix(), camera.getTarget(), 3.5, camera.getAzimuth(), camera.getElevation());
+		uCameraMatrix.set(camera.getMatrix());
 		cube2Trans.getTranslation().set(1, 0, 0);
 		cube2Trans.getRotationY().setDegrees(time * 90);
 		cube1Trans.getTranslation().set(-1, 0, 0);
@@ -95,7 +85,8 @@ public class T013StripedCubes extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMat, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 30);
-		uProjectionMatrix.set(projMat);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 30);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

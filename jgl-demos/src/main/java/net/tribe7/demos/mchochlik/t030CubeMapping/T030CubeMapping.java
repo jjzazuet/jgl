@@ -9,14 +9,15 @@ import static net.tribe7.math.matrix.Matrix4OpsCam.*;
 import static net.tribe7.math.angle.AngleOps.*;
 
 import java.util.List;
+
 import javax.media.opengl.GL3;
+
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.bezier.BezierCubicLoop;
 import net.tribe7.geom.solid.*;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.*;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -52,11 +53,8 @@ public class T030CubeMapping extends GL3EventListener {
 	private GLUFloatMat4 sphereProjectionMatrix, sphereCameraMatrix;
 	private GLUFloatVec4 sphereLightPos;
 	private GLUFloat sphereTime;
-
-	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private Angle fov = new Angle(), azimuth = new Angle(), elevation = new Angle();
-	private Vector3 cameraTarget = new Vector3(), lightPoint = new Vector3();
+	private GLPointCamera camera = new GLPointCamera();
+	private Vector3 lightPoint = new Vector3();
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -103,10 +101,10 @@ public class T030CubeMapping extends GL3EventListener {
 		GLBuffer cubeNormals = buffer(cube.getNormals(), gl, GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
 		cubeMapProg.bind(); {
-			perspectiveX(projMatrix, fov.setDegrees(90), 1.0, 1, 20);
+			perspectiveX(camera.getProjection(), camera.getFov().setDegrees(90), 1.0, 1, 20);
 			cubeMapProg.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerticesGl, false, 0).enable();
 			cubeMapProg.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			cubeMapProg.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
+			cubeMapProg.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
 			cmLightPos = cubeMapProg.getInterface().getVec4("LightPos");
 			cmOffset = cubeMapProg.getInterface().getVec3("Offset");
 		} cubeMapProg.unbind();
@@ -176,24 +174,24 @@ public class T030CubeMapping extends GL3EventListener {
 		lightPath.pointAt(time/10.0, lightPoint);
 		lightPos.set(lightPoint);
 		lightPos.setW(1.0);
-		perspectiveX(projMatrix, fov.setDegrees(70), (double) width/height, 1, 20);
-		orbit(camMatrix, cameraTarget, 4.0, 
-				azimuth.setFullCircles(time / 16.0),
-				elevation.setDegrees(sineWave(time / 20.0) * 30));
+		perspectiveX(camera.getProjection(), camera.getFov().setDegrees(70), (double) width/height, 1, 20);
+		orbit(camera.getMatrix(), camera.getTarget(), 4.0,
+				camera.getAzimuth().setFullCircles(time / 16.0),
+				camera.getElevation().setDegrees(sineWave(time / 20.0) * 30));
 
 		cubeMapProg.bind(); {
 			cmLightPos.set(lightPos);
 		} cubeMapProg.unbind();
 
 		cubeProg.bind(); {
-			cubeProjectionMatrix.set(projMatrix);
-			cubeCameraMatrix.set(camMatrix);
+			cubeProjectionMatrix.set(camera.getProjection());
+			cubeCameraMatrix.set(camera.getMatrix());
 			cubeLightPos.set(lightPos);
 		} cubeProg.unbind();
 
 		sphereProg.bind(); {
-			sphereProjectionMatrix.set(projMatrix);
-			sphereCameraMatrix.set(camMatrix);
+			sphereProjectionMatrix.set(camera.getProjection());
+			sphereCameraMatrix.set(camera.getMatrix());
 			sphereLightPos.set(lightPos);
 			sphereTime.set((float) time);
 		} sphereProg.unbind();

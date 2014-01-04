@@ -13,10 +13,8 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.glsl.attribute.GLUSampler;
@@ -38,13 +36,9 @@ public class T025RecursiveTexture extends GL3EventListener {
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 	private GLUSampler uTexUnit;
 
-	private Angle fov = new Angle();
-	private Angle elevation = new Angle();
-	private Angle azimuth = new Angle();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
+	/* TODO possibly, two cameras might help split the render perspective logic to update() as well. */
+	private GLPointCamera camera = new GLPointCamera(); 
 	private ModelTransform cubeTransform = new ModelTransform();
-	private Vector3 camTarget = new Vector3();
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -110,16 +104,16 @@ public class T025RecursiveTexture extends GL3EventListener {
 
 		uTexUnit.set(fbos[front].getColorAttachment());
 
-		orbit(cameraMatrix, camTarget, 3.0, 
-				azimuth.setDegrees(time * 35), 
-				elevation.setDegrees(sineWave(time / 20.0) * 60));
-		uCameraMatrix.set(cameraMatrix);
+		orbit(camera.getMatrix(), camera.getTarget(), 3.0, 
+				camera.getAzimuth().setDegrees(time * 35), 
+				camera.getElevation().setDegrees(sineWave(time / 20.0) * 60));
+		uCameraMatrix.set(camera.getMatrix());
 
 		cubeTransform.getRotationX().setFullCircles(time * 0.25);
 		uModelMatrix.set(cubeTransform.getModelMatrix());
 
-		perspectiveX(projMatrix, fov.setDegrees(40), 1.0, 1, 40);
-		uProjectionMatrix.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov().setDegrees(40), 1.0, 1, 40);
+		uProjectionMatrix.set(camera.getProjection());
 
 		fbos[front].getColorAttachment().bind(); {
 
@@ -136,13 +130,13 @@ public class T025RecursiveTexture extends GL3EventListener {
 			getDrawHelper().glClearColor().glClearDepth();
 			time += 0.3;
 
-			orbit(cameraMatrix, camTarget, 3.0, 
-					azimuth.setDegrees(time * 35), 
-					elevation.setDegrees(sineWave(time / 20.0) * 60));
-			uCameraMatrix.set(cameraMatrix);
+			orbit(camera.getMatrix(), camera.getTarget(), 3.0, 
+					camera.getAzimuth().setDegrees(time * 35), 
+					camera.getElevation().setDegrees(sineWave(time / 20.0) * 60));
+			uCameraMatrix.set(camera.getMatrix());
 
-			perspectiveX(projMatrix, fov.setDegrees(75), (double) width / height, 1, 40);
-			uProjectionMatrix.set(projMatrix);
+			perspectiveX(camera.getProjection(), camera.getFov().setDegrees(75), (double) width / height, 1, 40);
+			uProjectionMatrix.set(camera.getProjection());
 
 			cubeVao.bind();
 			getDrawHelper().glFrontFace(cube.getFaceWinding());

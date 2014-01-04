@@ -13,10 +13,8 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.*;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.*;
 import net.tribe7.opengl.util.*;
 import net.tribe7.time.util.ExecutionState;
@@ -37,14 +35,9 @@ public class T025RenderedTexture extends GL3EventListener {
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLVertexArray torusVao = new GLVertexArray();
 
-	private Angle fov = new Angle();
-	private Angle elevation = new Angle();
-	private Angle azimuth = new Angle();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
 	private ModelTransform torusTransform = new ModelTransform();
 	private ModelTransform cubeTransform = new ModelTransform();
-	private Vector3 camTarget = new Vector3();
+	private GLPointCamera camera = new GLPointCamera();
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
@@ -98,8 +91,8 @@ public class T025RenderedTexture extends GL3EventListener {
 			torusProgram.getInterface().getStageAttribute("Normal").set(torusVao, torusNormals, false, 0).enable();
 			torusProgram.getInterface().getStageAttribute("TexCoord").set(torusVao, torusTexCoords, false, 0).enable();
 			torusProgram.getInterface().getVec3("LightPos").set(2.0f, 3.0f, 4.0f);
-			perspectiveX(projMatrix, fov.setDegrees(60), 1.0, 1, 30);
-			torusProgram.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
+			perspectiveX(camera.getProjection(), camera.getFov().setDegrees(60), 1.0, 1, 30);
+			torusProgram.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
 		}
 		torusProgram.unbind();
 
@@ -146,10 +139,10 @@ public class T025RenderedTexture extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 
 		torusProgram.bind(); {
-			orbit(cameraMatrix, camTarget, 3.5, 
-					azimuth.setDegrees(time * 25), 
-					elevation.setDegrees(sineWave(time / 30.0) * 90));
-			torusProgram.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			orbit(camera.getMatrix(), camera.getTarget(), 3.5, 
+					camera.getAzimuth().setDegrees(time * 25), 
+					camera.getElevation().setDegrees(sineWave(time / 30.0) * 90));
+			torusProgram.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 			double rotation = time * 0.25;
 			torusTransform.getRotationX().setFullCircles(rotation);
 			torusTransform.getRotationY().setFullCircles(rotation);
@@ -158,13 +151,13 @@ public class T025RenderedTexture extends GL3EventListener {
 		} torusProgram.unbind();
 
 		cubeProgram.bind(); {
-			perspectiveX(projMatrix, fov.setDegrees(70), 
+			perspectiveX(camera.getProjection(), camera.getFov().setDegrees(70), 
 					(double) width / height, 1, 30);
-			cubeProgram.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
-			orbit(cameraMatrix, camTarget, 3.0, 
-					azimuth.setDegrees(time * 35), 
-					elevation.setDegrees(sineWave(time / 20.0) * 60));
-			cubeProgram.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			cubeProgram.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
+			orbit(camera.getMatrix(), camera.getTarget(), 3.0, 
+					camera.getAzimuth().setDegrees(time * 35), 
+					camera.getElevation().setDegrees(sineWave(time / 20.0) * 60));
+			cubeProgram.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 			cubeTransform.getRotationX().setFullCircles(time * 0.25);
 			cubeProgram.getInterface().getMat4("ModelMatrix").set(cubeTransform.getModelMatrix());
 		} cubeProgram.unbind();

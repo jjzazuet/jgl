@@ -12,9 +12,8 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -27,15 +26,12 @@ public class T015ShadedCube extends GL3EventListener {
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVertices, cubeNormals;
 	private GLProgram p;
-	
+
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix;
-	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private Angle fov = new Angle();
 	private Angle azimuth = new Angle();
 	private Angle elevation = new Angle();
-	private Vector3 orbitTarget = new Vector3();
-	
+	private GLPointCamera camera = new GLPointCamera(60);
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -69,16 +65,17 @@ public class T015ShadedCube extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
-		orbit(camMatrix, orbitTarget, 3, 
+		orbit(camera.getMatrix(), camera.getTarget(), 3, 
 				azimuth.setDegrees(time * 135), 
 				elevation.setDegrees(sineWave(time / 20) * 90));
-		uCameraMatrix.set(camMatrix);
+		uCameraMatrix.set(camera.getMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMatrix, fov.setDegrees(60), newViewport.width / newViewport.height, 1, 20);
-		uProjectionMatrix.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 20);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

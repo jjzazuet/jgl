@@ -12,10 +12,8 @@ import javax.media.opengl.GL3;
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
-import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -27,23 +25,17 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	private int instructionCount = 32;
 	private Cube cube = new Cube();
 	private ModelTransform cubeTransform = new ModelTransform();
-	
+
 	private GLProgram p;
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVertices;
 	private GLUInt uFrontFacing;
 	private GLUFloatMat4 uCameraMatrix, uModelMatrix, uProjectionMatrix;
-	
-	private BufferedMatrix4 camMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private Vector3 camTarget = new Vector3();
-	private Angle azimuth = new Angle();
-	private Angle elevation = new Angle();
-	private Angle fov = new Angle().setDegrees(70);
+	private GLPointCamera camera = new GLPointCamera(70);
 
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
-		
+
 		p = loadProgram("/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.vs", 
 				"/net/tribe7/demos/mchochlik/t019SubsurfaceScattering/subsurfaceScattering.fs", gl);
 
@@ -55,7 +47,6 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 
 		p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVertices, false, 0).enable();
 		p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-
 		p.getInterface().getVec3("LightPos").set(-3.0f, -2.0f, -3.0f);
 		p.getInterface().getInt("InstCount").set(instructionCount);
 
@@ -89,9 +80,10 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
-		orbit(camMatrix, camTarget, 3, azimuth.setDegrees(time * 50), 
-				elevation.setDegrees(sineWave(time / 16.0) * 80));
-		uCameraMatrix.set(camMatrix);
+		orbit(camera.getMatrix(), camera.getTarget(), 3, 
+				camera.getAzimuth().setDegrees(time * 50), 
+				camera.getElevation().setDegrees(sineWave(time / 16.0) * 80));
+		uCameraMatrix.set(camera.getMatrix());
 		cubeTransform.getRotationY().setDegrees(time * 25);
 		uModelMatrix.set(cubeTransform.getModelMatrix());
 	}
@@ -99,7 +91,7 @@ public class T019SubsurfaceScattering extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMatrix, fov, newViewport.aspectRatio, 1, 20);
-		uProjectionMatrix.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 1, 20);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }

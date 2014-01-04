@@ -11,10 +11,9 @@ import javax.media.opengl.GL3;
 
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -28,15 +27,10 @@ public class T012CheckerCube extends GL3EventListener {
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVerts;
 	private GLBuffer cubeTexCoords;
-	
-	private Angle fov = new Angle();
-	private Angle azimuth = new Angle();
-	private Angle elevation = new Angle();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
+	private GLPointCamera camera = new GLPointCamera(70);
 	private GLUFloatMat4 cameraMatrixAttr;
 	private GLUFloatMat4 projectionMatrixAttr;
-	
+
 	@Override
 	protected void doInit(GL3 gl) throws Exception {
 
@@ -70,16 +64,17 @@ public class T012CheckerCube extends GL3EventListener {
 
 		double time = currentState.getElapsedTimeSeconds();
 
-		azimuth.setDegrees(time * 135);
-		elevation.setDegrees(sineWave(time / 20) * 90);
-		orbit(cameraMatrix, new Vector3(), 2.7, azimuth, elevation);
-		cameraMatrixAttr.set(cameraMatrix);
+		camera.getAzimuth().setDegrees(time * 135);
+		camera.getElevation().setDegrees(sineWave(time / 20) * 90);
+		orbit(camera.getMatrix(), new Vector3(), 2.7, camera.getAzimuth(), camera.getElevation());
+		cameraMatrixAttr.set(camera.getMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMatrix, fov.setDegrees(70), newViewport.width / newViewport.height, 1, 20);
-		projectionMatrixAttr.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 20);
+		projectionMatrixAttr.set(camera.getProjection());
 	}
 }

@@ -9,14 +9,13 @@ import static net.tribe7.math.matrix.Matrix4OpsCam.*;
 import static net.tribe7.math.angle.AngleOps.*;
 
 import javax.media.opengl.GL3;
-
 import net.tribe7.geom.io.GeometryBuffer;
 import net.tribe7.geom.solid.Torus;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
@@ -25,12 +24,8 @@ public class T026StencilShadow extends GL3EventListener {
 
 	private Torus torus = new Torus(1.0, 0.7, 72, 48);
 	private ModelTransform modelTransform = new ModelTransform();
-
-	private BufferedMatrix4 projectionMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
 	private BufferedMatrix4 identity = new BufferedMatrix4();
-	private Angle fov = new Angle().setDegrees(70), azimuth = new Angle(), elevation = new Angle();
-	private Vector3 cameraTarget = new Vector3();
+	private GLPointCamera camera = new GLPointCamera(70);
 
 	private GeometryBuffer<Float> planeVerts = new GeometryBuffer<Float>(3,
 			new Float [] {
@@ -102,9 +97,9 @@ public class T026StencilShadow extends GL3EventListener {
 		double time = currentState.getElapsedTimeSeconds();
 
 		getDrawHelper().glClearColor().glClearDepth().glClearStencil();
-		orbit(cameraMatrix, cameraTarget, 9.0, 
-				azimuth.setFullCircles(time * 0.1), 
-				elevation.setDegrees(15 + (-sineWave(0.25+time/12.5)+1.0)* 0.5 * 75));
+		orbit(camera.getMatrix(), camera.getTarget(), 9.0, 
+				camera.getAzimuth().setFullCircles(time * 0.1), 
+				camera.getElevation().setDegrees(15 + (-sineWave(0.25+time/12.5)+1.0)* 0.5 * 75));
 
 		double rot = time * 0.2;
 		modelTransform.getTranslation().set(0.0f, 2.5f, 0.0);
@@ -120,7 +115,7 @@ public class T026StencilShadow extends GL3EventListener {
 		gl.glDisable(GL_STENCIL_TEST);
 
 		objectProg.bind(); {
-			objectProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			objectProg.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 			objectProg.getInterface().getFloat("LightMult").set(0.2f);
 			planeVao.bind(); {
 				objectProg.getInterface().getMat4("ModelMatrix").set(identity);
@@ -141,7 +136,7 @@ public class T026StencilShadow extends GL3EventListener {
 		gl.glStencilOpSeparate(GL_BACK, GL_KEEP, GL_KEEP, GL_DECR);
 
 		shadowProg.bind(); {
-			shadowProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			shadowProg.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 			shadowProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
 			torusVao.bind(); {
 				gl.glCullFace(GL_BACK);
@@ -182,12 +177,12 @@ public class T026StencilShadow extends GL3EventListener {
 		int width = (int) newViewport.width, height = (int) newViewport.height;
 
 		getDrawHelper().glViewPort(width, height);
-		perspectiveX(projectionMatrix, fov, newViewport.aspectRatio, 1, 30);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 1, 30);
 		objectProg.bind();
-		objectProg.getInterface().getMat4("ProjectionMatrix").set(projectionMatrix);
+		objectProg.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
 		objectProg.unbind();
 		shadowProg.bind();
-		shadowProg.getInterface().getMat4("ProjectionMatrix").set(projectionMatrix);
+		shadowProg.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
 		shadowProg.unbind();
 	}
 }

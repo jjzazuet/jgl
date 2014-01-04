@@ -13,7 +13,7 @@ import net.tribe7.math.vector.Vector3;
 
 public class Matrix4OpsCam {
 
-	public static void lookAt(Matrix4 dst, Vector3 eye, Vector3 target) {
+	public static void lookAt(Vector3 eye, Vector3 target, Matrix4 dst) {
 
 		checkNoNulls(eye, target);
 		checkArgument(!eye.equals(target));

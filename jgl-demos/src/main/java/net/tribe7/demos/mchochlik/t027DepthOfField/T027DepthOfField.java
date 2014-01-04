@@ -8,15 +8,13 @@ import static net.tribe7.math.matrix.Matrix4OpsCam.*;
 import static net.tribe7.math.angle.AngleOps.*;
 
 import java.util.List;
-
 import javax.media.opengl.GL3;
-
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
-import net.tribe7.math.angle.Angle;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
@@ -28,11 +26,8 @@ public class T027DepthOfField extends GL3EventListener {
 	private Cube cube = new Cube();
 	private List<BufferedMatrix4> cubeMatrices = new MakeCubeMatrices().apply(100, 10.0f);
 
-	private Vector3 cameraTarget = new Vector3(), ambientColor = new Vector3(), diffuseColor = new Vector3();
-	private Angle fov = new Angle(), azimuth = new Angle(), elevation = new Angle();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-
+	private Vector3 ambientColor = new Vector3(), diffuseColor = new Vector3();
+	private GLPointCamera camera = new GLPointCamera(65);
 	private GLProgram mainProg, dofProg;
 	private GLTextureFrameBuffer fbo = new GLTextureFrameBuffer();
 	private GLVertexArray cubeVao = new GLVertexArray(), screenVao = new GLVertexArray();
@@ -129,12 +124,12 @@ public class T027DepthOfField extends GL3EventListener {
 
 		double time = currentState.getElapsedTimeSeconds();
 
-		orbit(cameraMatrix, cameraTarget, 20.5, 
-				azimuth.setFullCircles(time / 20.0), 
-				elevation.setDegrees(sineWave(time / 25.0) * 30));
+		orbit(camera.getMatrix(), camera.getTarget(), 20.5, 
+				camera.getAzimuth().setFullCircles(time / 20.0), 
+				camera.getElevation().setDegrees(sineWave(time / 25.0) * 30));
 
 		mainProg.bind(); {
-			mainProg.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			mainProg.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 		} mainProg.unbind();
 
 		dofProg.bind(); {
@@ -148,7 +143,7 @@ public class T027DepthOfField extends GL3EventListener {
 		int width = (int) newViewport.width;
 		int height = (int) newViewport.height;
 		getDrawHelper().glViewPort(width, height);
-		perspectiveX(projMatrix, fov.setDegrees(65), newViewport.aspectRatio, 4, 50);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 4, 50);
 
 		dofProg.bind(); {
 			dofProg.getInterface().getInt("ViewportWidth").set(width);
@@ -156,7 +151,7 @@ public class T027DepthOfField extends GL3EventListener {
 		} dofProg.unbind();
 
 		mainProg.bind(); {
-			mainProg.getInterface().getMat4("ProjectionMatrix").set(projMatrix);
+			mainProg.getInterface().getMat4("ProjectionMatrix").set(camera.getProjection());
 		} mainProg.unbind();
 	}
 }

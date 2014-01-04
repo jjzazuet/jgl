@@ -10,10 +10,9 @@ import javax.media.opengl.GL3;
 
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Cube;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
@@ -26,10 +25,7 @@ public class T010RgbCube extends GL3EventListener {
 	private Cube cube = new Cube();
 	private GLVertexArray cubeVao = new GLVertexArray();
 	private GLBuffer cubeVerts, cubeNormals;
-	
-	private Angle xFov = new Angle();
-	private BufferedMatrix4 cameraMatrix = new BufferedMatrix4();
-	private BufferedMatrix4 projMatrix = new BufferedMatrix4();
+	private GLPointCamera camera = new GLPointCamera(48);
 	private GLUFloatMat4 projectionMatrixAttr;
 
 	@Override
@@ -45,8 +41,8 @@ public class T010RgbCube extends GL3EventListener {
 			projectionMatrixAttr = p.getInterface().getMat4("ProjectionMatrix");
 			p.getInterface().getStageAttribute("Position").set(cubeVao, cubeVerts, false, 0).enable();
 			p.getInterface().getStageAttribute("Normal").set(cubeVao, cubeNormals, false, 0).enable();
-			lookAt(cameraMatrix, new Vector3(2, 2, 2), new Vector3());
-			p.getInterface().getMat4("CameraMatrix").set(cameraMatrix);
+			lookAt(new Vector3(2, 2, 2), new Vector3(), camera.getMatrix());
+			p.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 		}
 
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
@@ -68,8 +64,7 @@ public class T010RgbCube extends GL3EventListener {
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		xFov.setDegrees(48);
-		perspectiveX(projMatrix, xFov, newViewport.aspectRatio, 1, 100);
-		projectionMatrixAttr.set(projMatrix);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 1, 100);
+		projectionMatrixAttr.set(camera.getProjection());
 	}
 }

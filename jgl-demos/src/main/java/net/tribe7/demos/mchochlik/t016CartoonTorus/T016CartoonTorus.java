@@ -9,14 +9,12 @@ import static javax.media.opengl.GL.*;
 import static javax.media.opengl.GL3.*;
 
 import javax.media.opengl.GL3;
-
 import net.tribe7.demos.WebstartDemo;
 import net.tribe7.geom.solid.Torus;
 import net.tribe7.geom.transform.ModelTransform;
-import net.tribe7.math.angle.Angle;
-import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.math.vector.Vector3;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.GLProgram;
 import net.tribe7.opengl.glsl.attribute.GLUFloatMat4;
 import net.tribe7.opengl.util.GLViewSize;
@@ -30,14 +28,8 @@ public class T016CartoonTorus extends GL3EventListener {
 	private GLVertexArray torusVao = new GLVertexArray();
 	private GLBuffer torusIndices;
 
-	private Angle fov = new Angle();
-	private Angle azimuth = new Angle();
-	private Angle elevation = new Angle();
-	private Vector3 target = new Vector3();
-	private BufferedMatrix4 projMat = new BufferedMatrix4();
-	private BufferedMatrix4 camMat = new BufferedMatrix4();
 	private ModelTransform modelTransform = new ModelTransform();
-
+	private GLPointCamera camera = new GLPointCamera(75);
 	private GLUFloatMat4 uProjectionMatrix, uCameraMatrix, uModelMatrix;
 
 	@Override
@@ -90,19 +82,20 @@ public class T016CartoonTorus extends GL3EventListener {
 	@Override
 	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
 		double time = currentState.getElapsedTimeSeconds();
-		orbit(camMat, target, 3.5, 
-				azimuth.setDegrees(time * 35),
-				elevation.setDegrees(sineWave(time / 20.0) * 60));
+		orbit(camera.getMatrix(), camera.getTarget(), 3.5, 
+				camera.getAzimuth().setDegrees(time * 35),
+				camera.getElevation().setDegrees(sineWave(time / 20.0) * 60));
 		modelTransform.getRotationY().setFullCircles(time * .25);
 		modelTransform.getRotationX().setFullCircles(.25);
-		uCameraMatrix.set(camMat);
+		uCameraMatrix.set(camera.getMatrix());
 		uModelMatrix.set(modelTransform.getModelMatrix());
 	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
 		getDrawHelper().glViewPort(newViewport);
-		perspectiveX(projMat, fov.setDegrees(75), newViewport.width / newViewport.height, 1, 30);
-		uProjectionMatrix.set(projMat);
+		perspectiveX(camera.getProjection(), camera.getFov(), 
+				newViewport.width / newViewport.height, 1, 30);
+		uProjectionMatrix.set(camera.getProjection());
 	}
 }
