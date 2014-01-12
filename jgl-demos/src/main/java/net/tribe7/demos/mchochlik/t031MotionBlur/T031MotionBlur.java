@@ -2,6 +2,7 @@ package net.tribe7.demos.mchochlik.t031MotionBlur;
 
 import static net.tribe7.opengl.GLBufferFactory.*;
 import static javax.media.opengl.GL3.*;
+import static net.tribe7.math.matrix.Matrix4OpsPersp.*;
 
 import javax.media.opengl.GL3;
 
@@ -9,6 +10,7 @@ import net.tribe7.geom.plane.Screen;
 import net.tribe7.geom.solid.Cube;
 import net.tribe7.math.matrix.io.BufferedMatrix4;
 import net.tribe7.opengl.*;
+import net.tribe7.opengl.camera.GLPointCamera;
 import net.tribe7.opengl.glsl.attribute.*;
 import net.tribe7.opengl.util.GLViewSize;
 import net.tribe7.time.util.ExecutionState;
@@ -23,10 +25,10 @@ public class T031MotionBlur extends GL3EventListener {
 	private final MatrixInstances instances = new MatrixInstances(256);
 
 	private final Cube cube = new Cube();
+	private final Screen screen = new Screen();
+	private final GLPointCamera camera = new GLPointCamera(60);
 	private final GLVertexArray cubeVao = new GLVertexArray();
 	private final GLVertexArray arrowVao = new GLVertexArray();
-
-	private final Screen screen = new Screen();
 	private final GLVertexArray screenVao = new GLVertexArray();
 
 	@Override
@@ -89,7 +91,73 @@ public class T031MotionBlur extends GL3EventListener {
 
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
-		// TODO Auto-generated method stub
+
+		/* TODO: port code.
+		int samples = 3;
+		double frame_time = currentState.getElapsedTimeSeconds();
+		double interval = currentState.getFrameTimeUs();
+		double step = interval/samples;
+
+		for(int s=0; s!=samples; ++s) {
+
+			double time = frame_time + s*step;
+
+			// draw objects off-screen
+			blur_buffers.BindFBO();
+
+			gl.Enable(Capability::DepthTest);
+
+			gl.Clear().ColorBuffer().DepthBuffer();
+
+			double pos = time/20.0;
+
+			draw_prog.Use();
+			draw_prog.camera_matrix.Set(
+				CamMatrixf::LookingAt(
+					instances.Position(pos-0.03+SineWave(time/7.0)*0.01),
+					instances.Position(pos+0.02+SineWave(time/11.0)*0.01),
+					instances.Normal(pos-0.02+SineWave(time/9.0)*0.02)
+				)
+			);
+			draw_prog.single_model.Set(0);
+
+			cube.Use();
+			cube.Draw(instances.Count());
+
+			draw_prog.single_model.Set(1);
+
+			arrow.Use();
+
+			draw_prog.model_matrix.Set(
+				instances.MakeMatrix(
+					pos-0.007+SineWave(time/13.0)*0.007,
+					0.001
+				)
+			);
+			arrow.Draw();
+
+			draw_prog.model_matrix.Set(
+				instances.MakeMatrix(
+					pos+0.013+SineWave(time / 7.0)*0.007,
+					0.001
+				)
+			);
+			arrow.Draw();
+
+			// motion blur
+			Framebuffer::BindDefault(Framebuffer::Target::Draw);
+
+			gl.Disable(Capability::DepthTest);
+
+			blur_prog.Use();
+
+			screen.Use();
+			screen.Draw();
+
+			blur_buffers.Accumulate();
+		}
+		blur_prog.splitter.Set((SineWave(frame_time / 20.0)*0.5+0.5)*screen_width);
+		*/
 	}
 
 	@Override
@@ -99,6 +167,13 @@ public class T031MotionBlur extends GL3EventListener {
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {
-		// TODO Auto-generated method stub
+		getDrawHelper().glViewPort((int) newViewport.width, (int) newViewport.height);
+		perspectiveX(camera.getProjection(), camera.getFov(), newViewport.aspectRatio, 1, 300);
+		drawProg.bind();
+		drawProg.getProjectionMatrix().set(camera.getProjection());
+		drawProg.unbind();
+		blurProg.bind();
+		blurProg.getScreenSize().set(newViewport.width, newViewport.height);
+		blurProg.unbind();
 	}
 }

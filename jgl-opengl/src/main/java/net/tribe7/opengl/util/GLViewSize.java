@@ -16,8 +16,8 @@ public class GLViewSize {
 	@Override
 	public String toString() {
 		return String.format(
-				"%s[x:%s, y:%s, w:%s, h:%s]", 
+				"%s[x:%s, y:%s, w:%s, h:%s, ar:%s]", 
 				getClass().getSimpleName(),
-				x, y, width, height);
+				x, y, width, height, aspectRatio);
 	}
 }
