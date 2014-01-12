@@ -4,9 +4,7 @@ import static net.tribe7.common.base.Preconditions.*;
 import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
-
 import net.tribe7.demos.mchochlik.t025RecursiveTexture.T025RecursiveTexture;
-import net.tribe7.demos.mchochlik.t031MotionBlur.T031MotionBlur;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.platform.GLBootstrap;
 
@@ -29,7 +27,7 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T031MotionBlur();
+		GLScheduledEventListener target = new T025RecursiveTexture();
 		setTarget(target);
 	}
 
