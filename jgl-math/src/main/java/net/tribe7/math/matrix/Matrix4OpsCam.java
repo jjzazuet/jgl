@@ -39,6 +39,37 @@ public class Matrix4OpsCam {
 		dst.m(0,2, z.x); dst.m(1,2, z.y); dst.m(2,2, z.z); dst.m(3,2, -dot(eye, z));
 	}
 
+	public static void lookAt(Vector3 eye, Vector3 target, Vector3 up, Matrix4 dst) {
+
+		checkNoNulls(eye, target, up, dst);
+		checkArgument(!eye.equals(target));
+
+		Vector3 z = new Vector3();
+		sub(eye, target, z);
+		normalize(z);
+
+		double dupz = dot(up, z);
+		checkState(dupz < 0.9 && dupz > -0.9);
+
+		Vector3 y = new Vector3();
+
+		if (dupz != 0.0) {
+			scale(z, dupz);
+			sub(up, z, y);
+		} else {
+			y.set(up);
+		}
+		normalize(y);
+
+		Vector3 x = new Vector3();
+
+		cross(y, z, x);
+		setIdentity(dst);
+		dst.m(0, 0, x.x); dst.m(1, 0, x.y); dst.m(2, 0, x.z); dst.m(3, 0, -dot(eye, x));
+		dst.m(0, 1, y.x); dst.m(1, 1, y.y); dst.m(2, 1, y.z); dst.m(3, 1, -dot(eye, y)); 
+		dst.m(0, 2, z.x); dst.m(1, 2, z.y); dst.m(2, 2, z.z); dst.m(3, 2, -dot(eye, z)); 
+	}
+
 	public static void orbit(Matrix4 dst, Vector3 target, double radius, Angle azimuth, Angle elevation) {
 
 		checkNoNulls(dst, target);

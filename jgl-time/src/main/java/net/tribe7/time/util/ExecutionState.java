@@ -3,12 +3,14 @@ package net.tribe7.time.util;
 import net.tribe7.time.Timer;
 
 public class ExecutionState {
-	
+
 	private StateMethod method = StateMethod.UPDATE;
 	private final Timer logicTimer = new Timer();
 	private final Timer renderTimer = new Timer();
 	private double elapsedTimeUs, frameTimeUs, tickTimeUs, tickDelta;
 
+	// TODO fix this sh*t. Too many time variables being tracked between
+	// the timer. execution state and state listener.
 	public double getElapsedTimeSeconds() {
 		double time = elapsedTimeUs * 0.000001;
 		return time;

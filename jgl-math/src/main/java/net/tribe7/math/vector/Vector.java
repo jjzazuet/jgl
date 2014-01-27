@@ -36,24 +36,21 @@ public abstract class Vector {
 		StringBuilder sb = new StringBuilder();
 		double [] values = values();
 		sb.append(getClass().getSimpleName()).append("[ ");
-		
+
 		for (int k = 0; k < values.length; k++) {
 			sb.append(values[k]).append(' ');
 		}
-		
+
 		sb.append("]\n");
 		return sb.toString();
 	}
 	
 	public boolean equals(Object o) {
-		
 		boolean equals = false;
-		
 		if (o != null && o instanceof Vector) {
 			Vector v = (Vector) o;
 			equals = Arrays.equals(values(), v.values());
 		}
-		
 		return equals;
 	}
 

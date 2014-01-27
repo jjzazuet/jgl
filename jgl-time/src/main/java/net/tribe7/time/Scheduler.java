@@ -56,7 +56,7 @@ public abstract class Scheduler {
 		frameDeltaUs = Math.round(TIMER_RESOLUTION / frameTicksPerSecond);
 		setReady(false);
 	}
-	
+
 	public long queryCurrentTimeUs() {
 		return MICROSECONDS.convert(System.nanoTime(), NANOSECONDS);
 	}

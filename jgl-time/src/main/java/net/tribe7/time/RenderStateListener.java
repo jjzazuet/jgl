@@ -3,7 +3,7 @@ package net.tribe7.time;
 import java.util.concurrent.TimeUnit;
 
 public interface RenderStateListener {
-	
+
 	/**
 	 * Use this method for performing simulation state update (e.g. physics, resources, calculations, etc.).
 	 * 
@@ -12,7 +12,7 @@ public interface RenderStateListener {
 	 * @throws Exception when an error occurs during update.
 	 */
 	public void updateTick(double elapsedTimeUs, double frameTimeUs) throws Exception;
-	
+
 	/**
 	 * Use this method for rendering simulation state.
 	 * 

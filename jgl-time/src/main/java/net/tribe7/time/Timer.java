@@ -46,9 +46,10 @@ public class Timer {
 		fpsWeightFactor2 = (double) previousDeltaUs * ALPHA;
 		averageFramesPerSecond = TIMER_RESOLUTION / (fpsWeightFactor1 + fpsWeightFactor2);
 	}
-	
+
 	public long getCurrentTimeUs() { return t1; }
 	public long getElapsedSecondsSinceStart() { return t1 - startTimeUs; }
-	public long getElapsedMillis() { return currentDeltaUs; }
+	public long getElapsedMillis() { return currentDeltaUs * 1000; }
+	public long getElapsedSeconds() { return currentDeltaUs * TIMER_RESOLUTION; }
 	public double getFps() { return averageFramesPerSecond; }
 }

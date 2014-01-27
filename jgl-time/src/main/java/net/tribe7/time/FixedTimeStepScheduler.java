@@ -33,8 +33,7 @@ public class FixedTimeStepScheduler extends Scheduler {
 			t = t + fd;
 			accumulator = accumulator - fd;
 		}
-		stateListener.renderTick(getCurrentTimeUs(),
-				((double) accumulator)/((double) fd));
+		stateListener.renderTick(getCurrentTimeUs(), ((double) accumulator)/((double) fd));
 	}
 
 	@Override
