@@ -94,18 +94,7 @@ public class T026StencilShadow extends GL3EventListener {
 	@Override
 	protected void doRender(GL3 gl, ExecutionState currentState) throws Exception {
 
-		double time = currentState.getElapsedTimeSeconds();
-
-		getDrawHelper().glClearColor().glClearDepth().glClearStencil();
-		orbit(camera.getMatrix(), camera.getTarget(), 9.0, 
-				camera.getAzimuth().setFullCircles(time * 0.1), 
-				camera.getElevation().setDegrees(15 + (-sineWave(0.25+time/12.5)+1.0)* 0.5 * 75));
-
-		double rot = time * 0.2;
-		modelTransform.getTranslation().set(0.0f, 2.5f, 0.0);
-		modelTransform.getRotationX().setFullCircles(rot);
-		modelTransform.getRotationY().setFullCircles(rot);
-		modelTransform.getRotationZ().setFullCircles(rot);
+		gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //getDrawHelper().glClearColor().glClearDepth().glClearStencil();
 
 		BufferedMatrix4 modelMatrix = modelTransform.getModelMatrix();
 
@@ -117,17 +106,18 @@ public class T026StencilShadow extends GL3EventListener {
 		objectProg.bind(); {
 			objectProg.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
 			objectProg.getInterface().getFloat("LightMult").set(0.2f);
-			planeVao.bind(); {
-				objectProg.getInterface().getMat4("ModelMatrix").set(identity);
-				gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			} planeVao.unbind();
-			torusVao.bind(); {
-				objectProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
-				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
-			} torusVao.unbind();
+
+			planeVao.bind();
+			objectProg.getInterface().getMat4("ModelMatrix").set(identity);
+			gl.glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			planeVao.unbind();
+
+			torusVao.bind();
+			objectProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
+			getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
+			torusVao.unbind();
 		} objectProg.unbind();
 
-		// TODO bug
 		gl.glColorMask(false, false, false, false);
 		gl.glDepthMask(false);
 		gl.glEnable(GL_STENCIL_TEST);
@@ -137,21 +127,21 @@ public class T026StencilShadow extends GL3EventListener {
 
 		shadowProg.bind(); {
 			shadowProg.getInterface().getMat4("CameraMatrix").set(camera.getMatrix());
-			shadowProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
 			torusVao.bind(); {
+				shadowProg.getInterface().getMat4("ModelMatrix").set(modelMatrix);
 				gl.glCullFace(GL_BACK);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 				gl.glCullFace(GL_FRONT);
 				getDrawHelper().glIndexedDraw(GL_TRIANGLE_STRIP, torusIndices, torus.getPrimitiveRestartIndex());
 				gl.glCullFace(GL_BACK);
+
+				gl.glColorMask(true, true, true, true);
+				gl.glDepthMask(true);
+				getDrawHelper().glClearDepth();
+				gl.glStencilFunc(GL_EQUAL, 0, ~0);
+				gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 			} torusVao.unbind();
 		} shadowProg.unbind();
-
-		gl.glColorMask(true, true, true, true);
-		gl.glDepthMask(true);
-		getDrawHelper().glClearDepth();
-		gl.glStencilFunc(GL_EQUAL, 0, ~0);
-		gl.glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
 		objectProg.bind(); {
 			objectProg.getInterface().getFloat("LightMult").set(2.5f);
@@ -169,7 +159,20 @@ public class T026StencilShadow extends GL3EventListener {
 	}
 
 	@Override
-	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {}
+	protected void doUpdate(GL3 gl, ExecutionState currentState) throws Exception {
+
+		double time = currentState.getElapsedTimeSeconds();
+
+		orbit(camera.getMatrix(), camera.getTarget(), 9.0, 
+				camera.getAzimuth().setFullCircles(time * 0.1), 
+				camera.getElevation().setDegrees(15 + (-sineWave(0.25+time/12.5)+1.0)* 0.5 * 75));
+
+		double rot = time * 0.2;
+		modelTransform.getTranslation().set(0.0f, 2.5f, 0.0);
+		modelTransform.getRotationX().setFullCircles(rot);
+		modelTransform.getRotationY().setFullCircles(rot);
+		modelTransform.getRotationZ().setFullCircles(rot);
+	}
 
 	@Override
 	protected void onResize(GL3 gl, GLViewSize newViewport) {

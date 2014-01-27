@@ -7,7 +7,8 @@ uniform vec3 LightPos;
 out vec3 vertNormal;
 out vec3 vertLight;
 
-void main(void) {
+void main(void)
+{
 	gl_Position = ModelMatrix * Position;
 	vertNormal = mat3(ModelMatrix)*Normal;
 	vertLight = LightPos - gl_Position.xyz;

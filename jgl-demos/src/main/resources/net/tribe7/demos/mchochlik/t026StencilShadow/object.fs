@@ -5,8 +5,8 @@ in vec3 vertLight;
 uniform vec3 Color;
 uniform float LightMult;
 out vec4 fragColor;
-
-void main(void) {
+void main(void)
+{
 	float l = sqrt(length(vertLight));
 	float d = l > 0.0 ?
 		dot(

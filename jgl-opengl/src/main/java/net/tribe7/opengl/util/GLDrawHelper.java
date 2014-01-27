@@ -18,7 +18,7 @@ public class GLDrawHelper extends GLContextResource {
 		buffer.getRawBuffer().clear();
 		buffer.getGl().glDrawElements(glMode, 
 				buffer.getRawBuffer().capacity(), 
-				buffer.getBufferMetadata().getGlPrimitiveType(), 
+				buffer.getBufferMetadata().getGlPrimitiveType(),
 				db.address());
 		buffer.checkError();
 	}

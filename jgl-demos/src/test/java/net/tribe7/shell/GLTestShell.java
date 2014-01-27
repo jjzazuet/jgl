@@ -4,7 +4,11 @@ import static net.tribe7.common.base.Preconditions.*;
 import static net.tribe7.common.base.Throwables.*;
 
 import javax.media.opengl.*;
+
+import net.tribe7.demos.mchochlik.t004Rect.T004Rect;
+import net.tribe7.demos.mchochlik.t015ShadedCube.T015ShadedCube;
 import net.tribe7.demos.mchochlik.t025RecursiveTexture.T025RecursiveTexture;
+import net.tribe7.demos.mchochlik.t026StencilShadow.T026StencilShadow;
 import net.tribe7.opengl.GLScheduledEventListener;
 import net.tribe7.opengl.platform.GLBootstrap;
 
@@ -27,7 +31,7 @@ public class GLTestShell {
 		getCapabilities().setDoubleBuffered(true);
 		getCapabilities().setSampleBuffers(false);
 
-		GLScheduledEventListener target = new T025RecursiveTexture();
+		GLScheduledEventListener target = new T004Rect();
 		setTarget(target);
 	}
 
